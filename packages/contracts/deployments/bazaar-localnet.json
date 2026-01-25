@@ -1,6 +1,6 @@
 {
-  "predictionOracle": "0x4b6aB5F819A515382B0dEB6935D793817bB4af28",
-  "predictionMarket": "0xF8e31cb472bc70500f08Cd84917E5A1912Ec8397",
+  "predictionOracle": "0x942ED2fa862887Dc698682cc6a86355324F0f01e",
+  "predictionMarket": "0x8D81A3DCd17030cD5F23Ac7370e4Efb10D2b3cA4",
   "markets": [
     {
       "sessionId": "0x0000000000000000000000000000000000000000000000000000000000000001",
@@ -28,5 +28,5 @@
       "liquidity": "2000000000000000000000"
     }
   ],
-  "deployedAt": "2026-01-07T03:45:21.695Z"
+  "deployedAt": "2026-01-25T21:46:25.752Z"
 }

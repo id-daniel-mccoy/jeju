@@ -2,6 +2,7 @@
 
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs'
 import { join } from 'node:path'
+import { execa } from 'execa'
 import { getFarcasterHubUrl, getLocalhostHost } from '@jejunetwork/config'
 import { type Subprocess, spawn } from 'bun'
 import {
@@ -728,8 +729,23 @@ class ServicesOrchestrator {
       },
     })
 
+    // Build indexer first to resolve circular dependencies in model files
+    try {
+      await execa('bun', ['run', 'build'], {
+        cwd: indexerPath,
+        stdio: 'pipe',
+      })
+    } catch {
+      // Build may fail, but try to continue anyway
+      logger.warn('Indexer build failed, continuing with TypeScript...')
+    }
+
     // Start processor separately (can crash without killing GraphQL/API)
-    const processorProc = spawn(['bun', 'run', 'dev:processor'], {
+    // Use compiled version if available, otherwise fall back to TypeScript
+    const processorScript = existsSync(join(indexerPath, 'lib/api/main.js'))
+      ? 'lib/api/main.js'
+      : 'api/main.ts'
+    const processorProc = spawn(['bun', processorScript], {
       cwd: indexerPath,
       stdout: 'inherit',
       stderr: 'inherit',

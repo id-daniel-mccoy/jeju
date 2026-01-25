@@ -5,8 +5,11 @@
  * threshold MPC signing, and W3C Verifiable Credentials.
  */
 
-import type { JsonRecord, TEEAttestation } from '@jejunetwork/types'
+import type { JsonRecord as _JsonRecord, TEEAttestation } from '@jejunetwork/types'
 import type { Address, Hex } from 'viem'
+
+// Re-export JsonRecord for use in SDK
+export type JsonRecord = _JsonRecord
 
 export const AuthProvider = {
   WALLET: 'wallet',

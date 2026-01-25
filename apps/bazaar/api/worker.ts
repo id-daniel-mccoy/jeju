@@ -1040,6 +1040,77 @@ export function createBazaarApp(env?: Partial<BazaarEnv>) {
       }),
   )
 
+  // Fallback: serve static files from local dist in development
+  // This handles cases where static files aren't in IPFS yet
+  if (isDev) {
+    app.get('/*', async ({ path, set }) => {
+      // Skip API routes - they're handled above
+      if (
+        path.startsWith('/api/') ||
+        path === '/health' ||
+        path.startsWith('/.well-known/')
+      ) {
+        set.status = 404
+        return { error: 'NOT_FOUND' }
+      }
+
+      // Try to serve from local dist/static directory
+      const { join, dirname } = await import('node:path')
+      const { existsSync, readFileSync } = await import('node:fs')
+      const { fileURLToPath } = await import('node:url')
+
+      let staticDir: string | null = null
+
+      // Find dist/static directory
+      if (typeof import.meta !== 'undefined' && 'dir' in import.meta && import.meta.dir) {
+        const apiDir = import.meta.dir
+        const bazaarDir = dirname(apiDir)
+        staticDir = join(bazaarDir, 'dist', 'static')
+      } else {
+        try {
+          const currentFile = fileURLToPath(import.meta.url)
+          const apiDir = dirname(currentFile)
+          const bazaarDir = dirname(apiDir)
+          staticDir = join(bazaarDir, 'dist', 'static')
+        } catch {
+          // Fallback to workspace root
+          staticDir = join(process.cwd(), 'apps', 'bazaar', 'dist', 'static')
+        }
+      }
+
+      if (staticDir && existsSync(staticDir)) {
+        const filePath = path === '/' ? 'index.html' : path.replace(/^\//, '')
+        const fullPath = join(staticDir, filePath)
+
+        if (existsSync(fullPath)) {
+          const content = readFileSync(fullPath)
+          const ext = filePath.split('.').pop()?.toLowerCase() ?? ''
+          const contentType =
+            ext === 'js'
+              ? 'application/javascript'
+              : ext === 'css'
+                ? 'text/css'
+                : ext === 'html'
+                  ? 'text/html'
+                  : ext === 'svg'
+                    ? 'image/svg+xml'
+                    : 'application/octet-stream'
+
+          return new Response(content, {
+            headers: {
+              'Content-Type': contentType,
+              'Cache-Control': 'no-cache',
+              'X-Bazaar-Source': 'local-filesystem',
+            },
+          })
+        }
+      }
+
+      set.status = 404
+      return { error: 'NOT_FOUND' }
+    })
+  }
+
   return app
 }
 

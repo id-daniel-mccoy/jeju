@@ -607,16 +607,24 @@ async function serveFrontendFromStorage(
   // Try to find CID for this path in staticFiles map
   let fileCid: string | null = null
   if (app.staticFiles) {
-    fileCid = app.staticFiles[path] ?? null
+    // Try both with and without leading slash since deploy scripts vary
+    const pathWithSlash = `/${path}`
+    fileCid = app.staticFiles[path] ?? app.staticFiles[pathWithSlash] ?? null
     // Also try with dist/ prefix for legacy paths like /dist/web/main.js
     if (!fileCid && path.startsWith('dist/')) {
       const withoutDist = path.replace(/^dist\//, '')
-      fileCid = app.staticFiles[withoutDist] ?? null
+      fileCid =
+        app.staticFiles[withoutDist] ??
+        app.staticFiles[`/${withoutDist}`] ??
+        null
     }
     // Try web/ prefix for /dist/web/* paths
     if (!fileCid && path.startsWith('dist/web/')) {
       const withoutDistWeb = path.replace(/^dist\/web\//, 'web/')
-      fileCid = app.staticFiles[withoutDistWeb] ?? null
+      fileCid =
+        app.staticFiles[withoutDistWeb] ??
+        app.staticFiles[`/${withoutDistWeb}`] ??
+        null
     }
   }
 
@@ -678,6 +686,48 @@ async function serveFrontendFromStorage(
     }
   }
 
+  // Fallback to local filesystem for development (localnet only)
+  if (!fileCid && NETWORK === 'localnet') {
+    const { join } = await import('node:path')
+    const { existsSync, readFileSync } = await import('node:fs')
+    const ROOT = join(import.meta.dir, '../../../../..')
+    const appDistPath = join(ROOT, 'apps', app.name, 'dist', 'static', path)
+    
+    if (existsSync(appDistPath)) {
+      const content = readFileSync(appDistPath)
+      const contentType = getContentType(path)
+      console.log(`[AppRouter] Serving from local filesystem: ${appDistPath}`)
+      return new Response(content, {
+        headers: {
+          'Content-Type': contentType,
+          'Cache-Control': 'no-cache',
+          'X-DWS-Source': 'local-filesystem',
+        },
+      })
+    }
+  }
+
+  // Fallback to local filesystem for development (localnet only)
+  if (!fileCid && NETWORK === 'localnet') {
+    const { join } = await import('node:path')
+    const { existsSync, readFileSync } = await import('node:fs')
+    const ROOT = join(import.meta.dir, '../../../../..')
+    const appDistPath = join(ROOT, 'apps', app.name, 'dist', 'static', path)
+    
+    if (existsSync(appDistPath)) {
+      const content = readFileSync(appDistPath)
+      const contentType = getContentType(path)
+      console.log(`[AppRouter] Serving from local filesystem: ${appDistPath}`)
+      return new Response(content, {
+        headers: {
+          'Content-Type': contentType,
+          'Cache-Control': 'no-cache',
+          'X-DWS-Source': 'local-filesystem',
+        },
+      })
+    }
+  }
+
   if (!fileCid) {
     console.log(`[AppRouter] No CID found for path: ${path}`)
     return new Response('Not Found', { status: 404 })
@@ -703,6 +753,26 @@ async function serveFrontendFromStorage(
     console.log(
       `[AppRouter] Storage fetch failed: ${response?.status ?? 'timeout'} for ${fileCid}`,
     )
+    // Fallback to local filesystem for development (localnet only)
+    if (NETWORK === 'localnet') {
+      const { join } = await import('node:path')
+      const { existsSync, readFileSync } = await import('node:fs')
+      const ROOT = join(import.meta.dir, '../../../../..')
+      const appDistPath = join(ROOT, 'apps', app.name, 'dist', 'static', path)
+      
+      if (existsSync(appDistPath)) {
+        const content = readFileSync(appDistPath)
+        const contentType = getContentType(path)
+        console.log(`[AppRouter] Fallback to local filesystem: ${appDistPath}`)
+        return new Response(content, {
+          headers: {
+            'Content-Type': contentType,
+            'Cache-Control': 'no-cache',
+            'X-DWS-Source': 'local-filesystem-fallback',
+          },
+        })
+      }
+    }
     return new Response('Not Found', { status: 404 })
   }
 

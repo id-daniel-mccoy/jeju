@@ -4,8 +4,10 @@
 
 import './init'
 
+import 'reflect-metadata'
 import { ZERO_ADDRESS } from '@jejunetwork/types'
 import { type Store, TypeormDatabase } from '@subsquid/typeorm-store'
+// Import models AFTER init to ensure they're loaded with proper metadata
 import {
   Account,
   Block as BlockEntity,
@@ -52,6 +54,24 @@ if (config.indexerMode === 'sqlit') {
     "[Indexer] INDEXER_MODE='sqlit' is not supported yet for the Subsquid processor store. Use INDEXER_MODE='postgres'.",
   )
 }
+
+// Ensure ALL models are loaded before creating database (TypeORM needs entities registered)
+// Import all entities to ensure their decorators are evaluated and metadata is registered
+// This must happen before TypeormDatabase is created
+import * as allModels from '../src/model'
+
+// Force evaluation of all entity classes to register them with TypeORM
+// TypeORM uses decorator metadata which requires classes to be evaluated
+const _ensureEntitiesLoaded = () => {
+  // Access all exported classes to ensure they're evaluated
+  Object.values(allModels).forEach((model) => {
+    if (typeof model === 'function' && model.prototype) {
+      // Force class evaluation by accessing prototype
+      void model.prototype
+    }
+  })
+}
+_ensureEntitiesLoaded()
 
 const db = new TypeormDatabase({ supportHotBlocks: true })
 

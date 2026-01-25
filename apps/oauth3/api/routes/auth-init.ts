@@ -610,97 +610,110 @@ export function createAuthInitRouter(config: AuthConfig) {
       .post(
         '/wallet',
         async ({ body, set }) => {
-          if (!isAddress(body.address)) {
-            set.status = 400
-            return { error: 'invalid_address' }
-          }
-          if (!isHex(body.signature)) {
-            set.status = 400
-            return { error: 'invalid_signature_format' }
-          }
+          try {
+            // Ensure state and KMS are initialized
+            await ensureAuthInitInitialized(config)
 
-          const address: Address = body.address
-          const signature: Hex = body.signature
-          const appId = body.appId ?? 'jeju-default'
-
-          // Verify the message is a valid sign-in message
-          // Accept any SIWE-style message from known domains
-          const validDomains = [
-            'auth.jejunetwork.org',
-            'auth.testnet.jejunetwork.org',
-            'oauth3.jejunetwork.org',
-            'oauth3.testnet.jejunetwork.org',
-            'crucible.testnet.jejunetwork.org',
-            'crucible.jejunetwork.org',
-            'localhost',
-            getLocalhostHost(),
-          ]
-          const messageHasDomain = validDomains.some(
-            (d) =>
-              body.message.includes(d) ||
-              body.message.includes('wants you to sign in'),
-          )
-          if (!messageHasDomain) {
-            set.status = 400
-            return {
-              error: 'invalid_message',
-              message: 'Message must be a valid sign-in request',
+            if (!isAddress(body.address)) {
+              set.status = 400
+              return { error: 'invalid_address' }
             }
-          }
+            if (!isHex(body.signature)) {
+              set.status = 400
+              return { error: 'invalid_signature_format' }
+            }
 
-          // Verify signature
-          const valid = await verifyMessage({
-            address,
-            message: body.message,
-            signature,
-          })
+            const address: Address = body.address
+            const signature: Hex = body.signature
+            const appId = body.appId ?? 'jeju-default'
 
-          if (!valid) {
-            set.status = 401
-            return { error: 'invalid_signature' }
-          }
+            // Verify the message is a valid sign-in message
+            // Accept any SIWE-style message from known domains
+            const validDomains = [
+              'auth.jejunetwork.org',
+              'auth.testnet.jejunetwork.org',
+              'oauth3.jejunetwork.org',
+              'oauth3.testnet.jejunetwork.org',
+              'crucible.testnet.jejunetwork.org',
+              'crucible.jejunetwork.org',
+              'localhost',
+              getLocalhostHost(),
+            ]
+            const messageHasDomain = validDomains.some(
+              (d) =>
+                body.message.includes(d) ||
+                body.message.includes('wants you to sign in'),
+            )
+            if (!messageHasDomain) {
+              set.status = 400
+              return {
+                error: 'invalid_message',
+                message: 'Message must be a valid sign-in request',
+              }
+            }
 
-          // Create session
-          const sessionId = `0x${crypto.randomUUID().replace(/-/g, '')}`
-          const userId = `wallet:${address.toLowerCase()}`
+            // Verify signature
+            const valid = await verifyMessage({
+              address,
+              message: body.message,
+              signature,
+            })
 
-          const ephemeralKey = await getEphemeralKey(sessionId)
+            if (!valid) {
+              set.status = 401
+              return { error: 'invalid_signature' }
+            }
 
-          const expiresAt = Date.now() + 24 * 60 * 60 * 1000 // 24 hours
+            // Create session
+            const sessionId = `0x${crypto.randomUUID().replace(/-/g, '')}`
+            const userId = `wallet:${address.toLowerCase()}`
 
-          await sessionState.save({
-            sessionId,
-            userId,
-            provider: 'wallet',
-            address,
-            createdAt: Date.now(),
-            expiresAt,
-            metadata: { appId },
-            ephemeralKeyId: ephemeralKey.keyId,
-          })
+            const ephemeralKey = await getEphemeralKey(sessionId)
 
-          console.log('[OAuth3] Direct wallet auth session created:', {
-            sessionId: `${sessionId.substring(0, 10)}...`,
-            address: `${address.substring(0, 6)}...${address.slice(-4)}`,
-            appId,
-          })
+            const expiresAt = Date.now() + 24 * 60 * 60 * 1000 // 24 hours
 
-          // Return session in OAuth3Session format expected by the SDK
-          return {
-            sessionId,
-            identityId: sessionId, // Use session as identity for wallet auth
-            smartAccount: address,
-            expiresAt,
-            capabilities: ['sign_message', 'sign_transaction'],
-            signingPublicKey: ephemeralKey.publicKey,
-            attestation: {
-              quote: EMPTY_HEX,
-              measurement: EMPTY_HEX,
-              reportData: EMPTY_HEX,
-              timestamp: Date.now(),
-              platform: 'simulated',
-              verified: false,
-            },
+            await sessionState.save({
+              sessionId,
+              userId,
+              provider: 'wallet',
+              address,
+              createdAt: Date.now(),
+              expiresAt,
+              metadata: { appId },
+              ephemeralKeyId: ephemeralKey.keyId,
+            })
+
+            console.log('[OAuth3] Direct wallet auth session created:', {
+              sessionId: `${sessionId.substring(0, 10)}...`,
+              address: `${address.substring(0, 6)}...${address.slice(-4)}`,
+              appId,
+            })
+
+            // Return session in OAuth3Session format expected by the SDK
+            return {
+              sessionId,
+              identityId: sessionId, // Use session as identity for wallet auth
+              smartAccount: address,
+              expiresAt,
+              capabilities: ['sign_message', 'sign_transaction'],
+              signingPublicKey: ephemeralKey.publicKey,
+              attestation: {
+                quote: EMPTY_HEX,
+                measurement: EMPTY_HEX,
+                reportData: EMPTY_HEX,
+                timestamp: Date.now(),
+                platform: 'simulated',
+                verified: false,
+              },
+            }
+          } catch (error) {
+            const errorMsg = error instanceof Error ? error.message : String(error)
+            console.error('[OAuth3] Wallet auth error:', errorMsg, error instanceof Error ? error.stack : undefined)
+            set.status = 500
+            return {
+              error: 'internal_error',
+              message: process.env.NODE_ENV === 'development' ? errorMsg : 'Authentication failed',
+            }
           }
         },
         { body: WalletAuthBodySchema },

@@ -4,7 +4,7 @@
  */
 
 import { spawnSync } from 'node:child_process'
-import { existsSync, readdirSync, statSync } from 'node:fs'
+import { existsSync, readdirSync, readFileSync, statSync } from 'node:fs'
 import { join, relative } from 'node:path'
 import type { Address, Hex } from 'viem'
 import {
@@ -397,7 +397,46 @@ async function deployWorker(
 
   // For workerd workers we must upload a single JS module CID (directories/tarballs are not supported)
   if (workerRuntime === 'workerd') {
-    const entry = entrypoint ?? 'index.js'
+    // Try to find the built worker file
+    // 1. Check metadata.json for the entrypoint
+    let entry: string | null = null
+    const metadataPath = join(workerPath, 'metadata.json')
+    if (existsSync(metadataPath)) {
+      try {
+        const metadata = JSON.parse(
+          readFileSync(metadataPath, 'utf-8'),
+        ) as { entrypoint?: string }
+        if (metadata.entrypoint) {
+          entry = metadata.entrypoint
+        }
+      } catch {
+        // Ignore metadata parse errors
+      }
+    }
+
+    // 2. Try common built file names
+    if (!entry) {
+      const commonNames = ['worker.js', 'index.js', 'main.js']
+      for (const name of commonNames) {
+        const testPath = join(workerPath, name)
+        if (existsSync(testPath)) {
+          entry = name
+          break
+        }
+      }
+    }
+
+    // 3. Fall back to manifest entrypoint (remove path, keep filename)
+    if (!entry) {
+      if (entrypoint) {
+        // Extract filename from entrypoint (e.g., "api/worker.ts" -> "worker.js")
+        const entrypointName = entrypoint.split('/').pop() ?? 'worker.ts'
+        entry = entrypointName.replace(/\.ts$/, '.js')
+      } else {
+        entry = 'index.js'
+      }
+    }
+
     const workerFilePath = join(workerPath, entry)
     if (!existsSync(workerFilePath)) {
       throw new Error(

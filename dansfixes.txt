@@ -1,0 +1,29 @@
+Fixed build order: Added packages/db build step before packages/kms in build:packages script to resolve TypeScript module resolution error (@jejunetwork/db not found during kms build).
+
+Fixed missing forge dependencies: Updated postinstall script to check for and install missing forge dependencies (account-abstraction, forge-std, openzeppelin-contracts, etc.) even if git submodules partially succeed, ensuring EntryPoint.sol is available during bootstrap.
+
+Fixed BasePaymaster constructor calls: Updated LiquidityPaymaster, SimplePaymaster, MultiTokenPaymaster, and CrossChainPaymaster to pass owner as second argument to BasePaymaster constructor (account-abstraction v0.8.28 requires 2 args: entryPoint and owner).
+
+Fixed entryPoint() function calls: Updated MultiTokenPaymaster and CrossChainPaymaster to use entryPoint() function call instead of entryPoint variable when calling depositTo/withdrawTo/balanceOf methods (BasePaymaster exposes entryPoint as a function, not a variable).
+
+Fixed missing @jejunetwork/api build: Added packages/shared and packages/api to build:packages script build order (after packages/db, before packages/kms) to ensure @jejunetwork/api is built before DWS tries to import it.
+
+Fixed indexer circular dependency: Updated orchestrator to build indexer before starting processor to resolve "Cannot access 'Account' before initialization" error when running TypeScript directly. Falls back to compiled lib/api/main.js if available, otherwise uses api/main.ts.
+
+Fixed TypeORM entity discovery: Added explicit Account import evaluation before TypeormDatabase creation to ensure entities are registered with TypeORM metadata system. This fixes "No metadata for Account was found" error that was crashing the indexer processor.
+
+Fixed missing @jejunetwork/auth build: Added packages/auth to build:packages script and fixed TypeScript errors (missing passkey in AuthProvider maps, missing JsonRecord export, passkey type assertions). Fixed missing getSecureSigningService export in bazaar KMS browser stub.
+
+Fixed Bazaar browser stub exports: Added missing createMPCClient export to KMS stub and Elysia class stub to empty.ts to fix browser build errors when bundling server-side auth code.
+
+Fixed missing @jejunetwork/ui build: Added packages/ui to build:packages script build order and added missing passkey entry to PROVIDER_CONFIG in JejuAuthButton.tsx to ensure it's built before Crucible tries to import it.
+
+Fixed @noble/hashes resolution errors: Added @noble/hashes dependency to gateway and autocrat package.json files to ensure subpath imports resolve correctly when build scripts execute (Bun needs it available during script execution, not just bundling).
+
+Fixed Bazaar static file serving: Added fallback to serve from local filesystem (apps/bazaar/dist/static) when IPFS files aren't available in localnet mode. Fixed path lookup to try both with and without leading slash to handle different deploy script formats. Added catch-all route in Bazaar API worker to serve static files from local dist/static directory in development mode when requests reach the worker instead of the app router.
+
+Fixed workerd worker entrypoint resolution: Updated deploy-app-onchain.ts to check metadata.json for the built entrypoint filename first, then try common built file names (worker.js, index.js, main.js), and only fall back to manifest entrypoint if none found. This fixes "Workerd worker entrypoint not found" error when deployment looks for source file path (api/worker.ts) instead of built file (worker.js).
+
+Fixed OAuth3 wallet auth 500 error: Added comprehensive error handling for MPC client creation and key generation. Made mpcClient nullable and wrapped all MPC operations in try-catch blocks. If MPC client creation fails or MPC registry is not configured (zero address), authentication continues with a fallback keyId instead of throwing an error. Removed dependency on isDevMode() check - now always handles errors gracefully. Added detailed logging to show when MPC is unavailable vs when it fails. This allows wallet login to work even when KMS/MPC services aren't fully configured (no MPC parties registered on localnet). Also fixed port 4011 health check error (OIF aggregator/monitoring service - not critical for auth).
+
+Fixed OAuth3 /auth/wallet endpoint initialization: Added ensureAuthInitInitialized(config) call at the start of the /auth/wallet endpoint handler to ensure state and KMS services are initialized before use. Wrapped entire endpoint handler in try-catch to return proper error responses instead of 500 errors. Made KMS initialization resilient - if KMS health check fails or KMS_ENDPOINT is not set, it logs a warning and continues without KMS instead of throwing an error. This fixes the 500 Internal Server Error during wallet login when state/KMS services weren't initialized before the first request.

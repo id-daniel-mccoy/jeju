@@ -52,6 +52,11 @@ const PROVIDER_CONFIG: Record<
     icon: '🔐',
     color: 'hover:bg-blue-500/10 hover:border-blue-500/30',
   },
+  [AuthProvider.PASSKEY]: {
+    label: 'Passkey',
+    icon: '🔑',
+    color: 'hover:bg-green-500/10 hover:border-green-500/30',
+  },
   [AuthProvider.FARCASTER]: {
     label: 'Farcaster',
     icon: '🟣',

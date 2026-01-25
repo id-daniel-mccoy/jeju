@@ -659,7 +659,10 @@ async function main(): Promise<void> {
 
         // Static files from IPFS/CDN
         const filePath = path === '/' ? 'index.html' : path.slice(1)
-        const fileCid = state.staticFiles[filePath]
+        // Try both with and without leading slash since deploy scripts vary
+        const filePathWithSlash = `/${filePath}`
+        const fileCid =
+          state.staticFiles[filePath] ?? state.staticFiles[filePathWithSlash]
 
         if (fileCid) {
           const ipfsResponse = await fetch(
@@ -677,7 +680,8 @@ async function main(): Promise<void> {
         }
 
         // SPA fallback - serve index.html
-        const indexCid = state.staticFiles['index.html']
+        const indexCid =
+          state.staticFiles['index.html'] ?? state.staticFiles['/index.html']
         if (indexCid) {
           const indexResponse = await fetch(
             `${DWS_URL}/storage/${indexCid}`,

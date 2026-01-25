@@ -17,4 +17,24 @@ export function createKMSSigner(_config: {
   return new KMSSigner()
 }
 
+export function getSecureSigningService(_options?: {
+  serviceId?: string
+  allowLocalDev?: boolean
+}): {
+  generateKey(): Promise<{ privateKey: string; publicKey: string }>
+  signMessage(message: string): Promise<{ signature: `0x${string}` }>
+} {
+  throw new Error('KMS is not available in browser')
+}
+
+export function createMPCClient(
+  _config: unknown,
+  _serviceAgentId?: string,
+): {
+  generateKey(): Promise<never>
+  signMessage(_message: string): Promise<never>
+} {
+  throw new Error('MPC client is not available in browser')
+}
+
 export type { KMSSigner as KMSSignerType }

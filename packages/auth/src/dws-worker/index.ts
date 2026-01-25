@@ -361,14 +361,24 @@ interface PendingAuth {
 
 export function createOAuth3Worker(config: OAuth3WorkerConfig) {
   // MPC client for threshold signing
-  const mpcClient = createMPCClient(
-    {
-      rpcUrl: config.rpcUrl,
-      mpcRegistryAddress: config.mpcRegistryAddress,
-      identityRegistryAddress: config.identityRegistryAddress,
-    },
-    config.serviceAgentId,
-  )
+  // Create MPC client, but handle errors gracefully if registry is not configured
+  let mpcClient: ReturnType<typeof createMPCClient> | null = null
+  try {
+    mpcClient = createMPCClient(
+      {
+        rpcUrl: config.rpcUrl,
+        mpcRegistryAddress: config.mpcRegistryAddress,
+        identityRegistryAddress: config.identityRegistryAddress,
+      },
+      config.serviceAgentId,
+    )
+  } catch (error) {
+    console.warn(
+      `[OAuth3] Failed to create MPC client (registry: ${config.mpcRegistryAddress}):`,
+      error instanceof Error ? error.message : String(error),
+    )
+    // mpcClient will be null, and getOrCreateUserKey will handle it
+  }
 
   // Session storage (in production, use distributed storage)
   const sessions = new Map<string, OAuth3Session>()
@@ -389,7 +399,39 @@ export function createOAuth3Worker(config: OAuth3WorkerConfig) {
 
     // Generate new MPC key for this user
     keyId = `oauth3:${userId}:${Date.now()}`
-    await mpcClient.requestKeyGen({ keyId })
+    
+    // Check if MPC client is available and registry is configured
+    const hasMPCConfig = 
+      mpcClient !== null &&
+      config.mpcRegistryAddress && 
+      config.mpcRegistryAddress !== '0x0000000000000000000000000000000000000000'
+    
+    if (hasMPCConfig) {
+      try {
+        await mpcClient.requestKeyGen({ keyId })
+        console.log(`[OAuth3] Created MPC key for ${userId}: ${keyId}`)
+      } catch (error) {
+        const errorMsg = error instanceof Error ? error.message : String(error)
+        console.warn(
+          `[OAuth3] Failed to create MPC key for ${userId} (MPC registry: ${config.mpcRegistryAddress}):`,
+          errorMsg,
+        )
+        // Use a fallback keyId that doesn't require MPC
+        keyId = `fallback:${userId}`
+      }
+    } else {
+      if (!mpcClient) {
+        console.debug(
+          `[OAuth3] MPC client not available, using fallback key for ${userId}`,
+        )
+      } else {
+        console.debug(
+          `[OAuth3] MPC registry not configured (address: ${config.mpcRegistryAddress}), using fallback key for ${userId}`,
+        )
+      }
+      // Use a fallback keyId that doesn't require MPC
+      keyId = `fallback:${userId}`
+    }
 
     userKeys.set(userId, keyId)
     return keyId
@@ -400,6 +442,16 @@ export function createOAuth3Worker(config: OAuth3WorkerConfig) {
     message: string,
   ): Promise<Hex> {
     const keyId = await getOrCreateUserKey(userId)
+    
+    // If keyId is a fallback key, we can't sign with MPC
+    if (keyId.startsWith('fallback:')) {
+      throw new Error('Cannot sign with fallback key - MPC not available')
+    }
+    
+    if (!mpcClient) {
+      throw new Error('MPC client not available')
+    }
+    
     const messageHash = keccak256(toBytes(message))
 
     const result = await mpcClient.requestSignature({
@@ -546,14 +598,28 @@ export function createOAuth3Worker(config: OAuth3WorkerConfig) {
 
         // Create session with wallet address
         const userId = `wallet:${params.address.toLowerCase()}`
-        const keyId = await getOrCreateUserKey(userId)
+        
+        // Try to get/create user key, but don't fail if MPC is unavailable
+        // Always wrap in try-catch to handle any errors gracefully
+        let keyId: string
+        try {
+          keyId = await getOrCreateUserKey(userId)
+        } catch (error) {
+          const errorMsg = error instanceof Error ? error.message : String(error)
+          console.warn(
+            `[OAuth3] Failed to get/create user key for ${userId}, using fallback:`,
+            errorMsg,
+          )
+          // Use a fallback keyId that doesn't require MPC
+          keyId = `fallback:${userId}`
+        }
 
         const session: OAuth3Session = {
           sessionId: generateSessionId(),
           userId,
           address: params.address,
           provider: 'wallet',
-          keyId,
+          keyId: keyId ?? `fallback:${userId}`,
           createdAt: Date.now(),
           expiresAt: Date.now() + sessionDuration,
           lastActivity: Date.now(),

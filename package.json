@@ -74,8 +74,8 @@
   },
   "scripts": {
     "clean": "find apps packages vendor -type d -name node_modules -prune -exec rm -rf {} + && rm -rf node_modules .turbo && bun install",
-    "postinstall": "cd packages/contracts && forge install --no-git && cd ../.. && bun run \"build:packages\" && bun run packages/deployment/scripts/setup-apps.ts && bun run \"link:cli\"",
-    "build:packages": "bun run --cwd packages/types build && bun run --cwd packages/contracts build && bun run --cwd packages/kms build",
+    "postinstall": "cd packages/contracts && (git submodule update --init --recursive --depth 1 2>/dev/null; test -d lib/account-abstraction || forge install eth-infinitism/account-abstraction --no-git || true) && (test -d lib/forge-std || forge install foundry-rs/forge-std --no-git || true) && (test -d lib/openzeppelin-contracts || forge install OpenZeppelin/openzeppelin-contracts@v5.3.0 --no-git || true) && (test -d lib/openzeppelin-contracts-upgradeable || forge install OpenZeppelin/openzeppelin-contracts-upgradeable@v5.3.0 --no-git || true) && (test -d lib/optimism || forge install ethereum-optimism/optimism --no-git || true) && cd ../.. && bun run \"build:packages\" && bun run packages/deployment/scripts/setup-apps.ts && bun run \"link:cli\"",
+    "build:packages": "bun run --cwd packages/types build && bun run --cwd packages/contracts build && bun run --cwd packages/db build && bun run --cwd packages/shared build && bun run --cwd packages/api build && bun run --cwd packages/kms build && bun run --cwd packages/auth build && bun run --cwd packages/ui build",
     "link:cli": "bun run --cwd packages/cli build && mkdir -p ~/.bun/bin && ln -sf $PWD/packages/cli/bin/jeju.js ~/.bun/bin/jeju",
     "jeju": "bun packages/cli/src/index.ts",
     "start": "bun run jeju start",
