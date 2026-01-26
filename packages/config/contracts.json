@@ -73,12 +73,12 @@
       "workerRegistry": "0xDC11f7E700A4c898AE5CAddB1082cFfa76512aDD",
       "cdnRegistry": "0x51A1ceB83B83F1985a81C295d1fF28Afef186E02",
       "repoRegistry": "0x0dcd1bf9a1b36ce34237eeafef220932846bcd82",
-      "packageRegistry": "0x3904b8f5b0f49cd206b7d5aabee5d1f37ee15d8d",
-      "managedDatabaseRegistry": "0xfe5f411481565fbf70d8d33d992c78196e014b90",
-      "gitRegistry": "0xccf1769d8713099172642eb55ddffc0c5a444fe9",
-      "cacheManager": "0x2dd78fd9b8f40659af32ef98555b8b31bc97a351",
-      "cronOrchestrator": "0x56fc17a65ccfec6b7ad0ade9bd9416cb365b9be8",
-      "containerRegistry": "0x2625760c4a8e8101801d3a48ee64b2bea42f1e96",
+      "packageRegistry": "0xb868cc77a95a65f42611724af05aa2d3b6ec05f2",
+      "managedDatabaseRegistry": "0x7cf4be31f546c04787886358b9486ca3d62b9acf",
+      "gitRegistry": "0x286b8decd5ed79c962b2d8f4346cd97ff0e2c352",
+      "cacheManager": "0x70e5370b8981abc6e14c91f4ace823954efc8ea3",
+      "cronOrchestrator": "0x9338ca7d556248055f5751d85cda7ad6ef254433",
+      "containerRegistry": "0x9c65f85425c619a6cb6d29ff8d57ef696323d188",
       "storageProviderRegistry": "0xdc64a140aa3e981100a9beca4e685f962f0cf6c9",
       "identityRegistry": "0x5fc8d32690cc91d4c39d9d3abcbd16989f875707"
     },
@@ -109,7 +109,7 @@
       "inferenceServing": "0x08A90aF9A6eBBe11c322AD9930CC58E122231B5A",
       "staking": "0x7bdd3b028C4796eF0EAf07d11394d0d9d8c24139",
       "workerRegistry": "",
-      "cronTriggerRegistry": "0x56fc17a65ccfec6b7ad0ade9bd9416cb365b9be8"
+      "cronTriggerRegistry": "0x9338ca7d556248055f5751d85cda7ad6ef254433"
     },
     "sequencer": {
       "registry": "0xA7c59f010700930003b33aB25a7a0679C860f29c",
@@ -215,7 +215,8 @@
       "XLPV3Factory": "",
       "XLPV3PositionManager": "",
       "TFMMPool_JEJU_USDC": "0x79E8AB29Ff79805025c9462a2f2F12e9A496f81d",
-      "weightUpdateRunner": "0xd9fEc8238711935D6c8d79Bef2B9546ef23FC046"
+      "weightUpdateRunner": "0xd9fEc8238711935D6c8d79Bef2B9546ef23FC046",
+      "TFMMPool_POOL": "0xA9e6Bfa2BF53dE88FEb19761D9b2eE2e821bF1Bf"
     },
     "messaging": {},
     "bridge": {}

@@ -16,6 +16,71 @@
         "100000000000000000000000",
         "10000000000"
       ]
+    },
+    {
+      "address": "0x162700d1613DfEC978032A909DE02643bC55df1A",
+      "name": "TFMM-POOL",
+      "symbol": "TFMM-POOL",
+      "tokens": [
+        "0x0B306BF915C4d645ff596e518fAf3F9669b97016",
+        "0x5FbDB2315678afecb367f032d93F642f64180aa3"
+      ],
+      "weights": [
+        "500000000000000000",
+        "500000000000000000"
+      ]
+    },
+    {
+      "address": "0x67aD6EA566BA6B0fC52e97Bc25CE46120fdAc04c",
+      "name": "TFMM-POOL",
+      "symbol": "TFMM-POOL",
+      "tokens": [
+        "0x0B306BF915C4d645ff596e518fAf3F9669b97016",
+        "0x5FbDB2315678afecb367f032d93F642f64180aa3"
+      ],
+      "weights": [
+        "500000000000000000",
+        "500000000000000000"
+      ]
+    },
+    {
+      "address": "0x114e375B6FCC6d6fCb68c7A1d407E652C54F25FB",
+      "name": "Test Pool 3",
+      "symbol": "TFMM-POOL",
+      "tokens": [
+        "0x0B306BF915C4d645ff596e518fAf3F9669b97016",
+        "0x5FbDB2315678afecb367f032d93F642f64180aa3"
+      ],
+      "weights": [
+        "500000000000000000",
+        "500000000000000000"
+      ]
+    },
+    {
+      "address": "0x5e6CB7E728E1C320855587E1D9C6F7972ebdD6D5",
+      "name": "Test Pool 4",
+      "symbol": "TFMM-POOL",
+      "tokens": [
+        "0x0B306BF915C4d645ff596e518fAf3F9669b97016",
+        "0x5FbDB2315678afecb367f032d93F642f64180aa3"
+      ],
+      "weights": [
+        "500000000000000000",
+        "500000000000000000"
+      ]
+    },
+    {
+      "address": "0xA9e6Bfa2BF53dE88FEb19761D9b2eE2e821bF1Bf",
+      "name": "Test Pool 5",
+      "symbol": "TFMM-POOL",
+      "tokens": [
+        "0x0B306BF915C4d645ff596e518fAf3F9669b97016",
+        "0x5FbDB2315678afecb367f032d93F642f64180aa3"
+      ],
+      "weights": [
+        "500000000000000000",
+        "500000000000000000"
+      ]
     }
   ],
   "deployedAt": "2026-01-25T21:46:38.124Z"

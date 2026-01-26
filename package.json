@@ -89,6 +89,8 @@
     "forge": "cd packages/contracts && forge",
     "localnet": "cd packages/deployment && bun run localnet:start",
     "localnet:stop": "cd packages/deployment && bun run localnet:stop",
+    "kill:ports": "bun scripts/kill-all-ports.ts --force",
+    "kill:dev": "bash scripts/kill-dev.sh",
     "deploy": "bun run jeju -- deploy",
     "deploy:all": "bun run jeju -- start",
     "deploy:testnet": "bun run jeju -- deploy testnet-full",

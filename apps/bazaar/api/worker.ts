@@ -229,10 +229,19 @@ export function createBazaarApp(env?: Partial<BazaarEnv>) {
   const isDev = env?.NETWORK === 'localnet'
 
   const app = new Elysia()
-    .onError(({ code, error, path }) => {
+    .onError(({ code, error, path, set }) => {
       // Log all errors for debugging
       const msg = error instanceof Error ? error.message : String(error)
       console.error(`[Bazaar] Error on ${path}:`, code, msg)
+      if (error instanceof Error && error.stack) {
+        console.error('[Bazaar] Error stack:', error.stack)
+      }
+      // Return proper error response
+      set.status = code === 'VALIDATION' ? 400 : code === 'NOT_FOUND' ? 404 : 500
+      return {
+        error: code === 'VALIDATION' ? 'validation_error' : 'internal_error',
+        message: msg,
+      }
     })
     .use(
       cors({
@@ -810,37 +819,74 @@ export function createBazaarApp(env?: Partial<BazaarEnv>) {
           )
         }
 
-        const validated = expectValid(
-          TFMMPostRequestSchema,
-          body,
-          'TFMM POST request',
-        )
+        // Validate request body
+        let validated
+        try {
+          validated = expectValid(
+            TFMMPostRequestSchema,
+            body,
+            'TFMM POST request',
+          )
+        } catch (error) {
+          const errorMessage =
+            error instanceof Error ? error.message : String(error)
+          console.error('[Bazaar] TFMM request validation failed:', errorMessage)
+          console.error('[Bazaar] Request body:', JSON.stringify(body, null, 2))
+          return new Response(
+            JSON.stringify({
+              error: 'invalid_request',
+              message: errorMessage,
+            }),
+            { status: 400, headers: { 'Content-Type': 'application/json' } },
+          )
+        }
 
-        // All write operations currently fail as contracts not deployed
-        // This prevents abuse while providing clear feedback
+        // Handle write operations
         try {
           switch (validated.action) {
             case 'create_pool': {
-              await createTFMMPool(validated.params)
-              break // Never reached - createTFMMPool always throws
+              const result = await createTFMMPool(validated.params)
+              return new Response(
+                JSON.stringify({
+                  success: true,
+                  poolAddress: result.poolAddress,
+                  message: result.message,
+                }),
+                { status: 200, headers: { 'Content-Type': 'application/json' } },
+              )
             }
 
             case 'update_strategy': {
-              await updatePoolStrategy(validated.params)
-              break // Never reached - updatePoolStrategy always throws
+              const result = await updatePoolStrategy(validated.params)
+              return new Response(
+                JSON.stringify({
+                  success: true,
+                  txHash: result.txData,
+                  message: result.message,
+                }),
+                { status: 200, headers: { 'Content-Type': 'application/json' } },
+              )
             }
 
             case 'trigger_rebalance': {
-              await triggerPoolRebalance(validated.params)
-              break // Never reached - triggerPoolRebalance always throws
+              const result = await triggerPoolRebalance(validated.params)
+              return new Response(
+                JSON.stringify({
+                  success: true,
+                  txHash: result.txData,
+                  message: result.message,
+                }),
+                { status: 200, headers: { 'Content-Type': 'application/json' } },
+              )
             }
           }
         } catch (error) {
-          // Handle the service unavailable error from TFMM functions
+          // Handle errors from TFMM functions
           const errorMessage =
             error instanceof Error ? error.message : 'Service unavailable'
           return new Response(
             JSON.stringify({
+              success: false,
               error: 'service_unavailable',
               message: errorMessage,
             }),
@@ -849,10 +895,13 @@ export function createBazaarApp(env?: Partial<BazaarEnv>) {
         }
 
         // This should never be reached
-        return new Response(JSON.stringify({ error: 'Unknown action' }), {
-          status: 400,
-          headers: { 'Content-Type': 'application/json' },
-        })
+        return new Response(
+          JSON.stringify({ success: false, error: 'Unknown action' }),
+          {
+            status: 400,
+            headers: { 'Content-Type': 'application/json' },
+          },
+        )
       }),
   )
 

@@ -126,6 +126,8 @@ export interface TFMMActionResponse {
   success: boolean
   txHash?: string
   poolAddress?: Address
+  message?: string
+  error?: string
 }
 
 // API Error Handling
@@ -148,28 +150,24 @@ async function handleResponse<T>(
   response: Response,
   schema?: z.ZodType<T>,
 ): Promise<T> {
+  const data: T = await response.json()
+
   if (!response.ok) {
-    const errorBody = await response.json()
     const isErrorObject =
-      typeof errorBody === 'object' &&
-      errorBody !== null &&
-      !Array.isArray(errorBody)
+      typeof data === 'object' && data !== null && !Array.isArray(data)
+    const errorData = data as Record<string, unknown>
     const message =
-      (isErrorObject &&
-      'error' in errorBody &&
-      typeof errorBody.error === 'string'
-        ? errorBody.error
+      (isErrorObject && 'error' in errorData && typeof errorData.error === 'string'
+        ? errorData.error
         : null) ||
       (isErrorObject &&
-      'message' in errorBody &&
-      typeof errorBody.message === 'string'
-        ? errorBody.message
+      'message' in errorData &&
+      typeof errorData.message === 'string'
+        ? errorData.message
         : null) ||
       `Request failed: ${response.status}`
-    throw new ApiError(message, response.status)
+    throw new ApiError(String(message), response.status, errorData)
   }
-
-  const data: T = await response.json()
 
   if (schema) {
     const result = schema.safeParse(data)
@@ -216,37 +214,63 @@ export const api = {
       return handleResponse(response)
     },
 
-    async createPool(params: {
-      tokens: Address[]
-      initialWeights: number[]
-      strategy: string
-    }): Promise<TFMMActionResponse> {
+    async createPool(
+      params: {
+        tokens: Address[]
+        initialWeights: number[]
+        strategy: string
+        name?: string
+        symbol?: string
+        swapFeeBps?: number
+      },
+      walletAddress?: Address,
+    ): Promise<TFMMActionResponse> {
+      const headers: Record<string, string> = { 'Content-Type': 'application/json' }
+      if (walletAddress) {
+        headers['x-wallet-address'] = walletAddress
+      }
       const response = await fetch(`${API_BASE}/api/tfmm`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers,
         body: JSON.stringify({ action: 'create_pool', params }),
       })
-      return handleResponse(response)
+      const data = await response.json()
+      // Return the response object even if not ok (it has success: false)
+      return data as TFMMActionResponse
     },
 
-    async updateStrategy(params: {
-      poolAddress: Address
-      newStrategy: string
-    }): Promise<TFMMActionResponse> {
+    async updateStrategy(
+      params: {
+        poolAddress: Address
+        newStrategy: string
+      },
+      walletAddress?: Address,
+    ): Promise<TFMMActionResponse> {
+      const headers: Record<string, string> = { 'Content-Type': 'application/json' }
+      if (walletAddress) {
+        headers['x-wallet-address'] = walletAddress
+      }
       const response = await fetch(`${API_BASE}/api/tfmm`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers,
         body: JSON.stringify({ action: 'update_strategy', params }),
       })
       return handleResponse(response)
     },
 
-    async triggerRebalance(params: {
-      poolAddress: Address
-    }): Promise<TFMMActionResponse> {
+    async triggerRebalance(
+      params: {
+        poolAddress: Address
+      },
+      walletAddress?: Address,
+    ): Promise<TFMMActionResponse> {
+      const headers: Record<string, string> = { 'Content-Type': 'application/json' }
+      if (walletAddress) {
+        headers['x-wallet-address'] = walletAddress
+      }
       const response = await fetch(`${API_BASE}/api/tfmm`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers,
         body: JSON.stringify({ action: 'trigger_rebalance', params }),
       })
       return handleResponse(response)

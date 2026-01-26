@@ -3,6 +3,7 @@ import { useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { type Address, formatUnits } from 'viem'
 import { useAccount } from 'wagmi'
+import { CreatePoolModal } from '../components/CreatePoolModal'
 import { LoadingSpinner } from '../components/LoadingSpinner'
 import { EmptyState, Grid, PageHeader, StatCard } from '../components/ui'
 import {
@@ -167,10 +168,11 @@ function PoolRow({
 
 export default function PoolsPage() {
   const { isConnected } = useAccount()
-  const { pools, selectedPool, setSelectedPool, isLoading } = useTFMMPools()
+  const { pools, selectedPool, setSelectedPool, isLoading, refetch } = useTFMMPools()
   const [searchQuery, setSearchQuery] = useState('')
   const [sortField, setSortField] = useState<SortField>('tvl')
   const [sortDirection, setSortDirection] = useState<SortDirection>('desc')
+  const [showCreateModal, setShowCreateModal] = useState(false)
 
   // Filter and sort pools
   const filteredPools = useMemo(() => {
@@ -231,7 +233,11 @@ export default function PoolsPage() {
         icon="💧"
         title="Pools"
         description="Provide liquidity and earn trading fees on every swap"
-        action={{ label: 'Add Liquidity', href: '/liquidity' }}
+        action={
+          isConnected
+            ? { label: 'Create Pool', onClick: () => setShowCreateModal(true) }
+            : { label: 'Add Liquidity', href: '/liquidity' }
+        }
       />
 
       {/* Stats Overview */}
@@ -347,6 +353,16 @@ export default function PoolsPage() {
           </p>
         </div>
       )}
+
+      {/* Create Pool Modal */}
+      <CreatePoolModal
+        isOpen={showCreateModal}
+        onClose={() => setShowCreateModal(false)}
+        onSuccess={() => {
+          refetch()
+          setShowCreateModal(false)
+        }}
+      />
     </div>
   )
 }
