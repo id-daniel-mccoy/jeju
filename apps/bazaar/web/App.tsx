@@ -45,7 +45,8 @@ import SettingsPage from './pages/Settings'
 import SharePnLPage from './pages/SharePnL'
 import ShareReferralPage from './pages/ShareReferral'
 import SwapPage from './pages/Swap'
-import TFMMPage from './pages/TFMM'
+// TFMM temporarily disabled - focusing on DEX pools for swaps
+// import TFMMPage from './pages/TFMM'
 import TrendingGroupPage from './pages/TrendingGroup'
 import TrendingTagPage from './pages/TrendingTag'
 
@@ -193,7 +194,8 @@ export function App() {
               <Route path="/items/:id" element={<ItemDetailPage />} />
               <Route path="/names" element={<NamesPage />} />
               <Route path="/liquidity" element={<LiquidityPage />} />
-              <Route path="/tfmm" element={<TFMMPage />} />
+              {/* TFMM temporarily disabled - focusing on DEX pools for swaps */}
+              {/* <Route path="/tfmm" element={<TFMMPage />} /> */}
               <Route path="/portfolio" element={<PortfolioPage />} />
               <Route path="/profile/:id" element={<ProfileDetailPage />} />
               <Route path="/rewards" element={<RewardsPage />} />

@@ -12,13 +12,13 @@ else
   echo "Falling back to basic port killing..."
   
   # Kill processes by port (legacy ports)
-  for port in 4350 4352 4006 4030 4100 4301 4302 4337 4661; do
-    pid=$(lsof -ti:$port 2>/dev/null)
-    if [ -n "$pid" ]; then
-      echo "Killing process on port $port (PID: $pid)"
-      kill -9 $pid 2>/dev/null
-    fi
-  done
+for port in 4350 4352 4006 4030 4100 4301 4302 4337 4661; do
+  pid=$(lsof -ti:$port 2>/dev/null)
+  if [ -n "$pid" ]; then
+    echo "Killing process on port $port (PID: $pid)"
+    kill -9 $pid 2>/dev/null
+  fi
+done
 fi
 
 # Kill bun dev processes

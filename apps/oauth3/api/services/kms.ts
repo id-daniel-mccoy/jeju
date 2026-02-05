@@ -42,14 +42,14 @@ export async function initializeKMS(config: OAuth3KMSConfig): Promise<void> {
 
   kmsConfig = config
   try {
-    const healthy = await getKmsService().isHealthy()
-    if (!healthy) {
+  const healthy = await getKmsService().isHealthy()
+  if (!healthy) {
       console.warn('[OAuth3/KMS] KMS is not healthy, continuing without KMS')
       kmsInitialized = true // Mark as initialized to prevent retries
       return
-    }
-    console.log('[OAuth3/KMS] Connected to DWS KMS')
-    kmsInitialized = true
+  }
+  console.log('[OAuth3/KMS] Connected to DWS KMS')
+  kmsInitialized = true
   } catch (error) {
     const errorMsg = error instanceof Error ? error.message : String(error)
     console.warn(`[OAuth3/KMS] Failed to connect to KMS (${errorMsg}), continuing without KMS`)

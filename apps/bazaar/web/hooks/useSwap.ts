@@ -5,7 +5,7 @@
  */
 
 import { getContract } from '@jejunetwork/config'
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { type Address, erc20Abi, formatUnits } from 'viem'
 import {
   useAccount,
@@ -14,6 +14,7 @@ import {
   useWriteContract,
 } from 'wagmi'
 import { CHAIN_ID, NETWORK } from '../config'
+import { useDEXPools } from './dex/useDEXPools'
 
 // Safe contract getter that returns undefined instead of throwing
 function safeGetContract(
@@ -347,66 +348,73 @@ export function useSwap() {
   }
 }
 
+/**
+ * Fetches tokens available for swapping
+ * 
+ * Gets tokens directly from DEX pools (V2 pairs) that have liquidity
+ * This ensures tokens appear immediately after pools are created and funded
+ */
 export function useSwapTokens() {
-  const [tokens, setTokens] = useState<SwapToken[]>([ETH_TOKEN])
-  const [isLoading, setIsLoading] = useState(true)
+  const { data: dexPools = [], isLoading: poolsLoading } = useDEXPools()
+  const { wethAddress } = useSwapRouter()
 
-  useEffect(() => {
-    async function loadTokens() {
-      setIsLoading(true)
+  // Extract unique tokens from DEX pools with liquidity
+  const tokens = useMemo((): SwapToken[] => {
+    const tokenMap = new Map<Address, SwapToken>()
+    
+    // Always include ETH first (native ETH with zero address)
+    tokenMap.set(ETH_TOKEN.address, ETH_TOKEN)
 
-      // Try to fetch tokens from indexer
-      const response = await fetch('/api/graphql', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          query: `
-            query GetSwapTokens {
-              tokens(limit: 20, orderBy: volumeUSD24h_DESC) {
-                address
-                name
-                symbol
-                decimals
-                logoUrl
-                liquidityUSD
-              }
-            }
-          `,
-        }),
-      })
+    // Extract tokens from pools that have liquidity
+    for (const pool of dexPools) {
+      // Only include tokens from pools with liquidity
+      if (pool.reserve0 > 0n || pool.reserve1 > 0n) {
+        // Check if token0 is WETH - if so, use native ETH instead to avoid duplicates
+        const isToken0WETH = wethAddress && pool.token0.toLowerCase() === wethAddress.toLowerCase()
+        if (isToken0WETH) {
+          // Use native ETH (zero address) instead of WETH address
+          tokenMap.set(ETH_TOKEN.address, ETH_TOKEN)
+        } else if (pool.token0 && pool.token0 !== ETH_TOKEN.address) {
+          // Only add if not already ETH and address is valid
+          tokenMap.set(pool.token0, {
+            symbol: pool.token0Symbol,
+            name: pool.token0Symbol, // Could fetch name if needed
+            address: pool.token0,
+            decimals: pool.token0Decimals,
+          })
+        }
 
-      if (response.ok) {
-        const json = await response.json()
-        const indexerTokens = (json.data?.tokens ?? []) as Array<{
-          address: string
-          name: string
-          symbol: string
-          decimals: number
-          logoUrl?: string
-          liquidityUSD?: number
-        }>
-
-        // Filter to tokens with liquidity and map to SwapToken format
-        const tradableTokens = indexerTokens
-          .filter((t) => (t.liquidityUSD ?? 0) > 0)
-          .map((t) => ({
-            symbol: t.symbol,
-            name: t.name,
-            address: t.address as Address,
-            decimals: t.decimals,
-            logoUrl: t.logoUrl,
-          }))
-
-        setTokens([ETH_TOKEN, ...tradableTokens])
+        // Check if token1 is WETH - if so, use native ETH instead to avoid duplicates
+        const isToken1WETH = wethAddress && pool.token1.toLowerCase() === wethAddress.toLowerCase()
+        if (isToken1WETH) {
+          // Use native ETH (zero address) instead of WETH address
+          tokenMap.set(ETH_TOKEN.address, ETH_TOKEN)
+        } else if (pool.token1 && pool.token1 !== ETH_TOKEN.address) {
+          // Only add if not already ETH and address is valid
+          tokenMap.set(pool.token1, {
+            symbol: pool.token1Symbol,
+            name: pool.token1Symbol, // Could fetch name if needed
+            address: pool.token1,
+            decimals: pool.token1Decimals,
+          })
+        }
       }
-
-      setIsLoading(false)
     }
 
-    loadTokens()
-  }, [])
+    // Convert to array, ensuring ETH is first
+    const tokenArray = Array.from(tokenMap.values())
+    const ethIndex = tokenArray.findIndex((t) => t.address === ETH_TOKEN.address)
+    if (ethIndex > 0) {
+      const eth = tokenArray.splice(ethIndex, 1)[0]
+      tokenArray.unshift(eth)
+    } else if (ethIndex === -1) {
+      tokenArray.unshift(ETH_TOKEN)
+    }
 
-  return { tokens, isLoading }
+    return tokenArray
+  }, [dexPools, wethAddress])
+
+  return { tokens, isLoading: poolsLoading }
 }
 
 // Export ETH token for convenience

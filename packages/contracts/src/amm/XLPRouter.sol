@@ -744,6 +744,179 @@ contract XLPRouter is ReentrancyGuard, Ownable, IXLPV3SwapCallback, IRouterInteg
         if (!success) revert TransferFailed();
     }
 
+    // ============ Liquidity Functions ============
+
+    /// @notice Add liquidity to a V2 pair
+    /// @param tokenA First token address
+    /// @param tokenB Second token address
+    /// @param amountADesired Desired amount of tokenA
+    /// @param amountBDesired Desired amount of tokenB
+    /// @param amountAMin Minimum amount of tokenA (slippage protection)
+    /// @param amountBMin Minimum amount of tokenB (slippage protection)
+    /// @param to Address to receive LP tokens
+    /// @param deadline Transaction deadline
+    /// @return amountA Actual amount of tokenA added
+    /// @return amountB Actual amount of tokenB added
+    /// @return liquidity Amount of LP tokens minted
+    function addLiquidity(
+        address tokenA,
+        address tokenB,
+        uint256 amountADesired,
+        uint256 amountBDesired,
+        uint256 amountAMin,
+        uint256 amountBMin,
+        address to,
+        uint256 deadline
+    ) external ensure(deadline) nonReentrant notBanned returns (uint256 amountA, uint256 amountB, uint256 liquidity) {
+        address pair = _pairForV2(tokenA, tokenB);
+        if (pair == address(0)) {
+            // Create pair if it doesn't exist
+            pair = IXLPV2Factory(v2Factory).createPair(tokenA, tokenB);
+        }
+
+        (uint256 reserveA, uint256 reserveB) = _getReservesV2(tokenA, tokenB);
+        if (reserveA == 0 && reserveB == 0) {
+            (amountA, amountB) = (amountADesired, amountBDesired);
+        } else {
+            uint256 amountBOptimal = _quoteV2(amountADesired, reserveA, reserveB);
+            if (amountBOptimal <= amountBDesired) {
+                if (amountBOptimal < amountBMin) revert InsufficientOutputAmount();
+                (amountA, amountB) = (amountADesired, amountBOptimal);
+            } else {
+                uint256 amountAOptimal = _quoteV2(amountBDesired, reserveB, reserveA);
+                if (amountAOptimal > amountADesired || amountAOptimal < amountAMin) revert InsufficientOutputAmount();
+                (amountA, amountB) = (amountAOptimal, amountBDesired);
+            }
+        }
+
+        IERC20(tokenA).safeTransferFrom(msg.sender, pair, amountA);
+        IERC20(tokenB).safeTransferFrom(msg.sender, pair, amountB);
+        liquidity = IXLPV2Pair(pair).mint(to);
+    }
+
+    /// @notice Add liquidity with ETH
+    /// @param token Token address (must not be WETH)
+    /// @param amountTokenDesired Desired amount of token
+    /// @param amountTokenMin Minimum amount of token (slippage protection)
+    /// @param amountETHMin Minimum amount of ETH (slippage protection)
+    /// @param to Address to receive LP tokens
+    /// @param deadline Transaction deadline
+    /// @return amountToken Actual amount of token added
+    /// @return amountETH Actual amount of ETH added
+    /// @return liquidity Amount of LP tokens minted
+    function addLiquidityETH(
+        address token,
+        uint256 amountTokenDesired,
+        uint256 amountTokenMin,
+        uint256 amountETHMin,
+        address to,
+        uint256 deadline
+    ) external payable ensure(deadline) nonReentrant notBanned returns (uint256 amountToken, uint256 amountETH, uint256 liquidity) {
+        if (token == WETH) revert InvalidPath();
+
+        address pair = _pairForV2(token, WETH);
+        if (pair == address(0)) {
+            // Create pair if it doesn't exist
+            pair = IXLPV2Factory(v2Factory).createPair(token, WETH);
+        }
+
+        (uint256 reserveToken, uint256 reserveETH) = _getReservesV2(token, WETH);
+        uint256 amountETHDesired = msg.value;
+
+        if (reserveToken == 0 && reserveETH == 0) {
+            (amountToken, amountETH) = (amountTokenDesired, amountETHDesired);
+        } else {
+            uint256 amountETHOptimal = _quoteV2(amountTokenDesired, reserveToken, reserveETH);
+            if (amountETHOptimal <= amountETHDesired) {
+                if (amountETHOptimal < amountETHMin) revert InsufficientOutputAmount();
+                (amountToken, amountETH) = (amountTokenDesired, amountETHOptimal);
+            } else {
+                uint256 amountTokenOptimal = _quoteV2(amountETHDesired, reserveETH, reserveToken);
+                if (amountTokenOptimal > amountTokenDesired || amountTokenOptimal < amountTokenMin) revert InsufficientOutputAmount();
+                (amountToken, amountETH) = (amountTokenOptimal, amountETHDesired);
+            }
+        }
+
+        IERC20(token).safeTransferFrom(msg.sender, pair, amountToken);
+        IWETH(WETH).deposit{value: amountETH}();
+        IERC20(WETH).safeTransfer(pair, amountETH);
+        liquidity = IXLPV2Pair(pair).mint(to);
+
+        // Refund excess ETH
+        if (msg.value > amountETH) {
+            _safeTransferETH(msg.sender, msg.value - amountETH);
+        }
+    }
+
+    /// @notice Remove liquidity from a V2 pair
+    /// @param tokenA First token address
+    /// @param tokenB Second token address
+    /// @param liquidity Amount of LP tokens to burn
+    /// @param amountAMin Minimum amount of tokenA (slippage protection)
+    /// @param amountBMin Minimum amount of tokenB (slippage protection)
+    /// @param to Address to receive tokens
+    /// @param deadline Transaction deadline
+    /// @return amountA Amount of tokenA received
+    /// @return amountB Amount of tokenB received
+    function removeLiquidity(
+        address tokenA,
+        address tokenB,
+        uint256 liquidity,
+        uint256 amountAMin,
+        uint256 amountBMin,
+        address to,
+        uint256 deadline
+    ) external ensure(deadline) nonReentrant notBanned returns (uint256 amountA, uint256 amountB) {
+        address pair = _pairForV2(tokenA, tokenB);
+        if (pair == address(0)) revert InvalidPool();
+
+        IERC20(pair).safeTransferFrom(msg.sender, pair, liquidity);
+        (amountA, amountB) = IXLPV2Pair(pair).burn(to);
+
+        if (amountA < amountAMin || amountB < amountBMin) revert InsufficientOutputAmount();
+    }
+
+    /// @notice Remove liquidity with ETH
+    /// @param token Token address (must not be WETH)
+    /// @param liquidity Amount of LP tokens to burn
+    /// @param amountTokenMin Minimum amount of token (slippage protection)
+    /// @param amountETHMin Minimum amount of ETH (slippage protection)
+    /// @param to Address to receive tokens
+    /// @param deadline Transaction deadline
+    /// @return amountToken Amount of token received
+    /// @return amountETH Amount of ETH received
+    function removeLiquidityETH(
+        address token,
+        uint256 liquidity,
+        uint256 amountTokenMin,
+        uint256 amountETHMin,
+        address to,
+        uint256 deadline
+    ) external ensure(deadline) nonReentrant notBanned returns (uint256 amountToken, uint256 amountETH) {
+        if (token == WETH) revert InvalidPath();
+
+        address pair = _pairForV2(token, WETH);
+        if (pair == address(0)) revert InvalidPool();
+
+        IERC20(pair).safeTransferFrom(msg.sender, pair, liquidity);
+        (uint256 amount0, uint256 amount1) = IXLPV2Pair(pair).burn(address(this));
+
+        (address token0,) = _sortTokens(token, WETH);
+        (amountToken, amountETH) = token == token0 ? (amount0, amount1) : (amount1, amount0);
+
+        if (amountToken < amountTokenMin || amountETH < amountETHMin) revert InsufficientOutputAmount();
+
+        IERC20(token).safeTransfer(to, amountToken);
+        IWETH(WETH).withdraw(amountETH);
+        _safeTransferETH(to, amountETH);
+    }
+
+    function _quoteV2(uint256 amountA, uint256 reserveA, uint256 reserveB) internal pure returns (uint256 amountB) {
+        if (amountA == 0) revert InsufficientLiquidity();
+        if (reserveA == 0 || reserveB == 0) revert InsufficientLiquidity();
+        amountB = (amountA * reserveB) / reserveA;
+    }
+
     receive() external payable {
         require(msg.sender == WETH);
     }

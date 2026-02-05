@@ -365,13 +365,13 @@ export function createOAuth3Worker(config: OAuth3WorkerConfig) {
   let mpcClient: ReturnType<typeof createMPCClient> | null = null
   try {
     mpcClient = createMPCClient(
-      {
-        rpcUrl: config.rpcUrl,
-        mpcRegistryAddress: config.mpcRegistryAddress,
-        identityRegistryAddress: config.identityRegistryAddress,
-      },
-      config.serviceAgentId,
-    )
+    {
+      rpcUrl: config.rpcUrl,
+      mpcRegistryAddress: config.mpcRegistryAddress,
+      identityRegistryAddress: config.identityRegistryAddress,
+    },
+    config.serviceAgentId,
+  )
   } catch (error) {
     console.warn(
       `[OAuth3] Failed to create MPC client (registry: ${config.mpcRegistryAddress}):`,
@@ -408,7 +408,7 @@ export function createOAuth3Worker(config: OAuth3WorkerConfig) {
     
     if (hasMPCConfig) {
       try {
-        await mpcClient.requestKeyGen({ keyId })
+    await mpcClient.requestKeyGen({ keyId })
         console.log(`[OAuth3] Created MPC key for ${userId}: ${keyId}`)
       } catch (error) {
         const errorMsg = error instanceof Error ? error.message : String(error)

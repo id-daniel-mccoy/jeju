@@ -1,4 +1,8 @@
 import { useQueryClient } from '@tanstack/react-query'
+// NOTE: TFMM pools temporarily disabled - focusing on DEX pools for swaps
+// This page supports both TFMM pools and DEX V2 pools
+// DEX pools use XLPRouter.addLiquidity, TFMM pools use pool.addLiquidity directly
+
 import { useState, useEffect } from 'react'
 import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import { toast } from 'sonner'
@@ -17,6 +21,7 @@ import {
   useTFMMPoolState,
   useTFMMUserBalance,
 } from '../hooks/tfmm/useTFMMPools'
+import { useDEXContracts } from '../hooks/dex/useDEXPools'
 
 const TFMM_POOL_ABI = [
   {
@@ -105,22 +110,123 @@ const TFMM_POOL_ABI = [
   },
 ] as const
 
+const V2_PAIR_ABI = [
+  {
+    name: 'token0',
+    type: 'function',
+    stateMutability: 'view',
+    inputs: [],
+    outputs: [{ name: '', type: 'address' }],
+  },
+  {
+    name: 'token1',
+    type: 'function',
+    stateMutability: 'view',
+    inputs: [],
+    outputs: [{ name: '', type: 'address' }],
+  },
+  {
+    name: 'getReserves',
+    type: 'function',
+    stateMutability: 'view',
+    inputs: [],
+    outputs: [
+      { name: 'reserve0', type: 'uint112' },
+      { name: 'reserve1', type: 'uint112' },
+      { name: 'blockTimestampLast', type: 'uint32' },
+    ],
+  },
+] as const
+
+const ROUTER_ABI = [
+  {
+    name: 'addLiquidity',
+    type: 'function',
+    stateMutability: 'nonpayable',
+    inputs: [
+      { name: 'tokenA', type: 'address' },
+      { name: 'tokenB', type: 'address' },
+      { name: 'amountADesired', type: 'uint256' },
+      { name: 'amountBDesired', type: 'uint256' },
+      { name: 'amountAMin', type: 'uint256' },
+      { name: 'amountBMin', type: 'uint256' },
+      { name: 'to', type: 'address' },
+      { name: 'deadline', type: 'uint256' },
+    ],
+    outputs: [
+      { name: 'amountA', type: 'uint256' },
+      { name: 'amountB', type: 'uint256' },
+      { name: 'liquidity', type: 'uint256' },
+    ],
+  },
+  {
+    name: 'addLiquidityETH',
+    type: 'function',
+    stateMutability: 'payable',
+    inputs: [
+      { name: 'token', type: 'address' },
+      { name: 'amountTokenDesired', type: 'uint256' },
+      { name: 'amountTokenMin', type: 'uint256' },
+      { name: 'amountETHMin', type: 'uint256' },
+      { name: 'to', type: 'address' },
+      { name: 'deadline', type: 'uint256' },
+    ],
+    outputs: [
+      { name: 'amountToken', type: 'uint256' },
+      { name: 'amountETH', type: 'uint256' },
+      { name: 'liquidity', type: 'uint256' },
+    ],
+  },
+] as const
+
 export default function LiquidityPage() {
   const [searchParams] = useSearchParams()
   const navigate = useNavigate()
   const queryClient = useQueryClient()
   const poolAddress = searchParams.get('pool') as Address | null
+  const poolType = searchParams.get('type') // 'dex' or null (TFMM)
+  const isDEXPool = poolType === 'dex'
   const { address, isConnected } = useAccount()
   const [token0Amount, setToken0Amount] = useState('')
   const [token1Amount, setToken1Amount] = useState('')
 
-  const { poolState, isLoading: poolLoading } = useTFMMPoolState(poolAddress)
-  const { balance: userBalance } = useTFMMUserBalance(poolAddress)
+  const { routerAddress, wethAddress } = useDEXContracts()
+  const { poolState, isLoading: poolLoading } = useTFMMPoolState(
+    isDEXPool ? null : poolAddress,
+  )
+  const { balance: userBalance } = useTFMMUserBalance(
+    isDEXPool ? null : poolAddress,
+  )
   const publicClient = usePublicClient()
 
+  // For DEX pools, get token0 and token1 from pair contract
+  const { data: dexToken0 } = useReadContract({
+    address: isDEXPool && poolAddress ? poolAddress : undefined,
+    abi: V2_PAIR_ABI,
+    functionName: 'token0',
+    query: { enabled: isDEXPool && !!poolAddress },
+  })
+
+  const { data: dexToken1 } = useReadContract({
+    address: isDEXPool && poolAddress ? poolAddress : undefined,
+    abi: V2_PAIR_ABI,
+    functionName: 'token1',
+    query: { enabled: isDEXPool && !!poolAddress },
+  })
+
   // Get token info and balances
-  const token0 = poolState?.tokens[0]
-  const token1 = poolState?.tokens[1]
+  const token0: Address | undefined = isDEXPool ? (dexToken0 ?? undefined) : (poolState?.tokens[0] ?? undefined)
+  const token1: Address | undefined = isDEXPool ? (dexToken1 ?? undefined) : (poolState?.tokens[1] ?? undefined)
+  
+  // Check if this is an ETH pair (one token is WETH)
+  const isETHPair = isDEXPool && wethAddress && (token0 === wethAddress || token1 === wethAddress)
+  const otherToken = isETHPair ? (token0 === wethAddress ? token1 : token0) : null
+  
+  // Get native ETH balance for ETH pairs
+  const { data: nativeBalance } = useBalance({
+    address,
+    query: { enabled: !!isETHPair && !!address },
+  })
   
   const { data: token0Info } = useReadContract({
     address: token0,
@@ -152,15 +258,19 @@ export default function LiquidityPage() {
 
   const { data: token0Balance } = useBalance({
     address,
-    token: token0,
-    query: { enabled: !!token0 && !!address },
+    token: isETHPair && token0 === wethAddress ? undefined : token0, // Use native balance for WETH
+    query: { enabled: !!token0 && !!address && !(isETHPair && token0 === wethAddress) },
   })
 
   const { data: token1Balance } = useBalance({
     address,
-    token: token1,
-    query: { enabled: !!token1 && !!address },
+    token: isETHPair && token1 === wethAddress ? undefined : token1, // Use native balance for WETH
+    query: { enabled: !!token1 && !!address && !(isETHPair && token1 === wethAddress) },
   })
+  
+  // For ETH pairs, use native balance for WETH side
+  const effectiveToken0Balance = isETHPair && token0 === wethAddress ? nativeBalance : token0Balance
+  const effectiveToken1Balance = isETHPair && token1 === wethAddress ? nativeBalance : token1Balance
 
   const [pendingApprovals, setPendingApprovals] = useState<string[]>([])
   const parseRevertReason = (error: unknown): string => {
@@ -255,35 +365,37 @@ export default function LiquidityPage() {
     return errorStr.slice(0, 200)
   }
 
-  const { writeContract, writeContractAsync, data: txHash, isPending, error: writeError } = useWriteContract({
-    onError: (error) => {
-      const revertReason = parseRevertReason(error)
-      console.error('[Liquidity] Transaction error:', error)
-      toast.error(`Transaction failed: ${revertReason}`)
-      setPendingApprovals([])
-    },
-  })
+  const { writeContract, writeContractAsync, data: txHash, isPending, error: writeError } = useWriteContract()
   const { isLoading: isConfirming, isSuccess, isError: txError, data: receipt } = useWaitForTransactionReceipt({
     hash: txHash,
-    onError: (error) => {
-      const revertReason = parseRevertReason(error)
-      console.error('[Liquidity] Transaction receipt error:', error)
+  })
+
+  // Handle write errors
+  useEffect(() => {
+    if (writeError) {
+      const revertReason = parseRevertReason(writeError)
+      console.error('[Liquidity] Transaction error:', writeError)
       toast.error(`Transaction failed: ${revertReason}`)
       setPendingApprovals([])
-    },
-  })
+    }
+  }, [writeError])
+
+  // Handle transaction receipt errors
+  useEffect(() => {
+    if (txError) {
+      const revertReason = parseRevertReason(txError)
+      console.error('[Liquidity] Transaction receipt error:', txError)
+      toast.error(`Transaction failed: ${revertReason}`)
+      setPendingApprovals([])
+    }
+  }, [txError])
 
   // Check if transaction actually failed (status = 0)
   useEffect(() => {
     if (receipt) {
-      if (receipt.status === 'reverted' || receipt.status === 0) {
+      if (receipt.status === 'reverted') {
         console.error('[Liquidity] Transaction reverted')
-        // Try to get revert reason from receipt
-        let errorMessage = 'Transaction was reverted on-chain'
-        if (receipt.status === 'reverted') {
-          errorMessage = 'Transaction reverted. Check contract requirements (minimum amounts, balances, etc.)'
-        }
-        toast.error(errorMessage)
+        toast.error('Transaction reverted. Check contract requirements (minimum amounts, balances, etc.)')
         setPendingApprovals([])
       }
     }
@@ -297,14 +409,18 @@ export default function LiquidityPage() {
       setToken1Amount('')
       setPendingApprovals([])
       // Invalidate pools query to refresh the list
-      queryClient.invalidateQueries({ queryKey: ['tfmm-pools', CHAIN_ID] })
-      queryClient.invalidateQueries({ queryKey: ['tfmm-pool-state', poolAddress] })
+      if (isDEXPool) {
+        queryClient.invalidateQueries({ queryKey: ['dex-pools', CHAIN_ID] })
+      } else {
+        queryClient.invalidateQueries({ queryKey: ['tfmm-pools', CHAIN_ID] })
+        queryClient.invalidateQueries({ queryKey: ['tfmm-pool-state', poolAddress] })
+      }
       // Navigate back to pools page after a short delay to show success message
       setTimeout(() => {
         navigate('/pools')
       }, 1500)
     }
-  }, [isSuccess, navigate, queryClient, poolAddress])
+  }, [isSuccess, navigate, queryClient, poolAddress, isDEXPool])
 
   useEffect(() => {
     if (txError) {
@@ -330,8 +446,23 @@ export default function LiquidityPage() {
       return
     }
 
-    if (!poolAddress || !poolState) {
-      toast.error('No pool selected or pool state not loaded')
+    if (!poolAddress) {
+      toast.error('No pool selected')
+      return
+    }
+
+    if (isDEXPool && (!token0 || !token1)) {
+      toast.error('Pool tokens not loaded')
+      return
+    }
+
+    if (!isDEXPool && !poolState) {
+      toast.error('Pool state not loaded')
+      return
+    }
+
+    if (isDEXPool && !routerAddress) {
+      toast.error('Router not available')
       return
     }
 
@@ -355,18 +486,256 @@ export default function LiquidityPage() {
     // Build amounts array matching pool tokens
     // Get decimals for each token
     const tokenDecimals: number[] = []
-    for (let i = 0; i < poolState.tokens.length; i++) {
-      if (i === 0 && token0Decimals !== undefined) {
-        tokenDecimals.push(token0Decimals)
-      } else if (i === 1 && token1Decimals !== undefined) {
-        tokenDecimals.push(token1Decimals)
-      } else {
-        // Fallback to 18 decimals if not available
-        tokenDecimals.push(18)
+    if (!isDEXPool && poolState) {
+      for (let i = 0; i < poolState.tokens.length; i++) {
+        if (i === 0 && token0Decimals !== undefined) {
+          tokenDecimals.push(token0Decimals)
+        } else if (i === 1 && token1Decimals !== undefined) {
+          tokenDecimals.push(token1Decimals)
+        } else {
+          // Fallback to 18 decimals if not available
+          tokenDecimals.push(18)
+        }
       }
     }
 
-    const amounts = poolState.tokens.map((token, index) => {
+    if (isDEXPool) {
+      // Handle ETH pairs with addLiquidityETH
+      if (isETHPair && otherToken) {
+        const tokenDecimals = token0 === wethAddress ? (token1Decimals ?? 18) : (token0Decimals ?? 18)
+        const tokenAmount = token0 === wethAddress ? token1Amount : token0Amount
+        const ethAmount = token0 === wethAddress ? token0Amount : token1Amount
+        
+        const tokenAmountParsed = parseUnits(tokenAmount, tokenDecimals)
+        const ethAmountParsed = parseUnits(ethAmount, 18)
+        
+        const spender = routerAddress
+        if (!spender) {
+          toast.error('Router address not available')
+          return
+        }
+
+        // Check and approve token (no approval needed for ETH)
+        try {
+          const allowance = await publicClient.readContract({
+            address: otherToken,
+            abi: erc20Abi,
+            functionName: 'allowance',
+            args: [address, spender],
+          })
+
+          if (allowance < tokenAmountParsed) {
+            setPendingApprovals((prev) => [...prev, otherToken])
+            toast.info(`Approving ${token0 === wethAddress ? token1Info : token0Info || 'Token'}...`)
+            try {
+              const approveTx = await writeContractAsync({
+                address: otherToken,
+                abi: erc20Abi,
+                functionName: 'approve',
+                args: [spender, tokenAmountParsed],
+              })
+              await publicClient.waitForTransactionReceipt({ hash: approveTx })
+              toast.success(`${token0 === wethAddress ? token1Info : token0Info || 'Token'} approved`)
+              setPendingApprovals((prev) => prev.filter((addr) => addr !== otherToken))
+            } catch (error) {
+              setPendingApprovals((prev) => prev.filter((addr) => addr !== otherToken))
+              const revertReason = parseRevertReason(error)
+              console.error('[Liquidity] Approval error:', error)
+              toast.error(`Approval failed: ${revertReason}`)
+              return
+            }
+          }
+        } catch (error) {
+          const revertReason = parseRevertReason(error)
+          console.error('[Liquidity] Approval check error:', error)
+          toast.error(`Failed to check approvals: ${revertReason}`)
+          return
+        }
+
+        // Calculate minimum amounts (0.5% slippage)
+        const tokenMin = (tokenAmountParsed * 995n) / 1000n
+        const ethMin = (ethAmountParsed * 995n) / 1000n
+        const deadline = BigInt(Math.floor(Date.now() / 1000) + 1800) // 30 minutes
+
+        // Simulate transaction first
+        try {
+          await publicClient.simulateContract({
+            address: routerAddress!,
+            abi: ROUTER_ABI,
+            functionName: 'addLiquidityETH',
+            args: [
+              otherToken,
+              tokenAmountParsed,
+              tokenMin,
+              ethMin,
+              address,
+              deadline,
+            ],
+            account: address,
+            value: ethAmountParsed,
+          })
+        } catch (simError) {
+          const revertReason = parseRevertReason(simError)
+          console.error('[Liquidity] Simulation error:', simError)
+          toast.error(`Transaction will fail: ${revertReason}`)
+          return
+        }
+
+        toast.info('Adding liquidity...')
+        writeContract({
+          address: routerAddress!,
+          abi: ROUTER_ABI,
+          functionName: 'addLiquidityETH',
+          args: [
+            otherToken,
+            tokenAmountParsed,
+            tokenMin,
+            ethMin,
+            address,
+            deadline,
+          ],
+          value: ethAmountParsed,
+        })
+        return
+      }
+
+      // Regular DEX pool logic (non-ETH pairs)
+      const decimals0 = token0Decimals ?? 18
+      const decimals1 = token1Decimals ?? 18
+      const amount0Parsed = parseUnits(token0Amount, decimals0)
+      const amount1Parsed = parseUnits(token1Amount, decimals1)
+
+      // For DEX pools, use router; for TFMM, use pool directly
+      const spender = routerAddress
+      if (!spender) {
+        toast.error('Router address not available')
+        return
+      }
+
+      // Check and approve tokens
+      try {
+        // Token 0 approval
+        const allowance0 = await publicClient.readContract({
+          address: token0!,
+          abi: erc20Abi,
+          functionName: 'allowance',
+          args: [address, spender],
+        })
+
+        if (allowance0 < amount0Parsed) {
+          setPendingApprovals((prev) => [...prev, token0!])
+          toast.info(`Approving ${token0Info || 'Token 0'}...`)
+          try {
+            const approveTx = await writeContractAsync({
+              address: token0!,
+              abi: erc20Abi,
+              functionName: 'approve',
+              args: [spender, amount0Parsed],
+            })
+            await publicClient.waitForTransactionReceipt({ hash: approveTx })
+            toast.success(`${token0Info || 'Token 0'} approved`)
+            setPendingApprovals((prev) => prev.filter((addr) => addr !== token0!))
+          } catch (error) {
+            setPendingApprovals((prev) => prev.filter((addr) => addr !== token0!))
+            const revertReason = parseRevertReason(error)
+            console.error('[Liquidity] Approval error:', error)
+            toast.error(`Approval failed: ${revertReason}`)
+            return
+          }
+        }
+
+        // Token 1 approval
+        const allowance1 = await publicClient.readContract({
+          address: token1!,
+          abi: erc20Abi,
+          functionName: 'allowance',
+          args: [address, spender],
+        })
+
+        if (allowance1 < amount1Parsed) {
+          setPendingApprovals((prev) => [...prev, token1!])
+          toast.info(`Approving ${token1Info || 'Token 1'}...`)
+          try {
+            const approveTx = await writeContractAsync({
+              address: token1!,
+              abi: erc20Abi,
+              functionName: 'approve',
+              args: [spender, amount1Parsed],
+            })
+            await publicClient.waitForTransactionReceipt({ hash: approveTx })
+            toast.success(`${token1Info || 'Token 1'} approved`)
+            setPendingApprovals((prev) => prev.filter((addr) => addr !== token1!))
+          } catch (error) {
+            setPendingApprovals((prev) => prev.filter((addr) => addr !== token1!))
+            const revertReason = parseRevertReason(error)
+            console.error('[Liquidity] Approval error:', error)
+            toast.error(`Approval failed: ${revertReason}`)
+            return
+          }
+        }
+      } catch (error) {
+        const revertReason = parseRevertReason(error)
+        console.error('[Liquidity] Approval check error:', error)
+        toast.error(`Failed to check approvals: ${revertReason}`)
+        return
+      }
+
+      // Calculate minimum amounts (0.5% slippage)
+      const amount0Min = (amount0Parsed * 995n) / 1000n
+      const amount1Min = (amount1Parsed * 995n) / 1000n
+      const deadline = BigInt(Math.floor(Date.now() / 1000) + 1800) // 30 minutes
+
+      // Simulate transaction first
+      try {
+        await publicClient.simulateContract({
+          address: routerAddress!,
+          abi: ROUTER_ABI,
+          functionName: 'addLiquidity',
+          args: [
+            token0!,
+            token1!,
+            amount0Parsed,
+            amount1Parsed,
+            amount0Min,
+            amount1Min,
+            address,
+            deadline,
+          ],
+          account: address,
+        })
+      } catch (simError) {
+        const revertReason = parseRevertReason(simError)
+        console.error('[Liquidity] Simulation error:', simError)
+        toast.error(`Transaction will fail: ${revertReason}`)
+        return
+      }
+
+      toast.info('Adding liquidity...')
+      writeContract({
+        address: routerAddress!,
+        abi: ROUTER_ABI,
+        functionName: 'addLiquidity',
+        args: [
+          token0!,
+          token1!,
+          amount0Parsed,
+          amount1Parsed,
+          amount0Min,
+          amount1Min,
+          address,
+          deadline,
+        ],
+      })
+      return
+    }
+
+    // TFMM pool logic
+    if (!poolState) {
+      toast.error('Pool state not available')
+      return
+    }
+    
+    const amounts = poolState.tokens.map((_token, index) => {
       if (index === 0 && token0Amount) {
         return parseUnits(token0Amount, tokenDecimals[0] ?? 18)
       }
@@ -473,9 +842,15 @@ export default function LiquidityPage() {
         </InfoCard>
       )}
 
-      {poolAddress && !poolState && !poolLoading && (
+      {poolAddress && !isDEXPool && !poolState && !poolLoading && (
         <InfoCard variant="warning" className="mb-6">
           Pool contracts pending deployment. TFMM pools will be available soon.
+        </InfoCard>
+      )}
+
+      {poolAddress && isDEXPool && (!token0 || !token1) && (
+        <InfoCard variant="warning" className="mb-6">
+          Loading pool information...
         </InfoCard>
       )}
 
@@ -488,11 +863,11 @@ export default function LiquidityPage() {
                 className="text-sm"
                 style={{ color: 'var(--text-tertiary)' }}
               >
-                {token0Info ? String(token0Info) : 'Token 1'}
+                {isETHPair && token0 === wethAddress ? 'ETH' : (token0Info ? String(token0Info) : 'Token 1')}
               </label>
-              {token0Balance && (
+              {effectiveToken0Balance && (
                 <span className="text-xs" style={{ color: 'var(--text-tertiary)' }}>
-                  Balance: {formatUnits(token0Balance.value, token0Balance.decimals)}
+                  Balance: {formatUnits(effectiveToken0Balance.value, effectiveToken0Balance.decimals)}
                 </span>
               )}
             </div>
@@ -522,11 +897,11 @@ export default function LiquidityPage() {
                 className="text-sm"
                 style={{ color: 'var(--text-tertiary)' }}
               >
-                {token1Info ? String(token1Info) : 'Token 2'}
+                {isETHPair && token1 === wethAddress ? 'ETH' : (token1Info ? String(token1Info) : 'Token 2')}
               </label>
-              {token1Balance && (
+              {effectiveToken1Balance && (
                 <span className="text-xs" style={{ color: 'var(--text-tertiary)' }}>
-                  Balance: {formatUnits(token1Balance.value, token1Balance.decimals)}
+                  Balance: {formatUnits(effectiveToken1Balance.value, effectiveToken1Balance.decimals)}
                 </span>
               )}
             </div>
@@ -540,7 +915,7 @@ export default function LiquidityPage() {
             />
           </div>
 
-          {poolState && (
+          {(poolState || (isDEXPool && token0 && token1)) && (
             <div
               className="p-4 rounded-xl"
               style={{ backgroundColor: 'var(--bg-secondary)' }}
@@ -548,17 +923,19 @@ export default function LiquidityPage() {
               <div className="flex justify-between text-sm mb-2">
                 <span style={{ color: 'var(--text-tertiary)' }}>Fee Tier</span>
                 <span style={{ color: 'var(--text-primary)' }}>
-                  {Number(formatUnits(poolState.swapFee, 16)).toFixed(2)}%
+                  {isDEXPool ? '0.3%' : Number(formatUnits(poolState!.swapFee, 16)).toFixed(2) + '%'}
                 </span>
               </div>
-              <div className="flex justify-between text-sm">
-                <span style={{ color: 'var(--text-tertiary)' }}>
-                  Your LP Balance
-                </span>
-                <span style={{ color: 'var(--text-primary)' }}>
-                  {Number(formatUnits(userBalance, 18)).toFixed(4)}
-                </span>
-              </div>
+              {!isDEXPool && (
+                <div className="flex justify-between text-sm">
+                  <span style={{ color: 'var(--text-tertiary)' }}>
+                    Your LP Balance
+                  </span>
+                  <span style={{ color: 'var(--text-primary)' }}>
+                    {Number(formatUnits(userBalance, 18)).toFixed(4)}
+                  </span>
+                </div>
+              )}
             </div>
           )}
 
@@ -570,7 +947,9 @@ export default function LiquidityPage() {
               !isConnected ||
               !poolAddress ||
               !token0Amount ||
-              !token1Amount
+              !token1Amount ||
+              (isDEXPool && (!token0 || !token1 || !routerAddress)) ||
+              (!isDEXPool && !poolState)
             }
             className="btn-primary w-full py-3 disabled:opacity-50"
           >

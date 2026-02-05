@@ -8,7 +8,8 @@
 import { useQuery } from '@tanstack/react-query'
 import { type Address, formatUnits, parseAbi, zeroAddress } from 'viem'
 import { usePublicClient } from 'wagmi'
-import { CHAIN_ID, CONTRACTS } from '../../config'
+import { getContract } from '@jejunetwork/config'
+import { CHAIN_ID, CONTRACTS, NETWORK } from '../../config'
 
 // PriceOracle contract ABI
 const PRICE_ORACLE_ABI = parseAbi([
@@ -29,12 +30,35 @@ export const ETH_ADDRESS = zeroAddress // Native ETH uses zero address
  * In production, these should never be used - the oracle
  * should always be available and these fallbacks will log warnings.
  */
-const FALLBACK_PRICES: Record<string, number> = {
-  ETH: 2500,
-  WETH: 2500,
-  USDC: 1,
-  USDT: 1,
-  DAI: 1,
+// Helper to get fallback price by address
+function getFallbackPrice(address: Address): number {
+  // Get known token addresses
+  const usdcAddress = getContract('tokens', 'usdc', NETWORK as 'localnet' | 'testnet' | 'mainnet')?.toLowerCase()
+  const wethAddress = getContract('tokens', 'weth', NETWORK as 'localnet' | 'testnet' | 'mainnet')?.toLowerCase()
+  const jejuAddress = CONTRACTS.jeju.toLowerCase()
+  
+  const addrLower = address.toLowerCase()
+  
+  // Match by address
+  if (addrLower === zeroAddress || (wethAddress && addrLower === wethAddress)) {
+    return 2500 // ETH/WETH
+  }
+  if (usdcAddress && addrLower === usdcAddress) {
+    return 1 // USDC
+  }
+  if (jejuAddress && addrLower === jejuAddress) {
+    return 0.1 // JEJU
+  }
+  
+  // Known test token addresses (localnet)
+  if (addrLower === '0xc1b0cfda1e2df8ed85ac78ae515ff96a4a12337c') {
+    return 0.001 // MEME
+  }
+  if (addrLower === '0xe48503a26e840bf25584abc3d62f2fd1842f47de') {
+    return 0.01 // DEGEN
+  }
+  
+  return 0 // Unknown token
 }
 
 interface PriceData {
@@ -59,7 +83,7 @@ export function usePriceOracle(tokenAddress: Address | undefined) {
           )
         }
         return {
-          priceUSD: tokenAddress === ETH_ADDRESS ? FALLBACK_PRICES.ETH : 0,
+          priceUSD: getFallbackPrice(tokenAddress ?? ETH_ADDRESS),
           decimals: 8,
           isFresh: true,
           source: 'fallback',
@@ -88,7 +112,7 @@ export function usePriceOracle(tokenAddress: Address | undefined) {
             err,
           )
         }
-        return [[BigInt(FALLBACK_PRICES.ETH * 1e8), 8n] as const, true] as const
+        return [[BigInt(getFallbackPrice(tokenAddress ?? ETH_ADDRESS) * 1e8), 8n] as const, true] as const
       })
 
       const [priceRaw, decimalsRaw] = priceData
@@ -124,11 +148,11 @@ export function useTokenPrices(tokenAddresses: Address[]) {
     queryFn: async (): Promise<Map<Address, PriceData>> => {
       const priceMap = new Map<Address, PriceData>()
 
-      // No oracle - return fallback for ETH only
+      // No oracle - return fallback prices
       if (!oracleAddress || oracleAddress === zeroAddress || !publicClient) {
         for (const addr of tokenAddresses) {
           priceMap.set(addr, {
-            priceUSD: addr === ETH_ADDRESS ? FALLBACK_PRICES.ETH : 0,
+            priceUSD: getFallbackPrice(addr),
             decimals: 8,
             isFresh: true,
             source: 'fallback',
@@ -157,7 +181,7 @@ export function useTokenPrices(tokenAddresses: Address[]) {
             () =>
               [
                 [
-                  BigInt(addr === ETH_ADDRESS ? FALLBACK_PRICES.ETH * 1e8 : 0),
+                  BigInt(getFallbackPrice(addr) * 1e8),
                   8n,
                 ] as const,
                 true,

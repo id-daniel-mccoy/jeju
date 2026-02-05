@@ -6,6 +6,10 @@
  * - Cross-chain swaps via EIL CrossChainPaymaster
  * - Same-chain token swaps via useSameChainSwap
  * - ETH/ERC20 transfers as fallback
+ *
+ * NOTE: Currently using DEX pools (V2/V3) only for swaps
+ * TFMM pools are temporarily disabled - they're for portfolio management, not simple swaps
+ * Tokens will appear here once DEX pools are created and have liquidity
  */
 
 import {
@@ -92,12 +96,15 @@ export default function SwapPage() {
     address,
   })
   const [tokenBalance, setTokenBalance] = useState<bigint>(0n)
+  const [outputTokenBalance, setOutputTokenBalance] = useState<bigint>(0n)
 
   // Swap hooks
   const { isAvailable: routerAvailable } = useSwapRouter()
   const {
     quote,
     getQuote,
+    executeSwap,
+    txHash: swapTxHash,
     status: swapStatus,
     error: swapError,
     reset: resetSwap,
@@ -149,7 +156,7 @@ export default function SwapPage() {
     isPending: isWritePending,
   } = useWriteContract()
 
-  const txHash = sendTxHash || writeTxHash || crossChainHash || sameChainHash
+  const txHash = swapTxHash || sendTxHash || writeTxHash || crossChainHash || sameChainHash
   const isPending =
     isSendPending ||
     isWritePending ||
@@ -164,7 +171,7 @@ export default function SwapPage() {
     hash: txHash,
   })
 
-  // Fetch token balance
+  // Fetch input token balance
   useEffect(() => {
     async function fetchBalance() {
       if (!address || !publicClient || inputToken.address === ZERO_ADDRESS) {
@@ -182,6 +189,25 @@ export default function SwapPage() {
     }
     fetchBalance()
   }, [address, inputToken, publicClient])
+
+  // Fetch output token balance
+  useEffect(() => {
+    async function fetchOutputBalance() {
+      if (!address || !publicClient || outputToken.address === ZERO_ADDRESS) {
+        setOutputTokenBalance(0n)
+        return
+      }
+
+      const balance = await publicClient.readContract({
+        address: outputToken.address,
+        abi: erc20Abi,
+        functionName: 'balanceOf',
+        args: [address],
+      })
+      setOutputTokenBalance(balance)
+    }
+    fetchOutputBalance()
+  }, [address, outputToken, publicClient])
 
   // Update quote when input changes
   useEffect(() => {
@@ -206,22 +232,74 @@ export default function SwapPage() {
     getQuote,
   ])
 
-  // Handle success
+  // Handle success - clear input but keep token selections
   useEffect(() => {
     if (isSuccess && txHash) {
-      toast.success('Transaction completed successfully')
+      toast.success('Swap completed successfully!')
+      
+      // Clear input amount but keep token selections
       setInputAmount('')
       setRecipient('')
+      
+      // Small delay to ensure transaction is fully confirmed before refetching
+      const refetchBalances = async () => {
+        // Wait a bit for the transaction to be fully processed
+        await new Promise(resolve => setTimeout(resolve, 1000))
+        
+        // Refetch ETH balance first
+        await refetchEthBalance()
+        
+        // Refetch token balances
+        if (publicClient && address) {
+          // Refetch input token balance
+          if (inputToken.address !== ZERO_ADDRESS) {
+            try {
+              const balance = await publicClient.readContract({
+                address: inputToken.address,
+                abi: erc20Abi,
+                functionName: 'balanceOf',
+                args: [address],
+              })
+              setTokenBalance(balance)
+            } catch (error) {
+              console.error('Failed to refetch input token balance:', error)
+            }
+          }
+          
+          // Refetch output token balance
+          if (outputToken.address !== ZERO_ADDRESS) {
+            try {
+              const balance = await publicClient.readContract({
+                address: outputToken.address,
+                abi: erc20Abi,
+                functionName: 'balanceOf',
+                args: [address],
+              })
+              setOutputTokenBalance(balance)
+            } catch (error) {
+              console.error('Failed to refetch output token balance:', error)
+            }
+          }
+        }
+      }
+      
+      refetchBalances()
+      
+      // Reset swap state (clears quote, etc.)
       resetSwap()
       resetCrossChain()
-      refetchEthBalance()
     }
-  }, [isSuccess, txHash, resetSwap, refetchEthBalance])
+  }, [isSuccess, txHash, resetSwap, resetCrossChain, refetchEthBalance, publicClient, address, inputToken, outputToken])
 
   const currentBalance =
     inputToken.address === ZERO_ADDRESS
       ? (ethBalance?.value ?? 0n)
       : tokenBalance
+
+  const currentOutputBalance =
+    outputToken.address === ZERO_ADDRESS
+      ? (ethBalance?.value ?? 0n)
+      : outputTokenBalance
 
   const parsedAmount = inputAmount
     ? parseUnits(inputAmount, inputToken.decimals)
@@ -371,7 +449,20 @@ export default function SwapPage() {
         }
       }
 
-      // Regular swap (not gasless)
+      // Use DEX router if available (supports ETH swaps)
+      if (routerAvailable && canSwap) {
+        try {
+          await executeSwap(inputToken, outputToken, parsedAmount, 50) // 0.5% slippage
+          // Success will be handled by useWaitForTransactionReceipt in useEffect
+          return
+        } catch (error) {
+          const err = error as Error
+          toast.error(err.message || 'Swap failed')
+          return
+        }
+      }
+
+      // Fallback to same-chain swap (doesn't support ETH)
       try {
         await executeSameChainSwap({
           sourceToken: inputToken.address,
@@ -637,12 +728,19 @@ export default function SwapPage() {
 
         {/* To Section */}
         <div className="mb-4">
-          <label
-            htmlFor="output-amount"
-            className="text-sm text-tertiary block mb-2"
-          >
-            You Receive
-          </label>
+          <div className="flex items-center justify-between mb-2">
+            <label
+              htmlFor="output-amount"
+              className="text-sm text-tertiary"
+            >
+              You Receive
+            </label>
+            <span className="text-xs text-tertiary">
+              Balance:{' '}
+              {formatUnits(currentOutputBalance, outputToken.decimals).slice(0, 10)}{' '}
+              {outputToken.symbol}
+            </span>
+          </div>
           <div className="flex gap-2">
             <input
               id="output-amount"

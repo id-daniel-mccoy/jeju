@@ -15,12 +15,14 @@ Development mode with HMR
 Starting infrastructure in parallel...
 
   ✓ Docker already running
-  ✓ Localnet already running (L1 + L2)
+  → Starting dual-chain localnet (L1 + L2)...
   ✓ IPFS healthy
+  ✓ L1 running on port 6545 (chain 1337)
+  ✓ L2 running on port 6546 (chain 31337)
   → Starting SQLit Docker cluster...
-time="2026-01-25T19:54:45-05:00" level=warning msg="Found orphan containers ([cql-load-balancer cql-miner-2 cql-miner-1 cql-miner-3 cql-block-producer jeju-ipfs]) for this project. If you removed or renamed this service in your compose file, you can run this command with the --remove-orphans flag to clean it up."
- Container docker-sqlit-builder-1  Starting
+time="2026-01-26T00:29:52-05:00" level=warning msg="Found orphan containers ([cql-load-balancer cql-miner-2 cql-miner-1 cql-miner-3 cql-block-producer jeju-ipfs]) for this project. If you removed or renamed this service in your compose file, you can run this command with the --remove-orphans flag to clean it up."
  Container sqlit-bp-0  Starting
+ Container docker-sqlit-builder-1  Starting
  Container sqlit-bp-0  Started
  Container sqlit-bp-0  Waiting
  Container sqlit-bp-0  Waiting
@@ -33,7 +35,7 @@ time="2026-01-25T19:54:45-05:00" level=warning msg="Found orphan containers ([cq
  Container sqlit-bp-0  Error
 dependency failed to start: container sqlit-bp-0 is unhealthy
   → Starting SQLit server...
-[SQLit v2] Starting node 0xec4826bbba915e296345b2a411234952c7239772e2da5e6ee3185658a08d1cf2
+[SQLit v2] Starting node 0xd7fcb1d37526992bd775420aaad3c276cc3cea08b35bf10191cbe84c5c45ef51
 [SQLit v2] Registry contract not deployed at 0x0000000000000000000000000000000000000000, running in offline mode (run 'bun run deploy:contracts' to deploy)
 [SQLit v2] Loaded database f1e44641e1c3302e8adfd48d1d4dac6e
 [SQLit v2] Loaded database 8e892278e3c920607c7bca9c8ab27248
@@ -52,12 +54,16 @@ dependency failed to start: container sqlit-bp-0 is unhealthy
 [SQLit v2] Loaded database b4fe327bcb085a57540403a9199923a9
 [SQLit v2] Loaded database 38500de3593270bbde8aeab5612e69be
 [SQLit v2] Loaded database 2246f24111ffa0c3b9922e6067b89fa8
+[SQLit v2] Loaded database a88aafd2171b2a465d64ff8dfe6159ab
 [SQLit v2] Loaded database 79bceeca93fae5408aab022c824f318e
 [SQLit v2] Loaded database 9e99e7bae2d697cf9c443aa3e5c172bb
 [SQLit v2] Loaded database b74e26ee1c15b636b428958ff31cad7a
+[SQLit v2] Loaded database 12054037fac345e0529e691b5c2e5f88
 [SQLit v2] Loaded database 787e4aabcec7243e73c44d9290e800f4
+[SQLit v2] Loaded database fe69246a175231965b533e6c89e08651
 [SQLit v2] Loaded database 4acdba3c11043be2db7167e36312b983
 [SQLit v2] Loaded database 96fb2f3a9a6f931bcc08880dc488aafc
+[SQLit v2] Loaded database decba20a000b6d1b03d4dcf507c5e765
 [SQLit v2] Loaded database f0815266e673597edc41cb8123c64d8e
 [SQLit v2] Loaded database 9f8631df411ebad9a1545359330d3475
 [SQLit v2] Loaded database 894505f33ef08c4bd753f2f43e0c8c87
@@ -76,7 +82,9 @@ dependency failed to start: container sqlit-bp-0 is unhealthy
 [SQLit v2] Loaded database a0ee25203ae994b1beef70acb35271a4
 [SQLit v2] Loaded database 2e40680674662ec1eeeea5941f7e0c06
 [SQLit v2] Loaded database 96b3da12face62efb2bfe8c0b1bde71c
+[SQLit v2] Loaded database 6ca40ec94888cd3b52e2ce9fb1cc8441
 [SQLit v2] Loaded database 9ec0955dd9b0ab53d59ab47af745ee80
+[SQLit v2] Loaded database f3286104f15497dd1734173398a4b5be
 [SQLit v2] Loaded database c3a434caa932432dac38b4cfa29ee28c
 [SQLit v2] Loaded database acb51bd23aed855a6516214f84d735e9
 [SQLit v2] Loaded database c090100ec140c6e25435b0caa8bd6855
@@ -87,11 +95,13 @@ dependency failed to start: container sqlit-bp-0 is unhealthy
 [SQLit v2] Loaded database 9349138d83a783b09d10b4b2710dfdaa
 [SQLit v2] Loaded database 7e34814acc07a6c21bf33df0f471c4eb
 [SQLit v2] Loaded database 29f067321c6f2a317ad9d241107081a9
+[SQLit v2] Loaded database a23c9ece6b182107cd6dc9b72c0edd9e
 [SQLit v2] Loaded database bb2671eea9cfcaf6f62a8f9344417289
 [SQLit v2] Loaded database 10c21eb79add496eb64af14f1ba71ad9
 [SQLit v2] Loaded database 37383b8cf8a0b4b52565b20850c073b3
 [SQLit v2] Loaded database a5b81bdf395c658d11ab8a81a330a77f
 [SQLit v2] Loaded database 94d1164b9e45f1851aa8e88dfcc9b9dc
+[SQLit v2] Loaded database 5e75e558e05f96959812bdf04244f126
 [SQLit v2] Loaded database b8a9af1f6fd8ffb72af33ccf92e64aa5
 [SQLit v2] Loaded database 37cd20a793f6adaaa8b727114851369f
 [SQLit v2] Loaded database 34fbf00a73d27f97ba3a4852e70b4b46
@@ -103,6 +113,7 @@ dependency failed to start: container sqlit-bp-0 is unhealthy
 [SQLit v2] Loaded database 7fe3cf35d8dcb3a3ab2a3e548c91f6e9
 [SQLit v2] Loaded database 4489e924d9e94b078f95ee4c09b8bd0d
 [SQLit v2] Loaded database e2439ef3829bd79a68e113f315eb2037
+[SQLit v2] Loaded database b58d7f800afc21f2874e1d23d1c99130
 [SQLit v2] Loaded database d82620020ff8bcd693b48e2e5e48309e
 [SQLit v2] Loaded database 8bab462a4c9df01edaa2072bfe3af315
 [SQLit v2] Loaded database 9be6da582a56035ef621261b9508d36a
@@ -127,12 +138,17 @@ dependency failed to start: container sqlit-bp-0 is unhealthy
 [SQLit v2] Loaded database 6df6a1d38a007c661185108e3d6a02c3
 [SQLit v2] Loaded database dfccac01b1e43afa3c87012ba2b6ed9d
 [SQLit v2] Loaded database 3f21de954f96eea3bb73602ed12ce9ab
+[SQLit v2] Loaded database f7b77bd3d6e6b3207ab5a5cd5a5614a2
 [SQLit v2] Loaded database f65007db40e9260b9b85265090d01b01
 [SQLit v2] Loaded database cf46ea47f30b51614924aeb7b330571d
+[SQLit v2] Loaded database 4b7905d7650f1d50f85fe96465c66fad
+[SQLit v2] Loaded database 1518d3d2cde7df51e42bc229c6475a95
 [SQLit v2] Loaded database 83948ba18d9898e2681d986264ae070d
 [SQLit v2] Loaded database a9cf1502d43918484e446cf74745c1d9
+[SQLit v2] Loaded database 65a185f3075d841e56ad8e36ff2391bc
 [SQLit v2] Loaded database f8a66e7e558e7a7dbae378d6c1d9ada7
 [SQLit v2] Loaded database bf506332609da2017a16bbb9878a4cbf
+[SQLit v2] Loaded database 619c947ef89d47f1ece04ee38c8e9c9b
 [SQLit v2] Loaded database 2ec3a09dbfdd6ca260a41f141c1b6967
 [SQLit v2] Loaded database 33af752de069b1fc5fe4173c3b8b5d79
 [SQLit v2] Loaded database da0c3f38c114298fd4f6d23421dc1c71
@@ -141,12 +157,13 @@ dependency failed to start: container sqlit-bp-0 is unhealthy
 [SQLit v2] Loaded database e4ab98560a02702222c313621e019e59
 [SQLit v2] Loaded database 2305aaffcc4fd31bed954f9b56e4aa44
 [SQLit v2] Loaded database 65ca1d2462bf05eae81609023f8f8719
+[SQLit v2] Loaded database 6ae4790d257ae63fd1779bc26e458ce6
 [SQLit v2] Loaded database aba3f45349afb116c7d89b150e2db8b0
 [SQLit v2] Loaded database 684ec48fd46df694b2ae4fb62193a972
 [SQLit v2] Loaded database 057d2056f12b0756b89cd64e7fd922e0
 [SQLit v2] Loaded database e7fef8255babf5bd5bf198e9ee585546
 [SQLit v2] Loaded database 9c681a0519c90861b2ef74c9aed53b93
-[SQLit v2] Node 0xec4826bbba915e296345b2a411234952c7239772e2da5e6ee3185658a08d1cf2 started
+[SQLit v2] Node 0xd7fcb1d37526992bd775420aaad3c276cc3cea08b35bf10191cbe84c5c45ef51 started
 [SQLit v2] Server listening on 0.0.0.0:4661
   ✓ SQLit server running on port 4661
     API Endpoint: http://127.0.0.1:4661
@@ -160,7 +177,7 @@ dependency failed to start: container sqlit-bp-0 is unhealthy
 [Bundler] Chain ID: 31337
 [Bundler] EntryPoint: 0xCf7Ed3AccA5a467e9e704C703E8D87F634fB0Fc9
 [Bundler] Beneficiary: 0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266
-[Bundler] Balance: 9909.27117724305 ETH
+[Bundler] Balance: 10000 ETH
 [Bundler] Bundle interval: 1000ms
 [Bundler] Bundler service started.
 
@@ -188,6 +205,545 @@ Listening for cross-chain messages...
 
   ✓ All infrastructure ready
   → Bootstrapping contracts...
+  → Bootstrapping contracts...
+🚀 COMPLETE LOCALNET BOOTSTRAP
+======================================================================
+
+Checking prerequisites...
+✅ Localnet running (block 0)
+✅ Deployer funded (10000 ETH)
+
+📝 STEP 1: Deploying Tokens
+----------------------------------------------------------------------
+  ✅ USDC (with EIP-3009 x402 support): 0x5FbDB2315678afecb367f032d93F642f64180aa3
+
+🏗️  STEP 2: Deploying Infrastructure
+----------------------------------------------------------------------
+  ✅ PriceOracle: 0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512
+  ✅ ServiceRegistry: 0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0
+  ✅ EntryPoint v0.7 (ERC-4337): 0xCf7Ed3AccA5a467e9e704C703E8D87F634fB0Fc9
+
+📋 STEP 2.5: Deploying Registry System
+----------------------------------------------------------------------
+  ✅ IdentityRegistry: 0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9
+  ✅ ReputationRegistry: 0x5FC8d32690cc91D4c39d9d3abcBD16989F875707
+  ✅ ValidationRegistry: 0x0165878A594ca255338adfa4d48449f69242Eb8F
+
+🔐 STEP 2.6: Deploying ZK Bridge Infrastructure
+----------------------------------------------------------------------
+  📦 SP1 not installed - using mock verifier
+     Install SP1: curl -L https://sp1.succinct.xyz | bash && sp1up
+Warning: Found unknown `exclude_lints` config for profile `lint` defined in foundry.toml.
+  ✅ MockGroth16Verifier (SP1 not installed): 0xa513E6E4b8f2a923D98304ec87F64353C4D5C853
+Warning: Found unknown `exclude_lints` config for profile `lint` defined in foundry.toml.
+  ✅ SolanaLightClient: 0x2279B7A0a67DB372996a5FaB50D91eAA73d2eBe6
+Warning: Found unknown `exclude_lints` config for profile `lint` defined in foundry.toml.
+  ✅ ZKBridge (Solana ↔ EVM): 0x8A791620dd6260079BF849Dc5567aDC3F2FdC318
+  📁 Saved to zk-bridge-31337.json
+  ✅ ZK Bridge infrastructure deployed
+     ⚠️  Using mock verifier - install SP1 for real ZK proofs
+
+
+
+🎫 STEP 5: Deploying Paymaster System
+----------------------------------------------------------------------
+  ✅ TokenRegistry: 0x610178dA211FEF7D417bC0e6FeD39F05609AD788
+  ✅ PaymasterFactory: 0xB7f8BC63BbcaD18155201308C8f3540b07f84F5e
+  📝 Registering local tokens...
+     ⚠️  USDC registration skipped (may already exist)
+     ⚠️  WETH registration skipped (may already exist)
+  ✅ Paymaster system deployed with all local tokens registered
+
+🛡️  STEP 5.5: Deploying Moderation System
+----------------------------------------------------------------------
+  ✅ BanManager: 0xA51c1fc2f0D1a1b8494Ed1FE312d7C3a78Ed91C0
+  ✅ ReputationLabelManager: 0x0DCd1Bf9A1b36cE34237eEaFef220932846BCD82
+  ⚠️  ModerationMarketplace too large - using minimal setup
+  ✅ ReportingSystem: 0x9A676e781A523b5d0C0e43731313A708CB607508
+  ✅ Moderation system deployed
+
+🏝️  STEP 5.6: Deploying JEJU Token
+----------------------------------------------------------------------
+Warning: Found unknown `exclude_lints` config for profile `lint` defined in foundry.toml.
+  ✅ JEJU Token: 0x0B306BF915C4d645ff596e518fAf3F9669b97016
+     ✨ Faucet enabled (10,000 JEJU per claim)
+
+💳 STEP 5.6.1: Deploying CreditManager
+----------------------------------------------------------------------
+  ✅ CreditManager (Prepaid Balance System): 0x68B1D87F95878fE05B998F19b66F4baba5De1aed
+     ✨ Credit system enables zero-latency payments!
+
+💳 STEP 5.6.2: Deploying MultiTokenPaymaster
+----------------------------------------------------------------------
+  ✅ MultiTokenPaymaster (Multi-Token AA): 0x3Aa5ebB10DC797CAC828524e59A333d0A371443c
+     ✨ Funded with 10 ETH for gas sponsorship
+
+📊 STEP 5.6.3: Setting Oracle Prices
+----------------------------------------------------------------------
+     ETH = $3000
+     USDC = $1.00
+     JEJU = $0.10
+  ✅ Oracle prices initialized
+
+🖥️  STEP 5.7: Deploying Compute Marketplace
+----------------------------------------------------------------------
+Warning: Found unknown `exclude_lints` config for profile `lint` defined in foundry.toml.
+  ✅ ComputeRegistry (Provider Registry): 0xa85233C63b9Ee964Add6F2cffe00Fd84eb32338f
+Warning: Found unknown `exclude_lints` config for profile `lint` defined in foundry.toml.
+  ✅ LedgerManager (User Balances): 0x4A679253410272dd5232B3Ff7cF5dbB88f295319
+Warning: Found unknown `exclude_lints` config for profile `lint` defined in foundry.toml.
+  ✅ InferenceServing (Settlement): 0x7a2088a1bFc9d81c55368AE168C2C02570cB814F
+Warning: Found unknown `exclude_lints` config for profile `lint` defined in foundry.toml.
+Error: "/home/secure-dev/Dev/dfinity/partners/shaw/jeju/packages/contracts/src/compute/ComputeStaking.sol": No such file or directory (os error 2)
+  ⚠️  Compute marketplace deployment skipped (contracts may not exist)
+     Error: Command failed: cd packages/contracts && forge create src/compute/ComputeStaking.sol:ComputeStaking       --rpc-url http://127.0.0.1:6546       --private-key 0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80       --broadcast       --constructor-args "0xA51c1fc2f0D1a1b8494Ed1FE312d7C3a78Ed91C0" "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266"
+Warning: Found unknown `exclude_lints` config for profile `lint` defined in foundry.toml.
+Error: "/home/secure-dev/Dev/dfinity/partners/shaw/jeju/packages/contracts/src/compute/ComputeStaking.sol": No such file or directory (os error 2)
+
+
+🔗 STEP 5.8: Deploying Node Staking System
+----------------------------------------------------------------------
+  ✅ NodePerformanceOracle: 0x09635F643e140090A9A8Dcd712eD6285858ceBef
+  ✅ NodeStakingManager (Multi-Token): 0xc5a5C42992dECbae36851359345FE25997F5C42d
+  ✅ Node staking system deployed
+
+💧 STEP 5.9: Deploying Liquidity System
+----------------------------------------------------------------------
+Warning: Found unknown `exclude_lints` config for profile `lint` defined in foundry.toml.
+  ✅ RiskSleeve (Risk-Tiered Liquidity): 0x67d269191c92Caf3cD7723F116c85e6E9bf55933
+Warning: Found unknown `exclude_lints` config for profile `lint` defined in foundry.toml.
+  ✅ MultiServiceStakeManager: 0xE6E340D132b5f46d1e472DebcD681B2aBc16e57E
+Warning: Found unknown `exclude_lints` config for profile `lint` defined in foundry.toml.
+  ✅ LiquidityVault: 0xc3e53F4d16Ae77Db1c982e75a937B9f60FE63690
+Warning: Found unknown `exclude_lints` config for profile `lint` defined in foundry.toml.
+  ✅ LiquidityRouter (Single Entry Point): 0x84eA74d481Ee0A5332c457a4d796187F6Ba67fEB
+     USDC risk score: 85
+     JEJU risk score: 70
+     ETH risk score: 90
+  ✅ Liquidity system deployed
+     ✨ Risk-tiered pools: Conservative (3%), Balanced (10%), Aggressive (20%)
+
+🛡️  STEP 5.10: Deploying Security Bounty Registry
+----------------------------------------------------------------------
+Warning: Found unknown `exclude_lints` config for profile `lint` defined in foundry.toml.
+  ✅ SecurityBountyRegistry (Bug Bounty): 0x851356ae760d987E095750cCeb3bC6014560891C
+     ✨ Funded with 10 ETH for bounty rewards
+     Compute oracle set
+  ✅ Security Bounty Registry deployed
+     ✨ Bug bounty program ready for submissions
+
+🌐 STEP 5.11: Deploying DWS (Decentralized Web Services)
+----------------------------------------------------------------------
+Warning: Found unknown `exclude_lints` config for profile `lint` defined in foundry.toml.
+  ✅ JNSRegistry: 0x998abeb3E57409262aE5b751f60747921B33613E
+Warning: Found unknown `exclude_lints` config for profile `lint` defined in foundry.toml.
+  ✅ JNSResolver: 0x70e0bA845a1A0F2DA3359C97E0285013525FFC49
+     Root resolver set
+     .jeju TLD created
+     .jeju resolver set
+     .apps.jeju created
+     .apps.jeju resolver set
+     Apps: auth, autocrat, bazaar, crucible, docs, dws, factory, gateway, indexer, node, otto, vpn, wallet
+  📋 Discovered 13 apps with JNS names
+     auth.apps.jeju created
+     auth.apps.jeju resolver set
+     autocrat.apps.jeju created
+     autocrat.apps.jeju resolver set
+     bazaar.apps.jeju created
+     bazaar.apps.jeju resolver set
+     crucible.apps.jeju created
+     crucible.apps.jeju resolver set
+     docs.apps.jeju created
+     docs.apps.jeju resolver set
+     dws.apps.jeju created
+     dws.apps.jeju resolver set
+     factory.apps.jeju created
+     factory.apps.jeju resolver set
+     gateway.apps.jeju created
+     gateway.apps.jeju resolver set
+     indexer.apps.jeju created
+     indexer.apps.jeju resolver set
+     node.apps.jeju created
+     node.apps.jeju resolver set
+     otto.apps.jeju created
+     otto.apps.jeju resolver set
+     vpn.apps.jeju created
+     vpn.apps.jeju resolver set
+     wallet.apps.jeju created
+     wallet.apps.jeju resolver set
+Warning: Found unknown `exclude_lints` config for profile `lint` defined in foundry.toml.
+  ✅ StorageManager: 0xD8a5a9b31c3C0232E196d518E89Fd8bF83AcAd43
+Warning: Found unknown `exclude_lints` config for profile `lint` defined in foundry.toml.
+  ✅ WorkerRegistry: 0xDC11f7E700A4c898AE5CAddB1082cFfa76512aDD
+Warning: Found unknown `exclude_lints` config for profile `lint` defined in foundry.toml.
+  ✅ CDNRegistry: 0x51A1ceB83B83F1985a81C295d1fF28Afef186E02
+  ✅ DWS deployed
+     ✨ JNS, Storage, Workers, and CDN ready
+
+🔐 STEP 5.11.5: Deploying OAuth3 (Decentralized Auth)
+----------------------------------------------------------------------
+Warning: Found unknown `exclude_lints` config for profile `lint` defined in foundry.toml.
+  ✅ OAuth3TEEVerifier: 0x36b58F5C1969B7b6591D752ea6F5486D069010AB
+Warning: Found unknown `exclude_lints` config for profile `lint` defined in foundry.toml.
+  ✅ OAuth3IdentityRegistry: 0x8198f5d8F8CfFE8f9C413d98a0A55aEB8ab9FbB7
+Warning: Found unknown `exclude_lints` config for profile `lint` defined in foundry.toml.
+  ✅ OAuth3AppRegistry: 0x0355B7B8cb128fA5692729Ab3AAa199C1753f726
+Warning: Found unknown `exclude_lints` config for profile `lint` defined in foundry.toml.
+  ✅ OAuth3 Staking: 0x202CCe504e04bEd6fC0521238dDf04Bc9E8E15aB
+     OAuth3TEEVerifier identityRegistry set
+  ℹ️  App registration skipped - apps self-register on first use
+  ✅ OAuth3 deployed
+     ✨ TEEVerifier, IdentityRegistry, AppRegistry, Staking ready
+
+🏪 STEP 5.12: Deploying NFT Marketplace
+----------------------------------------------------------------------
+Warning: Found unknown `exclude_lints` config for profile `lint` defined in foundry.toml.
+  ✅ NFT Marketplace: 0x172076E0166D1F9Cc711C77Adf8488051744980C
+     Identity Registry linked
+     Ban Manager linked
+  📁 Saved to bazaar-marketplace-31337.json
+  ✅ NFT Marketplace deployed
+     ✨ List, buy, and sell ERC721/ERC1155/ERC20 tokens
+
+🖼️  STEP 5.13: Deploying Simple Collectible Contract
+----------------------------------------------------------------------
+Warning: Found unknown `exclude_lints` config for profile `lint` defined in foundry.toml.
+  ✅ Simple Collectible: 0xD84379CEae14AA33C123Af12424A37803F885889
+  📁 Saved to simple-collectible-31337.json
+  ✅ SimpleCollectible deployed
+     ✨ Free minting of ERC721 collectibles
+
+🎨 STEP 5.14: Seeding NFT Marketplace
+----------------------------------------------------------------------
+  Minting 8 sample collectibles...
+       Minted #1: Cosmic Voyager
+       Minted #2: Neon Dreams
+       Minted #3: Ocean Spirit
+       Minted #4: Digital Phoenix
+       Minted #5: Quantum Cat
+       Minted #6: Crystal Garden
+       Minted #7: Retro Arcade
+       Minted #8: Northern Lights
+  ✅ Sample collection minted
+  Listing some items on marketplace...
+       Approved marketplace
+       Listed #1 for 0.1 ETH
+       Listed #2 for 0.25 ETH
+       Listed #3 for 0.5 ETH
+  ✅ Sample listings created
+
+⛓️  STEP 5.15: Deploying EIL (Cross-Chain Gas Sponsorship)
+----------------------------------------------------------------------
+Warning: Found unknown `exclude_lints` config for profile `lint` defined in foundry.toml.
+  ✅ L1StakeManager: 0xf953b3A269d80e3eB0F2947630Da976B896A8C5b
+Warning: Found unknown `exclude_lints` config for profile `lint` defined in foundry.toml.
+  ✅ L2CrossDomainMessenger: 0xAA292E8611aDF267e563f334Ee42320aC96D0463
+Warning: Found unknown `exclude_lints` config for profile `lint` defined in foundry.toml.
+  ✅ CrossChainPaymasterUpgradeable (impl): 0x720472c8ce72c2A2D711333e064ABD3E6BbEAdd3
+Warning: Found unknown `exclude_lints` config for profile `lint` defined in foundry.toml.
+  ✅ CrossChainPaymaster (proxy): 0xe8D2A1E88c91DCd5433208d4152Cc4F399a7e91d
+  ⚠️  EIL deployment skipped
+     Error: Command failed: cast send 0xAA292E8611aDF267e563f334Ee42320aC96D0463 "setTargets(address,address)" 0xf953b3A269d80e3eB0F2947630Da976B896A8C5b 0xe8D2A1E88c91DCd5433208d4152Cc4F399a7e91d --private-key 0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80 --rpc-url http://127.0.0.1:6546
+Error: Failed to estimate gas: server returned an error response: error code 3: execution reverted, data: "0x"
+
+
+🧩 STEP 5.16: Deploying Additional Modules
+----------------------------------------------------------------------
+  ✅ VPNRegistry: 0x4b6aB5F819A515382B0dEB6935D793817bB4af28
+  ✅ AgentVault: 0xCace1b78160AE76398F486c8a18044da0d66d86D
+  ✅ RoomRegistry: 0xD5ac451B0c50B9476107823Af206eD814a2e2580
+  ⚠️  OTC skipped: Error: Command failed: cd packages/contracts && forge create src/otc/OTC.sol:OTC       --rpc-url htt
+  ✅ RPCProviderRegistry: 0xF8e31cb472bc70500f08Cd84917E5A1912Ec8397
+  ⚠️  Staking skipped: Error: Command failed: cd packages/contracts && forge create src/staking/BaseStaking.sol:BaseStaking
+  ✅ InsuranceFund: 0xc0F115A19107322cFBf1cDBC7ea011C19EbDB4F8
+  ✅ MarginManager: 0xc96304e3c037f81dA488ed9dEa1D8F2a48278a75
+  ✅ PerpetualMarket: 0x34B40BA116d5Dec75548a9e9A8f15411461E8c70
+  ✅ TrainingCoordinator: 0xD0141E899a65C95a556fE2B27e5982A6DE7fDD7A
+  ✅ FeeDistributor: 0x07882Ae1ecB7429a84f1D53048d35c4bB2056877
+  ✅ AirdropManager: 0x22753E4264FDDc6181dc7cce468904A80a363E44
+  ⚠️  TokenVesting skipped: Error: Command failed: cd packages/contracts && forge create src/rewards/TokenVesting.sol:TokenVesti
+  ⚠️  StakingRewardDistributor skipped: Error: Command failed: cd packages/contracts && forge create src/rewards/StakingRewards.sol:StakingR
+  ✅ SequencerRegistry: 0xA7c59f010700930003b33aB25a7a0679C860f29c
+  ✅ ForcedInclusion: 0xfaAddC93baf78e89DCf37bA67943E1bE8F37Bb8c
+  ✅ SlashingContract: 0x276C216D241856199A83bf27b2286659e5b877D3
+  ⚠️  XLPRouter skipped: Error: Command failed: cd packages/contracts && forge create src/amm/XLPRouter.sol:XLPRouter       -
+  ⚠️  OracleRegistry skipped: Error: Command failed: cd packages/contracts && forge create src/oracle/ManualPriceOracle.sol:Manual
+  ⚠️  MessageNodeRegistry skipped: Error: Command failed: cd packages/contracts && forge create src/infra/MessageRelay.sol:MessageRelay
+  ⚠️  HyperlaneMailbox skipped: Error: Command failed: cd packages/contracts && forge create src/hyperlane/Mailbox.sol:Mailbox      
+  ⚠️  HyperlaneISM skipped: Error: Command failed: cd packages/contracts && forge create src/hyperlane/MultisigISM.sol:MultisigI
+  ✅ Additional modules deployed
+
+🔐 STEP 6: Authorizing Services
+----------------------------------------------------------------------
+     Deployer (for testing)
+     Cloud Service
+     MCP Gateway
+     Caliguland
+  ✅ Authorized 4 services to deduct credits
+
+💰 STEP 7: Funding Test Wallets
+----------------------------------------------------------------------
+  Agent 1 (Payment Wallet)
+    Address: 0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266
+    ✅ 10,000 USDC, 100,000 JEJU (deployer has remaining ETH)
+
+  Agent 2 (Payment Wallet)
+    Address: 0x70997970C51812dc3A010C7d01b50e0d17dc79C8
+
+blockHash            0xb63972d0c532b337c1a9798d2c098f8269b6d2d2c737bd358996bd233de3e45b
+blockNumber          125
+contractAddress      
+cumulativeGasUsed    21000
+effectiveGasPrice    226
+from                 0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266
+gasUsed              21000
+logs                 []
+logsBloom            0x00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+root                 
+status               1 (success)
+transactionHash      0x9570ba656f9ccdd83410e93d9eb636a804b33fc87e231a89596a5c8aa1867d7d
+transactionIndex     0
+type                 2
+blobGasPrice         1
+blobGasUsed          
+to                   0x70997970C51812dc3A010C7d01b50e0d17dc79C8
+    ✅ 10,000 USDC, 100,000 JEJU, 10 ETH
+
+  Agent 3 (Payment Wallet)
+    Address: 0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC
+
+blockHash            0xda6435a59a45bf6012b10398a3053857930f0efb461bda51cdb3bdce9b930310
+blockNumber          128
+contractAddress      
+cumulativeGasUsed    21000
+effectiveGasPrice    153
+from                 0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266
+gasUsed              21000
+logs                 []
+logsBloom            0x00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+root                 
+status               1 (success)
+transactionHash      0xa081472c2e65b324528ebfd4afd73736a570fde3b9bab3f0c9c8ab59104ff0f7
+transactionIndex     0
+type                 2
+blobGasPrice         1
+blobGasUsed          
+to                   0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC
+    ✅ 10,000 USDC, 100,000 JEJU, 10 ETH
+
+  Cloud Service Wallet
+    Address: 0x90F79bf6EB2c4f870365E785982E1f101E93b906
+
+blockHash            0x037aa74b7bdf8fac24b64decfad0d268d285857e407db101a4d71e62c5d52aed
+blockNumber          131
+contractAddress      
+cumulativeGasUsed    21000
+effectiveGasPrice    105
+from                 0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266
+gasUsed              21000
+logs                 []
+logsBloom            0x00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+root                 
+status               1 (success)
+transactionHash      0x2f50a9d15e0956b740fc6bbbaf37e45601563d7a76972638809979f938e8f4d2
+transactionIndex     0
+type                 2
+blobGasPrice         1
+blobGasUsed          
+to                   0x90F79bf6EB2c4f870365E785982E1f101E93b906
+    ✅ 10,000 USDC, 100,000 JEJU, 10 ETH
+
+  MCP Service Wallet
+    Address: 0x15d34AAf54267DB7D7c367839AAf71A00a2C6A65
+
+blockHash            0xa25ee15e13a5fd6f662d172e05eb2a789f1287ae51e43245c723486a97763f1a
+blockNumber          134
+contractAddress      
+cumulativeGasUsed    21000
+effectiveGasPrice    72
+from                 0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266
+gasUsed              21000
+logs                 []
+logsBloom            0x00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+root                 
+status               1 (success)
+transactionHash      0x8b97c83d4320dd362d34f10b77b79a224be711f168faa316cb6e762a10b42592
+transactionIndex     0
+type                 2
+blobGasPrice         1
+blobGasUsed          
+to                   0x15d34AAf54267DB7D7c367839AAf71A00a2C6A65
+    ✅ 10,000 USDC, 100,000 JEJU, 10 ETH
+
+  Test User 1
+    Address: 0x9965507D1a55bcC2695C58ba16FB37d819B0A4dc
+
+blockHash            0x11e0266879ab9b2f82fa5a9a143f0378ed8deca0fc93ae073bf2f287d44cd377
+blockNumber          137
+contractAddress      
+cumulativeGasUsed    21000
+effectiveGasPrice    51
+from                 0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266
+gasUsed              21000
+logs                 []
+logsBloom            0x00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+root                 
+status               1 (success)
+transactionHash      0xcb0b2792b1dbaf6e6b068eccd0cc3f9a14d7a22bd67bfd74e8c45d462443b08e
+transactionIndex     0
+type                 2
+blobGasPrice         1
+blobGasUsed          
+to                   0x9965507D1a55bcC2695C58ba16FB37d819B0A4dc
+    ✅ 10,000 USDC, 100,000 JEJU, 10 ETH
+
+  Test User 2
+    Address: 0x976EA74026E726554dB657fA54763abd0C3a0aa9
+
+blockHash            0x460d6a534bdb2b0e5c2062e2598fd1a2cc5225c2869fe335510545df3a02d731
+blockNumber          140
+contractAddress      
+cumulativeGasUsed    21000
+effectiveGasPrice    36
+from                 0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266
+gasUsed              21000
+logs                 []
+logsBloom            0x00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+root                 
+status               1 (success)
+transactionHash      0x113fcf74964dee92c98794e0f59e7c03be5d972d272e0e3fc93a3ef50092a050
+transactionIndex     0
+type                 2
+blobGasPrice         1
+blobGasUsed          
+to                   0x976EA74026E726554dB657fA54763abd0C3a0aa9
+    ✅ 10,000 USDC, 100,000 JEJU, 10 ETH
+
+  Caliguland Prize Pool
+    Address: 0x14dC79964da2C08b23698B3D3cc7Ca32193d9955
+
+blockHash            0x57505b91687eacf6f9f9153eb0298147686d0b1a22b8f67e5a5f5efab79ff9db
+blockNumber          143
+contractAddress      
+cumulativeGasUsed    21000
+effectiveGasPrice    26
+from                 0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266
+gasUsed              21000
+logs                 []
+logsBloom            0x00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+root                 
+status               1 (success)
+transactionHash      0xb9e450268ebf6219681191d31f3e29ad2c70bcff1cbac341965e5f9ebf80aba1
+transactionIndex     0
+type                 2
+blobGasPrice         1
+blobGasUsed          
+to                   0x14dC79964da2C08b23698B3D3cc7Ca32193d9955
+    ✅ 10,000 USDC, 100,000 JEJU, 10 ETH
+
+
+🔄 STEP 8: Deploying Uniswap V4 Periphery
+----------------------------------------------------------------------
+Deploying V4 Periphery contracts (SwapRouter, PositionManager, Quoter, StateView)...
+  ⚠️  V4 Periphery deployment failed (continuing anyway)
+     Error: Command failed: cd packages/contracts && forge script script/DeployUniswapV4Periphery.s.sol:DeployUniswapV4Periphery         --rpc-url http://127.0.0.1:6546         --private-key 0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80         --broadcast         --legacy
+Warning: Found unknown `exclude_lints` config for profile `lint` defined in foundry.toml.
+Error: No such file or directory (os error 2)
+
+
+🏊 STEP 9: Initializing Uniswap V4 Pools
+----------------------------------------------------------------------
+  ⏭️  Uniswap V4 not deployed - skipping pools
+     Deploy with: bun run scripts/deploy-uniswap-v4.ts
+
+   /home/secure-dev/Dev/dfinity/partners/shaw/jeju/apps/gateway/.env.local
+💾 Configuration saved:
+   /home/secure-dev/Dev/dfinity/partners/shaw/jeju/packages/contracts/deployments/localnet-complete.json
+   /home/secure-dev/Dev/dfinity/partners/shaw/jeju/.env.localnet
+
+🔄 Syncing to contracts.json...
+----------------------------------------------------------------------
+🔄 Syncing localnet config...
+
+📦 Syncing contract addresses...
+✅ Synced 46 contract addresses to contracts.json
+
+📁 Updated: /home/secure-dev/Dev/dfinity/partners/shaw/jeju/packages/config/contracts.json
+
+======================================================================
+✅ LOCALNET BOOTSTRAP COMPLETE!
+======================================================================
+
+📦 Core Contracts:
+   JEJU:                0x0B306BF915C4d645ff596e518fAf3F9669b97016
+   USDC:                0x5FbDB2315678afecb367f032d93F642f64180aa3
+   CreditManager:       0x68B1D87F95878fE05B998F19b66F4baba5De1aed
+   MultiTokenPaymaster: 0x3Aa5ebB10DC797CAC828524e59A333d0A371443c
+   TokenRegistry:       0x610178dA211FEF7D417bC0e6FeD39F05609AD788
+   PaymasterFactory:    0xB7f8BC63BbcaD18155201308C8f3540b07f84F5e
+
+🎯 What Works Now:
+   ✅ JEJU token
+   ✅ x402 payments with USDC on the network
+   ✅ Prepaid credit system (zero-latency!)
+   ✅ Multi-token support (JEJU, USDC, ETH)
+   ✅ Account abstraction (gasless transactions)
+   ✅ Paymaster system with all tokens registered
+   ✅ Compute marketplace (AI inference on-chain settlement)
+   ✅ Risk-tiered liquidity pools (RiskSleeve)
+   ✅ Multi-service staking (Node, XLP, Paymaster, Governance)
+   ✅ Liquidity router for single-deposit UX
+   ✅ 8 test wallets funded with all tokens
+   ✅ Oracle prices initialized
+   ✅ All services authorized
+   ✅ Banned users cannot transfer JEJU
+   ✅ DWS (JNS, Storage, Workers, CDN)
+   ✅ ZK Bridge (Solana ↔ EVM with mock verifier)
+
+🌐 DWS Contracts:
+   JNSRegistry:     0x998abeb3E57409262aE5b751f60747921B33613E
+   JNSResolver:     0x70e0bA845a1A0F2DA3359C97E0285013525FFC49
+   StorageManager:  0xD8a5a9b31c3C0232E196d518E89Fd8bF83AcAd43
+   WorkerRegistry:  0xDC11f7E700A4c898AE5CAddB1082cFfa76512aDD
+   CDNRegistry:     0x51A1ceB83B83F1985a81C295d1fF28Afef186E02
+
+👥 Test Wallets (all funded):
+   0xf39Fd6e5... Agent 1 (Payment Wallet)
+   0x70997970... Agent 2 (Payment Wallet)
+   0x3C44CdDd... Agent 3 (Payment Wallet)
+   0x90F79bf6... Cloud Service Wallet
+   0x15d34AAf... MCP Service Wallet
+
+🚀 Next Steps:
+
+1. Everything is ready! Use: bun run dev
+
+2. Gateway (paymaster system):
+   http://127.0.0.1:4001
+
+3. Test paymaster:
+   All local tokens (USDC, JEJU, WETH) are registered
+   Apps can now deploy paymasters for any token
+
+4. Test agent payments:
+   bun test tests/x402-integration.test.ts
+
+💡 Payment System Features:
+   • JEJU preferred if in wallet (ban-enforced)
+   • Multi-token support (JEJU, USDC, ETH)
+   • Gasless transactions (account abstraction)
+   • Zero-latency credit system
+   • Permissionless token registration
+   • Automatic token discovery
+
+🏝️  JEJU Token Commands:
+   # Claim from faucet (10,000 JEJU):
+   cast send 0x0B306BF915C4d645ff596e518fAf3F9669b97016 "faucet()" --rpc-url http://127.0.0.1:6546 --private-key <KEY>
+
+   # Check if address is banned:
+   cast call 0x0B306BF915C4d645ff596e518fAf3F9669b97016 "isBanned(address)(bool)" <ADDRESS> --rpc-url http://127.0.0.1:6546
+
+  ✓ Contracts bootstrapped and verified on-chain
   → Verifying contracts on-chain...
   ✓ Contracts verified on-chain
   → Running app seed scripts...
@@ -198,6 +754,7 @@ Default provider: dws
 Configured: 
   ✓ Oracle node on port 4301 (reading from on-chain PriceOracle)
   ✓ DWS starting on port 4030 (storage, compute, git, pkg, ci - all on-chain)
+SQLit already running on port 4661
 🌐 Setting up local proxy for local.jejunetwork.org...
 
 1. Checking hosts file...
@@ -206,11 +763,15 @@ Configured:
 2. Checking Caddy installation...
    ✅ Caddy available
 
-SQLit already running on port 4661
 3. Generating Caddy configuration...
    ✅ Caddyfile written
 
 4. Starting reverse proxy...
+  [secrets] Using Anvil dev key (localnet only)
+Bazaar Development Seeder
+=========================
+
+Checking prerequisites...
    ✅ Caddy running on port 8080
 
 5. Checking port forwarding (80 → 8080)...
@@ -239,12 +800,7 @@ SQLit already running on port 4661
 
   ✓ Local proxy running
   Access apps at *.local.jejunetwork.org
-  [secrets] Using Anvil dev key (localnet only)
-Bazaar Development Seeder
-=========================
-
-Checking prerequisites...
-  Localnet running (block 242)
+  Localnet running (block 143)
   Contracts built
 Deployer: 0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266
 SimpleCollectible: 0xD84379CEae14AA33C123Af12424A37803F885889
@@ -265,7 +821,7 @@ SimpleCollectible: 0xD84379CEae14AA33C123Af12424A37803F885889
 [Search] Using in-memory search (set MEILISEARCH_URL for production)
 [WorkerRuntime] Using runtime mode: bun
 [WorkerRuntime] workerd binary not found (Bun mode only)
-[WorkerRegistry] Initialized for pod pod-1769388893147-f500hx in region global
+[WorkerRegistry] Initialized for pod pod-1769405471520-kszhw5 in region global
 [Workerd] Network: localnet
 [Workerd] RPC URL: http://127.0.0.1:6546
 [Workerd] Identity Registry: 0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9
@@ -276,13 +832,14 @@ SimpleCollectible: 0xD84379CEae14AA33C123Af12424A37803F885889
 [LoadBalancer] Started
 [Services] Discovering existing DWS-managed containers...
 [SQLit v2] Auto-provisioning database: dws
-[SQLit v2] Created database f3286104f15497dd1734173398a4b5be (dws)
+[SQLit v2] Created database b9098b248138d011ce6d15b9cbc826fe (dws)
 [Containers] System initialized
 [Cache Provisioning] Initializing...
 [AppRouter] Workerd executor injected
 [WorkerRuntime] Initialized successfully
 [DWS Server] Validating security configuration...
 [CDN] Local CDN initialization failed: Unable to connect. Is the computer able to access the url?
+[DWS] Agent registry init failed (SQLit may not be running): [AgentRegistry] SQLit exec failed: 404 - NOT_FOUND
 ╔═══════════════════════════════════════════════════════════════╗
 ║  WARNING: No worker nodes registered in on-chain registry     ║
 ╠═══════════════════════════════════════════════════════════════╣
@@ -297,7 +854,6 @@ SimpleCollectible: 0xD84379CEae14AA33C123Af12424A37803F885889
 ║    3. Set endpoint via setA2AEndpoint(agentId, endpoint)      ║
 ╚═══════════════════════════════════════════════════════════════╝
 [WorkerRouter] Started
-[DWS] Agent registry init failed (SQLit may not be running): [AgentRegistry] SQLit exec failed: 404 - NOT_FOUND
 [HSM-KDF] Running in local mode (development). Set HSM_ENDPOINT for HSM-backed key derivation.
 [DWS Server] Security recommendations:
   ℹ️  Set HSM_ENDPOINT and HSM_KEY_ID for maximum side-channel protection
@@ -326,7 +882,6 @@ SimpleCollectible: 0xD84379CEae14AA33C123Af12424A37803F885889
 [Cache Provisioning] SQLit tables ensured
 [Cache Provisioning] Loaded 0 instances, 0 nodes
 [Cache Provisioning] Initialized
-[Services] Discovered postgres service: dws-postgres-indexer (running)
 [DWS State] SQLit tables ensured
 [DWS State] Initialized with SQLit - persistence enabled
 [Key Vault] Found 0 system keys in environment
@@ -335,36 +890,39 @@ SimpleCollectible: 0xD84379CEae14AA33C123Af12424A37803F885889
 [AppRouter] Initializing...
 [AppRouter] ConfigMap not available, trying SQLit
 [API Marketplace] Initialized
-[CronExecutor] Initialized for pod dws-localnet-280551
+[CronExecutor] Initialized for pod dws-localnet-479267
 [CronExecutor] Starting with 30000ms tick interval
 [Workers] Loading 0 persisted workers from SQLit
 [Workers] Startup load complete: 0 loaded, 0 failed
 [Workers] Initial load complete: 0 workers loaded, 0 failed
 [WorkerRegistry] Starting background sync (interval: 30000ms)
-{"level":30,"time":1769388893777,"pid":280551,"hostname":"Daniels-Asus","name":"durable-objects:schema","databaseId":"dws-durable-objects","msg":"Initializing DO schema"}
-{"level":30,"time":1769388893780,"pid":280551,"hostname":"Daniels-Asus","name":"dws-keepalive","interval":30000,"databases":0,"msg":"Keepalive service started"}
+{"level":30,"time":1769405472088,"pid":479267,"hostname":"Daniels-Asus","name":"durable-objects:schema","databaseId":"dws-durable-objects","msg":"Initializing DO schema"}
+{"level":30,"time":1769405472093,"pid":479267,"hostname":"Daniels-Asus","name":"dws-keepalive","interval":30000,"databases":0,"msg":"Keepalive service started"}
 [DWS] Database keepalive service started
 [DWS] Cron executor started (0 enabled crons)
+[WorkerRegistry] Sync complete: loaded=0, skipped=0, failed=0, duration=16ms
 [AppRouter] Local app registry not available, skipping
-[AppRouter] Initialized with 0 apps (pod: pod-1769388893148-uk9r62)
-[AppRouter] Starting background sync (interval: 15000ms, pod: pod-1769388893148-uk9r62)
+[AppRouter] Initialized with 0 apps (pod: pod-1769405471521-4oww6u)
+[AppRouter] Starting background sync (interval: 15000ms, pod: pod-1769405471521-4oww6u)
 [DWS] App router initialized
-[WorkerRegistry] Sync complete: loaded=0, skipped=0, failed=0, duration=157ms
-[Services] Discovery complete. Found 1 services.
-{"level":30,"time":1769388894174,"pid":280551,"hostname":"Daniels-Asus","name":"durable-objects:schema","databaseId":"dws-durable-objects","msg":"DO schema initialized"}
-{"level":30,"time":1769388894175,"pid":280551,"hostname":"Daniels-Asus","name":"dws:alarm-scheduler","msg":"Alarm scheduler connected to instance provider"}
-{"level":30,"time":1769388894175,"pid":280551,"hostname":"Daniels-Asus","name":"dws:alarm-scheduler","podId":"local","interval":1000,"msg":"Alarm scheduler started"}
-{"level":30,"time":1769388894175,"pid":280551,"hostname":"Daniels-Asus","name":"dws:durable-objects","msg":"Durable Object manager started"}
+[Services] Discovered postgres service: dws-postgres-indexer (running)
+[Services] Discovering existing DWS-managed containers...
+{"level":30,"time":1769405472553,"pid":479267,"hostname":"Daniels-Asus","name":"durable-objects:schema","databaseId":"dws-durable-objects","msg":"DO schema initialized"}
+{"level":30,"time":1769405472554,"pid":479267,"hostname":"Daniels-Asus","name":"dws:alarm-scheduler","msg":"Alarm scheduler connected to instance provider"}
+{"level":30,"time":1769405472554,"pid":479267,"hostname":"Daniels-Asus","name":"dws:alarm-scheduler","podId":"local","interval":1000,"msg":"Alarm scheduler started"}
+{"level":30,"time":1769405472554,"pid":479267,"hostname":"Daniels-Asus","name":"dws:durable-objects","msg":"Durable Object manager started"}
 [DWS] Durable Objects manager started
-  ✓ JNS service on port 4302 (connected to on-chain contracts)
-  ✓ Cron service available via DWS on port 4030 (CI workflow engine)
-  ✓ DWS Compute available via DWS on port 4030 (TEE LOCAL mode)
+[Services] Discovery complete. Found 1 services.
 [DWS] Agent executor init failed: workerd binary not found. Run "bun install" to auto-install or set WORKERD_PATH environment variable. Manual install: https://github.com/cloudflare/workerd/releases
 [Services] Discovery complete. Found 1 services.
 [DWS] Infrastructure services discovery complete
 [SQLit] Resolving SQLit endpoint: http://127.0.0.1:8546
 [SQLit] External SQLit unavailable, using embedded mode
 [DWS] SQLit running at http://127.0.0.1:8546
+[Services] Discovery complete. Found 1 services.
+  ✓ JNS service on port 4302 (connected to on-chain contracts)
+  ✓ Cron service available via DWS on port 4030 (CI workflow engine)
+  ✓ DWS Compute available via DWS on port 4030 (TEE LOCAL mode)
   → Provisioning PostgreSQL (attempt 1/3)...
   ✓ PostgreSQL connection verified
   → Applying indexer database migrations...
@@ -377,8 +935,7 @@ $ DB_HOST=localhost DB_PORT=23798 DB_NAME=indexer DB_USER=postgres DB_PASS=postg
 [DB] Initializing SQLit database: indexer-sync
 [SQLit] Initializing schema for database: indexer-sync
 [SQLit v2] Auto-provisioning database: indexer-sync
-[SQLit v2] Created database 619c947ef89d47f1ece04ee38c8e9c9b (indexer-sync)
-{"level":2,"time":1769388907581,"ns":"sqd:commands","msg":"SERVE"}
+[SQLit v2] Created database 44ff56bc746280bb4bab94c6161b9b7d (indexer-sync)
 [SQLit] Schema initialized successfully
 [DB] SQLit database ready
 [DB] Database schema verified
@@ -397,69 +954,13 @@ $ DB_HOST=localhost DB_PORT=23798 DB_NAME=indexer DB_USER=postgres DB_PASS=postg
 │  MCP:     http://127.0.0.1:4353          │
 │  DB:      SQLit (decentralized)          │
 └──────────────────────────────────────────┘
-(node:282002) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+{"level":2,"time":1769405484984,"ns":"sqd:commands","msg":"SERVE"}
+(node:480271) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
 (Use `node --trace-deprecation ...` to show where the warning was created)
-{"level":2,"time":1769388919810,"ns":"sqd:graphql-server","msg":"listening on port 4350"}
-[2026-01-26T00:55:23.504Z] [e398ff1a] INFO GET /health - Request started
-[2026-01-26T00:55:23.507Z] [e398ff1a] INFO GET /health 200 4ms - Request completed
-[2026-01-26T00:55:53.422Z] [9e7e186c] INFO GET /health - Request started
-[2026-01-26T00:55:53.422Z] [9e7e186c] INFO GET /health 200 0ms - Request completed
+{"level":2,"time":1769405490164,"ns":"sqd:graphql-server","msg":"listening on port 4350"}
+[2026-01-26T05:31:41.801Z] [679f68ae] INFO GET /health - Request started
+[2026-01-26T05:31:41.803Z] [679f68ae] INFO GET /health 200 2ms - Request completed
   ✓ Indexer running on port 4350 (indexing blockchain events)
-TypeError: Cannot read properties of undefined (reading 'html')
-    at Mime.lookup (/home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/mime@file+.+patches+mime-safe/node_modules/mime/mime.js:22:20)
-    at ServerResponse.contentType (/home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/express@4.21.2/node_modules/express/lib/response.js:621:36)
-    at /home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/@subsquid+openreader@5.3.0+35fa4ab4e9f9593f/node_modules/@subsquid/openreader/lib/server.js:161:13
-    at Layer.handle [as handle_request] (/home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/express@4.21.2/node_modules/express/lib/router/layer.js:95:5)
-    at trim_prefix (/home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/express@4.21.2/node_modules/express/lib/router/index.js:328:13)
-    at /home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/express@4.21.2/node_modules/express/lib/router/index.js:286:9
-    at Function.process_params (/home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/express@4.21.2/node_modules/express/lib/router/index.js:346:12)
-    at next (/home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/express@4.21.2/node_modules/express/lib/router/index.js:280:10)
-    at expressInit (/home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/express@4.21.2/node_modules/express/lib/middleware/init.js:40:5)
-    at Layer.handle [as handle_request] (/home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/express@4.21.2/node_modules/express/lib/router/layer.js:95:5)
-TypeError: Cannot read properties of undefined (reading 'html')
-    at Mime.lookup (/home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/mime@file+.+patches+mime-safe/node_modules/mime/mime.js:22:20)
-    at ServerResponse.contentType (/home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/express@4.21.2/node_modules/express/lib/response.js:621:36)
-    at /home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/@subsquid+openreader@5.3.0+35fa4ab4e9f9593f/node_modules/@subsquid/openreader/lib/server.js:161:13
-    at Layer.handle [as handle_request] (/home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/express@4.21.2/node_modules/express/lib/router/layer.js:95:5)
-    at trim_prefix (/home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/express@4.21.2/node_modules/express/lib/router/index.js:328:13)
-    at /home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/express@4.21.2/node_modules/express/lib/router/index.js:286:9
-    at Function.process_params (/home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/express@4.21.2/node_modules/express/lib/router/index.js:346:12)
-    at next (/home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/express@4.21.2/node_modules/express/lib/router/index.js:280:10)
-    at expressInit (/home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/express@4.21.2/node_modules/express/lib/middleware/init.js:40:5)
-    at Layer.handle [as handle_request] (/home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/express@4.21.2/node_modules/express/lib/router/layer.js:95:5)
-TypeError: Cannot read properties of undefined (reading 'html')
-    at Mime.lookup (/home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/mime@file+.+patches+mime-safe/node_modules/mime/mime.js:22:20)
-    at ServerResponse.contentType (/home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/express@4.21.2/node_modules/express/lib/response.js:621:36)
-    at /home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/@subsquid+openreader@5.3.0+35fa4ab4e9f9593f/node_modules/@subsquid/openreader/lib/server.js:161:13
-    at Layer.handle [as handle_request] (/home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/express@4.21.2/node_modules/express/lib/router/layer.js:95:5)
-    at trim_prefix (/home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/express@4.21.2/node_modules/express/lib/router/index.js:328:13)
-    at /home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/express@4.21.2/node_modules/express/lib/router/index.js:286:9
-    at Function.process_params (/home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/express@4.21.2/node_modules/express/lib/router/index.js:346:12)
-    at next (/home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/express@4.21.2/node_modules/express/lib/router/index.js:280:10)
-    at expressInit (/home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/express@4.21.2/node_modules/express/lib/middleware/init.js:40:5)
-    at Layer.handle [as handle_request] (/home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/express@4.21.2/node_modules/express/lib/router/layer.js:95:5)
-TypeError: Cannot read properties of undefined (reading 'html')
-    at Mime.lookup (/home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/mime@file+.+patches+mime-safe/node_modules/mime/mime.js:22:20)
-    at ServerResponse.contentType (/home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/express@4.21.2/node_modules/express/lib/response.js:621:36)
-    at /home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/@subsquid+openreader@5.3.0+35fa4ab4e9f9593f/node_modules/@subsquid/openreader/lib/server.js:161:13
-    at Layer.handle [as handle_request] (/home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/express@4.21.2/node_modules/express/lib/router/layer.js:95:5)
-    at trim_prefix (/home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/express@4.21.2/node_modules/express/lib/router/index.js:328:13)
-    at /home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/express@4.21.2/node_modules/express/lib/router/index.js:286:9
-    at Function.process_params (/home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/express@4.21.2/node_modules/express/lib/router/index.js:346:12)
-    at next (/home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/express@4.21.2/node_modules/express/lib/router/index.js:280:10)
-    at expressInit (/home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/express@4.21.2/node_modules/express/lib/middleware/init.js:40:5)
-    at Layer.handle [as handle_request] (/home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/express@4.21.2/node_modules/express/lib/router/layer.js:95:5)
-TypeError: Cannot read properties of undefined (reading 'html')
-    at Mime.lookup (/home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/mime@file+.+patches+mime-safe/node_modules/mime/mime.js:22:20)
-    at ServerResponse.contentType (/home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/express@4.21.2/node_modules/express/lib/response.js:621:36)
-    at /home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/@subsquid+openreader@5.3.0+35fa4ab4e9f9593f/node_modules/@subsquid/openreader/lib/server.js:161:13
-    at Layer.handle [as handle_request] (/home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/express@4.21.2/node_modules/express/lib/router/layer.js:95:5)
-    at trim_prefix (/home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/express@4.21.2/node_modules/express/lib/router/index.js:328:13)
-    at /home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/express@4.21.2/node_modules/express/lib/router/index.js:286:9
-    at Function.process_params (/home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/express@4.21.2/node_modules/express/lib/router/index.js:346:12)
-    at next (/home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/express@4.21.2/node_modules/express/lib/router/index.js:280:10)
-    at expressInit (/home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/express@4.21.2/node_modules/express/lib/middleware/init.js:40:5)
-    at Layer.handle [as handle_request] (/home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/express@4.21.2/node_modules/express/lib/router/layer.js:95:5)
 TypeError: Cannot read properties of undefined (reading 'html')
     at Mime.lookup (/home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/mime@file+.+patches+mime-safe/node_modules/mime/mime.js:22:20)
     at ServerResponse.contentType (/home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/express@4.21.2/node_modules/express/lib/response.js:621:36)
@@ -500,6 +1001,8 @@ Registered 28 known contracts
 Known contract addresses: 0x5ff137d4b0fdcd49dca30c7cf57e578a026d2789, 0xe7f1725e7734ce288f8367e1bb143e90bb3f0512, 0x68b1d87f95878fe05b998f19b66f4baba5de1aed, 0x610178da211fef7d417bc0e6fed39f05609ad788, 0xb7f8bc63bbcad18155201308c8f3540b07f84f5e...
 All contracts configured
 [Indexer] Using PostgreSQL (TypeORM) database
+[2026-01-26T05:32:11.786Z] [0d10a9b9] INFO GET /health - Request started
+[2026-01-26T05:32:11.786Z] [0d10a9b9] INFO GET /health 200 0ms - Request completed
 TypeError: Cannot read properties of undefined (reading 'html')
     at Mime.lookup (/home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/mime@file+.+patches+mime-safe/node_modules/mime/mime.js:22:20)
     at ServerResponse.contentType (/home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/express@4.21.2/node_modules/express/lib/response.js:621:36)
@@ -511,21 +1014,10 @@ TypeError: Cannot read properties of undefined (reading 'html')
     at next (/home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/express@4.21.2/node_modules/express/lib/router/index.js:280:10)
     at expressInit (/home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/express@4.21.2/node_modules/express/lib/middleware/init.js:40:5)
     at Layer.handle [as handle_request] (/home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/express@4.21.2/node_modules/express/lib/router/layer.js:95:5)
-TypeError: Cannot read properties of undefined (reading 'html')
-    at Mime.lookup (/home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/mime@file+.+patches+mime-safe/node_modules/mime/mime.js:22:20)
-    at ServerResponse.contentType (/home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/express@4.21.2/node_modules/express/lib/response.js:621:36)
-    at /home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/@subsquid+openreader@5.3.0+35fa4ab4e9f9593f/node_modules/@subsquid/openreader/lib/server.js:161:13
-    at Layer.handle [as handle_request] (/home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/express@4.21.2/node_modules/express/lib/router/layer.js:95:5)
-    at trim_prefix (/home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/express@4.21.2/node_modules/express/lib/router/index.js:328:13)
-    at /home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/express@4.21.2/node_modules/express/lib/router/index.js:286:9
-    at Function.process_params (/home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/express@4.21.2/node_modules/express/lib/router/index.js:346:12)
-    at next (/home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/express@4.21.2/node_modules/express/lib/router/index.js:280:10)
-    at expressInit (/home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/express@4.21.2/node_modules/express/lib/middleware/init.js:40:5)
-    at Layer.handle [as handle_request] (/home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/express@4.21.2/node_modules/express/lib/router/layer.js:95:5)
-{"level":2,"time":1769388976086,"ns":"sqd:processor","msg":"processing blocks from 0"}
-{"level":2,"time":1769388976086,"ns":"sqd:processor","msg":"using chain RPC data source"}
-{"level":2,"time":1769388976127,"ns":"sqd:processor","msg":"prometheus metrics are served at port 38593"}
-{"level":5,"time":1769388976289,"ns":"sqd:processor","err":{"stack":"Error\n    at getMetadata (/home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/typeorm@0.3.26+46979240731243af/node_modules/typeorm/data-source/DataSource.js:305:31)\n    at saveMany (/home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/@subsquid+typeorm-store@1.5.1+67610e873e2cc02b/node_modules/@subsquid/typeorm-store/lib/store.js:44:38)\n    at saveMany (/home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/@subsquid+typeorm-store@1.5.1+67610e873e2cc02b/node_modules/@subsquid/typeorm-store/lib/store.js:41:20)\n    at upsert (/home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/@subsquid+typeorm-store@1.5.1+67610e873e2cc02b/node_modules/@subsquid/typeorm-store/lib/store.js:33:24)\n    at async <anonymous> (/home/secure-dev/Dev/dfinity/partners/shaw/jeju/apps/indexer/lib/api/main.js:553:21)\n    at async performUpdates (/home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/@subsquid+typeorm-store@1.5.1+67610e873e2cc02b/node_modules/@subsquid/typeorm-store/lib/database.js:152:19)\n    at async <anonymous> (/home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/@subsquid+typeorm-store@1.5.1+67610e873e2cc02b/node_modules/@subsquid/typeorm-store/lib/database.js:84:24)\n    at async transaction (/home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/typeorm@0.3.26+46979240731243af/node_modules/typeorm/entity-manager/EntityManager.js:75:34)\n    at processTicksAndRejections (unknown:7:39)","message":"No metadata for \"Account\" was found."}}
+{"level":2,"time":1769405532241,"ns":"sqd:processor","msg":"processing blocks from 0"}
+{"level":2,"time":1769405532242,"ns":"sqd:processor","msg":"using chain RPC data source"}
+{"level":2,"time":1769405532277,"ns":"sqd:processor","msg":"prometheus metrics are served at port 38669"}
+{"level":5,"time":1769405532367,"ns":"sqd:processor","err":{"stack":"Error\n    at getMetadata (/home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/typeorm@0.3.26+46979240731243af/node_modules/typeorm/data-source/DataSource.js:305:31)\n    at saveMany (/home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/@subsquid+typeorm-store@1.5.1+67610e873e2cc02b/node_modules/@subsquid/typeorm-store/lib/store.js:44:38)\n    at saveMany (/home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/@subsquid+typeorm-store@1.5.1+67610e873e2cc02b/node_modules/@subsquid/typeorm-store/lib/store.js:41:20)\n    at upsert (/home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/@subsquid+typeorm-store@1.5.1+67610e873e2cc02b/node_modules/@subsquid/typeorm-store/lib/store.js:33:24)\n    at async <anonymous> (/home/secure-dev/Dev/dfinity/partners/shaw/jeju/apps/indexer/lib/api/main.js:553:21)\n    at async performUpdates (/home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/@subsquid+typeorm-store@1.5.1+67610e873e2cc02b/node_modules/@subsquid/typeorm-store/lib/database.js:152:19)\n    at async <anonymous> (/home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/@subsquid+typeorm-store@1.5.1+67610e873e2cc02b/node_modules/@subsquid/typeorm-store/lib/database.js:84:24)\n    at async transaction (/home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/typeorm@0.3.26+46979240731243af/node_modules/typeorm/entity-manager/EntityManager.js:75:34)\n    at processTicksAndRejections (unknown:7:39)","message":"No metadata for \"Account\" was found."}}
   ⚠ Indexer processor exited with code 1 - GraphQL server continues running
 TypeError: Cannot read properties of undefined (reading 'html')
     at Mime.lookup (/home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/mime@file+.+patches+mime-safe/node_modules/mime/mime.js:22:20)
@@ -681,8 +1173,6 @@ TypeError: Cannot read properties of undefined (reading 'html')
     at next (/home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/express@4.21.2/node_modules/express/lib/router/index.js:280:10)
     at expressInit (/home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/express@4.21.2/node_modules/express/lib/middleware/init.js:40:5)
     at Layer.handle [as handle_request] (/home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/express@4.21.2/node_modules/express/lib/router/layer.js:95:5)
-[2026-01-26T00:56:23.422Z] [1e948f0e] INFO GET /health - Request started
-[2026-01-26T00:56:23.422Z] [1e948f0e] INFO GET /health 200 0ms - Request completed
 TypeError: Cannot read properties of undefined (reading 'html')
     at Mime.lookup (/home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/mime@file+.+patches+mime-safe/node_modules/mime/mime.js:22:20)
     at ServerResponse.contentType (/home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/express@4.21.2/node_modules/express/lib/response.js:621:36)
@@ -694,7 +1184,72 @@ TypeError: Cannot read properties of undefined (reading 'html')
     at next (/home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/express@4.21.2/node_modules/express/lib/router/index.js:280:10)
     at expressInit (/home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/express@4.21.2/node_modules/express/lib/middleware/init.js:40:5)
     at Layer.handle [as handle_request] (/home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/express@4.21.2/node_modules/express/lib/router/layer.js:95:5)
-[WorkerRegistry] Sync complete: loaded=0, skipped=0, failed=0, duration=1ms
+TypeError: Cannot read properties of undefined (reading 'html')
+    at Mime.lookup (/home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/mime@file+.+patches+mime-safe/node_modules/mime/mime.js:22:20)
+    at ServerResponse.contentType (/home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/express@4.21.2/node_modules/express/lib/response.js:621:36)
+    at /home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/@subsquid+openreader@5.3.0+35fa4ab4e9f9593f/node_modules/@subsquid/openreader/lib/server.js:161:13
+    at Layer.handle [as handle_request] (/home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/express@4.21.2/node_modules/express/lib/router/layer.js:95:5)
+    at trim_prefix (/home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/express@4.21.2/node_modules/express/lib/router/index.js:328:13)
+    at /home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/express@4.21.2/node_modules/express/lib/router/index.js:286:9
+    at Function.process_params (/home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/express@4.21.2/node_modules/express/lib/router/index.js:346:12)
+    at next (/home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/express@4.21.2/node_modules/express/lib/router/index.js:280:10)
+    at expressInit (/home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/express@4.21.2/node_modules/express/lib/middleware/init.js:40:5)
+    at Layer.handle [as handle_request] (/home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/express@4.21.2/node_modules/express/lib/router/layer.js:95:5)
+TypeError: Cannot read properties of undefined (reading 'html')
+    at Mime.lookup (/home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/mime@file+.+patches+mime-safe/node_modules/mime/mime.js:22:20)
+    at ServerResponse.contentType (/home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/express@4.21.2/node_modules/express/lib/response.js:621:36)
+    at /home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/@subsquid+openreader@5.3.0+35fa4ab4e9f9593f/node_modules/@subsquid/openreader/lib/server.js:161:13
+    at Layer.handle [as handle_request] (/home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/express@4.21.2/node_modules/express/lib/router/layer.js:95:5)
+    at trim_prefix (/home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/express@4.21.2/node_modules/express/lib/router/index.js:328:13)
+    at /home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/express@4.21.2/node_modules/express/lib/router/index.js:286:9
+    at Function.process_params (/home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/express@4.21.2/node_modules/express/lib/router/index.js:346:12)
+    at next (/home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/express@4.21.2/node_modules/express/lib/router/index.js:280:10)
+    at expressInit (/home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/express@4.21.2/node_modules/express/lib/middleware/init.js:40:5)
+    at Layer.handle [as handle_request] (/home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/express@4.21.2/node_modules/express/lib/router/layer.js:95:5)
+TypeError: Cannot read properties of undefined (reading 'html')
+    at Mime.lookup (/home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/mime@file+.+patches+mime-safe/node_modules/mime/mime.js:22:20)
+    at ServerResponse.contentType (/home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/express@4.21.2/node_modules/express/lib/response.js:621:36)
+    at /home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/@subsquid+openreader@5.3.0+35fa4ab4e9f9593f/node_modules/@subsquid/openreader/lib/server.js:161:13
+    at Layer.handle [as handle_request] (/home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/express@4.21.2/node_modules/express/lib/router/layer.js:95:5)
+    at trim_prefix (/home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/express@4.21.2/node_modules/express/lib/router/index.js:328:13)
+    at /home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/express@4.21.2/node_modules/express/lib/router/index.js:286:9
+    at Function.process_params (/home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/express@4.21.2/node_modules/express/lib/router/index.js:346:12)
+    at next (/home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/express@4.21.2/node_modules/express/lib/router/index.js:280:10)
+    at expressInit (/home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/express@4.21.2/node_modules/express/lib/middleware/init.js:40:5)
+    at Layer.handle [as handle_request] (/home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/express@4.21.2/node_modules/express/lib/router/layer.js:95:5)
+TypeError: Cannot read properties of undefined (reading 'html')
+    at Mime.lookup (/home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/mime@file+.+patches+mime-safe/node_modules/mime/mime.js:22:20)
+    at ServerResponse.contentType (/home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/express@4.21.2/node_modules/express/lib/response.js:621:36)
+    at /home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/@subsquid+openreader@5.3.0+35fa4ab4e9f9593f/node_modules/@subsquid/openreader/lib/server.js:161:13
+    at Layer.handle [as handle_request] (/home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/express@4.21.2/node_modules/express/lib/router/layer.js:95:5)
+    at trim_prefix (/home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/express@4.21.2/node_modules/express/lib/router/index.js:328:13)
+    at /home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/express@4.21.2/node_modules/express/lib/router/index.js:286:9
+    at Function.process_params (/home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/express@4.21.2/node_modules/express/lib/router/index.js:346:12)
+    at next (/home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/express@4.21.2/node_modules/express/lib/router/index.js:280:10)
+    at expressInit (/home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/express@4.21.2/node_modules/express/lib/middleware/init.js:40:5)
+    at Layer.handle [as handle_request] (/home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/express@4.21.2/node_modules/express/lib/router/layer.js:95:5)
+TypeError: Cannot read properties of undefined (reading 'html')
+    at Mime.lookup (/home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/mime@file+.+patches+mime-safe/node_modules/mime/mime.js:22:20)
+    at ServerResponse.contentType (/home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/express@4.21.2/node_modules/express/lib/response.js:621:36)
+    at /home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/@subsquid+openreader@5.3.0+35fa4ab4e9f9593f/node_modules/@subsquid/openreader/lib/server.js:161:13
+    at Layer.handle [as handle_request] (/home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/express@4.21.2/node_modules/express/lib/router/layer.js:95:5)
+    at trim_prefix (/home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/express@4.21.2/node_modules/express/lib/router/index.js:328:13)
+    at /home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/express@4.21.2/node_modules/express/lib/router/index.js:286:9
+    at Function.process_params (/home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/express@4.21.2/node_modules/express/lib/router/index.js:346:12)
+    at next (/home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/express@4.21.2/node_modules/express/lib/router/index.js:280:10)
+    at expressInit (/home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/express@4.21.2/node_modules/express/lib/middleware/init.js:40:5)
+    at Layer.handle [as handle_request] (/home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/express@4.21.2/node_modules/express/lib/router/layer.js:95:5)
+TypeError: Cannot read properties of undefined (reading 'html')
+    at Mime.lookup (/home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/mime@file+.+patches+mime-safe/node_modules/mime/mime.js:22:20)
+    at ServerResponse.contentType (/home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/express@4.21.2/node_modules/express/lib/response.js:621:36)
+    at /home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/@subsquid+openreader@5.3.0+35fa4ab4e9f9593f/node_modules/@subsquid/openreader/lib/server.js:161:13
+    at Layer.handle [as handle_request] (/home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/express@4.21.2/node_modules/express/lib/router/layer.js:95:5)
+    at trim_prefix (/home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/express@4.21.2/node_modules/express/lib/router/index.js:328:13)
+    at /home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/express@4.21.2/node_modules/express/lib/router/index.js:286:9
+    at Function.process_params (/home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/express@4.21.2/node_modules/express/lib/router/index.js:346:12)
+    at next (/home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/express@4.21.2/node_modules/express/lib/router/index.js:280:10)
+    at expressInit (/home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/express@4.21.2/node_modules/express/lib/middleware/init.js:40:5)
+    at Layer.handle [as handle_request] (/home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/express@4.21.2/node_modules/express/lib/router/layer.js:95:5)
 TypeError: Cannot read properties of undefined (reading 'html')
     at Mime.lookup (/home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/mime@file+.+patches+mime-safe/node_modules/mime/mime.js:22:20)
     at ServerResponse.contentType (/home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/express@4.21.2/node_modules/express/lib/response.js:621:36)
@@ -1092,11 +1647,18 @@ Development Services
   ✓ JNS (On-Chain)       http://127.0.0.1:4302
   ✓ DWS (Decentralized Web Services) http://127.0.0.1:4030
   → Deploying apps on-chain through DWS...
+  → Deploying DWS contracts...
+[2026-01-26T05:32:41.787Z] [eb410b9b] INFO GET /health - Request started
+[2026-01-26T05:32:41.787Z] [eb410b9b] INFO GET /health 200 0ms - Request completed
+[WorkerRegistry] Sync complete: loaded=0, skipped=0, failed=0, duration=2ms
+Warning: Found unknown `exclude_lints` config for profile `lint` defined in foundry.toml.
+  ✓ DWS contracts deployed
   → Registering local DWS node...
   → Registering DWS node on-chain...
   ✓ DWS node registered on-chain
   → Starting DWS server...
   ✓ DWS server running on port 4030
+$ bun run scripts/dev-with-infra.ts
 [Inference] Node registered locally: cli-inference-node (cli-multi-provider, 1 models)
 [Compute] Registered node cli-inference-node with GPU tier 0 {
   capabilities: [ "inference" ],
@@ -1106,19 +1668,18 @@ Development Services
 }
   ✓ Inference node registered at http://127.0.0.1:4100
   → Starting OAuth3 authentication gateway...
-$ bun run scripts/dev-with-infra.ts
 $ bun run scripts/dev.ts
 ╔════════════════════════════════════════════════════════════╗
 ║           DWS Development Server with Infrastructure       ║
 ╚════════════════════════════════════════════════════════════╝
 
-[Dev] Anvil already running on port 6546
-[Dev] Deploying contracts...
 ╔════════════════════════════════════════════════════════════╗
 ║              OAuth3 Development Server                      ║
 ╚════════════════════════════════════════════════════════════╝
 
 [OAuth3] Starting API server on port 4200...
+[Dev] Anvil already running on port 6546
+[Dev] Deploying contracts...
   ✓ OAuth3 gateway running on port 4200
   → Registering apps on-chain...
   → Deploying 12 apps on-chain...
@@ -1129,7 +1690,7 @@ $ bun run scripts/dev.ts
 Auth gateway running on http://127.0.0.1:4200
 [OAuth3] API server started on port 4200
 [OAuth3] Starting frontend dev server on port 4201...
-[OAuth3] Frontend built in 27ms
+[OAuth3] Frontend built in 28ms
 [OAuth3] Frontend dev server started on port 4201
 
 ╔════════════════════════════════════════════════════════════╗
@@ -1142,45 +1703,43 @@ Auth gateway running on http://127.0.0.1:4200
 Press Ctrl+C to stop all services
 [Deploy] Contracts compiled successfully
 [Deploy] Deploying RepoRegistry...
-[Deploy] RepoRegistry deployed at 0xead789bd8ce8b9e94f5d0fca99f8787c7e758817
+[Deploy] RepoRegistry deployed at 0xaca81583840b1bf2ddf6cde824ada250c1936b4d
 [Deploy] Deploying PackageRegistry...
 [Deploy] Deploying simple PackageRegistry...
-[Deploy] PackageRegistry deployed at 0x95775fd3afb1f4072794ca4dda27f2444bcf8ac3
+[Deploy] PackageRegistry deployed at 0x70bda08dbe07363968e9ee53d899dfe48560605b
 [Deploy] Deploying simple CacheManager...
-  ✓ vpn deployed on-chain
-  → Deploying bazaar on-chain...
-[Deploy] CacheManager deployed at 0xd9fec8238711935d6c8d79bef2b9546ef23fc046
+[Deploy] CacheManager deployed at 0x26b862f640357268bd2d9e95bc81553a2aa81d7e
 [Deploy] Deploying simple CronOrchestrator...
-[Deploy] CronOrchestrator deployed at 0xd3ffd73c53f139cebb80b6a524be280955b3f4db
+[Deploy] CronOrchestrator deployed at 0xa56f946d6398dd7d9d4d9b337cf9e0f68982ca5b
 [Deploy] Deploying simple ContainerRegistry...
-[Deploy] ContainerRegistry deployed at 0x512f7469bcc83089497506b5df64c6e246b39925
+[Deploy] ContainerRegistry deployed at 0x5d42ebdbba61412295d7b0302d6f50ac449ddb4f
 [Deploy] Deploying simple ManagedDatabaseRegistry...
-[Deploy] ManagedDatabaseRegistry deployed at 0x9fd16ea9e31233279975d99d5e8fc91dd214c7da
+[Deploy] ManagedDatabaseRegistry deployed at 0xdde78e6202518ff4936b5302cc2891ec180e8bff
 [Deploy] Updating contracts.json...
 [Deploy] contracts.json updated with:
-  dws.gitRegistry: 0xead789bd8ce8b9e94f5d0fca99f8787c7e758817
-  dws.packageRegistry: 0x95775fd3afb1f4072794ca4dda27f2444bcf8ac3
+  dws.gitRegistry: 0xaca81583840b1bf2ddf6cde824ada250c1936b4d
+  dws.packageRegistry: 0x70bda08dbe07363968e9ee53d899dfe48560605b
 [Deploy] Deployment info saved to /home/secure-dev/Dev/dfinity/partners/shaw/jeju/apps/dws/deployment-localnet.json
 
 [Deploy] All contracts deployed successfully:
-  Git Registry: 0xead789bd8ce8b9e94f5d0fca99f8787c7e758817
-  Package Registry: 0x95775fd3afb1f4072794ca4dda27f2444bcf8ac3
-  Cache Manager: 0xd9fec8238711935d6c8d79bef2b9546ef23fc046
-  Cron Orchestrator: 0xd3ffd73c53f139cebb80b6a524be280955b3f4db
-  Container Registry: 0x512f7469bcc83089497506b5df64c6e246b39925
-  Managed Database Registry: 0x9fd16ea9e31233279975d99d5e8fc91dd214c7da
+  Git Registry: 0xaca81583840b1bf2ddf6cde824ada250c1936b4d
+  Package Registry: 0x70bda08dbe07363968e9ee53d899dfe48560605b
+  Cache Manager: 0x26b862f640357268bd2d9e95bc81553a2aa81d7e
+  Cron Orchestrator: 0xa56f946d6398dd7d9d4d9b337cf9e0f68982ca5b
+  Container Registry: 0x5d42ebdbba61412295d7b0302d6f50ac449ddb4f
+  Managed Database Registry: 0xdde78e6202518ff4936b5302cc2891ec180e8bff
 
 [Deploy] Done.
 [Dev] Contracts deployed
 [Dev] Starting DWS API server...
 [Dev] DWS already running on port 4030
 [Dev] Starting frontend dev server...
-Auth gateway running on http://127.0.0.1:4200
-[DWS Frontend] Built in 2890ms
+  ✓ vpn deployed on-chain
+  → Deploying bazaar on-chain...
+[DWS Frontend] Built in 3871ms
 [DWS Frontend] http://127.0.0.1:4031
 [DWS Frontend] API proxy: http://127.0.0.1:4030
-[2026-01-26T00:56:53.424Z] [00115265] INFO GET /health - Request started
-[2026-01-26T00:56:53.424Z] [00115265] INFO GET /health 200 0ms - Request completed
+Auth gateway running on http://127.0.0.1:4200
 [Dev] Frontend started on port 4031
 
 ╔════════════════════════════════════════════════════════════╗
@@ -1194,54 +1753,51 @@ Auth gateway running on http://127.0.0.1:4200
 Press Ctrl+C to stop all services
   ✓ bazaar deployed on-chain
   → Deploying wallet on-chain...
+[2026-01-26T05:33:11.790Z] [11da23ef] INFO GET /health - Request started
+[2026-01-26T05:33:11.790Z] [11da23ef] INFO GET /health 200 0ms - Request completed
   ✓ wallet deployed on-chain
   → Deploying documentation on-chain...
-[2026-01-26T00:57:23.423Z] [68d6d450] INFO GET /health - Request started
-[2026-01-26T00:57:23.423Z] [68d6d450] INFO GET /health 200 0ms - Request completed
-[WorkerRegistry] Sync complete: loaded=0, skipped=0, failed=0, duration=2ms
-[2026-01-26T00:57:53.423Z] [475f3167] INFO GET /health - Request started
-[2026-01-26T00:57:53.424Z] [475f3167] INFO GET /health 200 1ms - Request completed
-[2026-01-26T00:58:23.425Z] [f3d88ceb] INFO GET /health - Request started
-[2026-01-26T00:58:23.425Z] [f3d88ceb] INFO GET /health 200 0ms - Request completed
-[WorkerRegistry] Sync complete: loaded=0, skipped=0, failed=0, duration=3ms
-[2026-01-26T00:58:53.425Z] [55e9ba51] INFO GET /health - Request started
-[2026-01-26T00:58:53.425Z] [55e9ba51] INFO GET /health 200 0ms - Request completed
+[2026-01-26T05:33:41.792Z] [b37884b1] INFO GET /health - Request started
+[2026-01-26T05:33:41.792Z] [b37884b1] INFO GET /health 200 0ms - Request completed
+[2026-01-26T05:34:11.798Z] [31c7f32c] INFO GET /health - Request started
+[2026-01-26T05:34:11.799Z] [31c7f32c] INFO GET /health 200 1ms - Request completed
+[WorkerRegistry] Sync complete: loaded=0, skipped=0, failed=0, duration=1ms
   ✓ documentation deployed on-chain
   → Deploying factory on-chain...
   ✓ factory deployed on-chain
   → Deploying dws on-chain...
+[2026-01-26T05:34:41.817Z] [a5f02848] INFO GET /health - Request started
+[2026-01-26T05:34:41.817Z] [a5f02848] INFO GET /health 200 0ms - Request completed
   ⚠ Failed to deploy dws: The contract function "setContenthash" reverted with the following reason:
 Not authorized
 
 Contract Call:
   address:   0x927b167526bAbB9be047421db732C663a0b77B11
   function:  setContenthash(bytes32 node, bytes hash)
-  args:                    (0xe8814d720e26a802f814b3372857c7f2f33ded26eae33cf9e4e1a6f786e15184, 0xe301701220ae5001404dcd0d97f33db394db96439543a41edf2cd06a580f421ff21cbb524b)
+  args:                    (0xe8814d720e26a802f814b3372857c7f2f33ded26eae33cf9e4e1a6f786e15184, 0xe3017012202c971248385dc66e2fbd722394704b68bd58b07225c4d389e85805124a65aaff)
   sender:    0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266
 
 Docs: https://viem.sh/docs/contract/writeContract
 Version: viem@2.43.3
   → Deploying oauth3 on-chain...
-[2026-01-26T00:59:23.424Z] [90be71e2] INFO GET /health - Request started
-[2026-01-26T00:59:23.424Z] [90be71e2] INFO GET /health 200 0ms - Request completed
-[WorkerRegistry] Sync complete: loaded=0, skipped=0, failed=0, duration=1ms
   ✓ oauth3 deployed on-chain
   → Deploying crucible on-chain...
+[2026-01-26T05:35:11.816Z] [7c080b1c] INFO GET /health - Request started
+[2026-01-26T05:35:11.816Z] [7c080b1c] INFO GET /health 200 0ms - Request completed
+[WorkerRegistry] Sync complete: loaded=0, skipped=0, failed=0, duration=1ms
   ✓ crucible deployed on-chain
   → Deploying node on-chain...
-[2026-01-26T00:59:53.425Z] [52eb829f] INFO GET /health - Request started
-[2026-01-26T00:59:53.425Z] [52eb829f] INFO GET /health 200 0ms - Request completed
   ✓ node deployed on-chain
   → Deploying gateway on-chain...
   ⚠ Failed to deploy gateway: Build failed for gateway: $ bun run scripts/build.ts
-[Gateway] Build error: error: ResolveMessage: Cannot find module '@noble/hashes/sha3' from '/home/secure-dev/Dev/dfinity/partners/shaw/jeju/apps/gateway/scripts/build.ts'
-    at /home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/viem@2.43.3+a98ba5b2ef9ffa9b/node_modules/viem/_esm/utils/hash/keccak256.js:0
-
-error: ResolveMessage: Cannot find module '@noble/hashes/sha256' from '/home/secure-dev/Dev/dfinity/partners/shaw/jeju/apps/gateway/scripts/build.ts'
+[Gateway] Build error: error: ResolveMessage: Cannot find module '@noble/hashes/sha256' from '/home/secure-dev/Dev/dfinity/partners/shaw/jeju/apps/gateway/scripts/build.ts'
     at /home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/viem@2.43.3+a98ba5b2ef9ffa9b/node_modules/viem/_esm/utils/hash/sha256.js:0
 
 error: ResolveMessage: Cannot find module '@noble/hashes/ripemd160' from '/home/secure-dev/Dev/dfinity/partners/shaw/jeju/apps/gateway/scripts/build.ts'
     at /home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/viem@2.43.3+a98ba5b2ef9ffa9b/node_modules/viem/_esm/utils/hash/ripemd160.js:0
+
+error: ResolveMessage: Cannot find module '@noble/hashes/sha3' from '/home/secure-dev/Dev/dfinity/partners/shaw/jeju/apps/gateway/scripts/build.ts'
+    at /home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/viem@2.43.3+a98ba5b2ef9ffa9b/node_modules/viem/_esm/utils/hash/keccak256.js:0
 
 error: ResolveMessage: Cannot find module '@noble/hashes/utils' from '/home/secure-dev/Dev/dfinity/partners/shaw/jeju/apps/gateway/scripts/build.ts'
     at /home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/@noble+curves@1.9.7/node_modules/@noble/curves/abstract/weierstrass.js:0
@@ -1309,47 +1865,47 @@ error: ResolveMessage: Cannot find module '@noble/hashes/utils' from '/home/secu
 error: ResolveMessage: Cannot find module '@noble/hashes/utils' from '/home/secure-dev/Dev/dfinity/partners/shaw/jeju/apps/gateway/scripts/build.ts'
     at /home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/webauthn-p256@0.0.10/node_modules/webauthn-p256/_esm/utils.js:0
 
-error: ResolveMessage: Cannot find module '@noble/hashes/ripemd160' from '/home/secure-dev/Dev/dfinity/partners/shaw/jeju/apps/gateway/scripts/build.ts'
-    at /home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/ox@0.9.17+0470b0a66942a3da/node_modules/ox/_esm/core/Hash.js:0
-
-error: ResolveMessage: Cannot find module '@noble/hashes/sha3' from '/home/secure-dev/Dev/dfinity/partners/shaw/jeju/apps/gateway/scripts/build.ts'
-    at /home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/ox@0.9.17+0470b0a66942a3da/node_modules/ox/_esm/core/Hash.js:0
-
-error: ResolveMessage: Cannot find module '@noble/hashes/sha256' from '/home/secure-dev/Dev/dfinity/partners/shaw/jeju/apps/gateway/scripts/build.ts'
-    at /home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/ox@0.9.17+0470b0a66942a3da/node_modules/ox/_esm/core/Hash.js:0
-
-error: ResolveMessage: Cannot find module '@noble/hashes/ripemd160' from '/home/secure-dev/Dev/dfinity/partners/shaw/jeju/apps/gateway/scripts/build.ts'
-    at /home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/ox@0.6.9+0470b0a66942a3da/node_modules/ox/_esm/core/Hash.js:0
-
-error: ResolveMessage: Cannot find module '@noble/hashes/sha3' from '/home/secure-dev/Dev/dfinity/partners/shaw/jeju/apps/gateway/scripts/build.ts'
-    at /home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/ox@0.6.9+0470b0a66942a3da/node_modules/ox/_esm/core/Hash.js:0
-
-error: ResolveMessage: Cannot find module '@noble/hashes/sha256' from '/home/secure-dev/Dev/dfinity/partners/shaw/jeju/apps/gateway/scripts/build.ts'
-    at /home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/ox@0.6.9+0470b0a66942a3da/node_modules/ox/_esm/core/Hash.js:0
-
 error: ResolveMessage: Cannot find module '@noble/hashes/blake3' from '/home/secure-dev/Dev/dfinity/partners/shaw/jeju/apps/gateway/scripts/build.ts'
     at /home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/ox@0.6.9+0470b0a66942a3da/node_modules/ox/_esm/core/BinaryStateTree.js:0
 
+error: ResolveMessage: Cannot find module '@noble/hashes/ripemd160' from '/home/secure-dev/Dev/dfinity/partners/shaw/jeju/apps/gateway/scripts/build.ts'
+    at /home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/ox@0.6.9+0470b0a66942a3da/node_modules/ox/_esm/core/Hash.js:0
+
 error: ResolveMessage: Cannot find module '@noble/hashes/sha3' from '/home/secure-dev/Dev/dfinity/partners/shaw/jeju/apps/gateway/scripts/build.ts'
-    at /home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/@coinbase+wallet-sdk@4.3.6+9684d7d2f9a4d681/node_modules/@coinbase/wallet-sdk/dist/vendor-js/eth-eip712-util/util.cjs:0
+    at /home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/ox@0.6.9+0470b0a66942a3da/node_modules/ox/_esm/core/Hash.js:0
+
+error: ResolveMessage: Cannot find module '@noble/hashes/sha256' from '/home/secure-dev/Dev/dfinity/partners/shaw/jeju/apps/gateway/scripts/build.ts'
+    at /home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/ox@0.6.9+0470b0a66942a3da/node_modules/ox/_esm/core/Hash.js:0
+
+error: ResolveMessage: Cannot find module '@noble/hashes/ripemd160' from '/home/secure-dev/Dev/dfinity/partners/shaw/jeju/apps/gateway/scripts/build.ts'
+    at /home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/ox@0.9.17+0470b0a66942a3da/node_modules/ox/_esm/core/Hash.js:0
+
+error: ResolveMessage: Cannot find module '@noble/hashes/sha3' from '/home/secure-dev/Dev/dfinity/partners/shaw/jeju/apps/gateway/scripts/build.ts'
+    at /home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/ox@0.9.17+0470b0a66942a3da/node_modules/ox/_esm/core/Hash.js:0
+
+error: ResolveMessage: Cannot find module '@noble/hashes/sha256' from '/home/secure-dev/Dev/dfinity/partners/shaw/jeju/apps/gateway/scripts/build.ts'
+    at /home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/ox@0.9.17+0470b0a66942a3da/node_modules/ox/_esm/core/Hash.js:0
+
+error: ResolveMessage: Cannot find module '@noble/hashes/utils' from '/home/secure-dev/Dev/dfinity/partners/shaw/jeju/apps/gateway/scripts/build.ts'
+    at /home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/@noble+curves@1.9.7/node_modules/@noble/curves/esm/abstract/weierstrass.js:0
+
+error: ResolveMessage: Cannot find module '@noble/hashes/sha3' from '/home/secure-dev/Dev/dfinity/partners/shaw/jeju/apps/gateway/scripts/build.ts'
+    at /home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/viem@2.43.3+a98ba5b2ef9ffa9b/node_modules/viem/_cjs/utils/hash/keccak256.js:0
 
 error: ResolveMessage: Cannot find module '@noble/hashes/ripemd160' from '/home/secure-dev/Dev/dfinity/partners/shaw/jeju/apps/gateway/scripts/build.ts'
     at /home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/viem@2.43.3+a98ba5b2ef9ffa9b/node_modules/viem/_cjs/utils/hash/ripemd160.js:0
 
 error: ResolveMessage: Cannot find module '@noble/hashes/sha256' from '/home/secure-dev/Dev/dfinity/partners/shaw/jeju/apps/gateway/scripts/build.ts'
-    at /home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/@coinbase+wallet-sdk@4.3.6+9684d7d2f9a4d681/node_modules/@coinbase/wallet-sdk/dist/sign/walletlink/relay/type/WalletLinkSession.js:0
-
-error: ResolveMessage: Cannot find module '@noble/hashes/utils' from '/home/secure-dev/Dev/dfinity/partners/shaw/jeju/apps/gateway/scripts/build.ts'
-    at /home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/@coinbase+wallet-sdk@4.3.6+9684d7d2f9a4d681/node_modules/@coinbase/wallet-sdk/dist/sign/walletlink/relay/type/WalletLinkSession.js:0
-
-error: ResolveMessage: Cannot find module '@noble/hashes/sha256' from '/home/secure-dev/Dev/dfinity/partners/shaw/jeju/apps/gateway/scripts/build.ts'
     at /home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/viem@2.43.3+a98ba5b2ef9ffa9b/node_modules/viem/_cjs/utils/hash/sha256.js:0
 
-error: ResolveMessage: Cannot find module '@noble/hashes/sha3' from '/home/secure-dev/Dev/dfinity/partners/shaw/jeju/apps/gateway/scripts/build.ts'
-    at /home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/viem@2.43.3+a98ba5b2ef9ffa9b/node_modules/viem/_cjs/utils/hash/keccak256.js:0
+error: ResolveMessage: Cannot find module '@noble/hashes/sha256' from '/home/secure-dev/Dev/dfinity/partners/shaw/jeju/apps/gateway/scripts/build.ts'
+    at /home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/@coinbase+wallet-sdk@4.3.6+9684d7d2f9a4d681/node_modules/@coinbase/wallet-sdk/dist/sign/walletlink/relay/type/WalletLinkSession.js:0
 
 error: ResolveMessage: Cannot find module '@noble/hashes/utils' from '/home/secure-dev/Dev/dfinity/partners/shaw/jeju/apps/gateway/scripts/build.ts'
-    at /home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/@noble+curves@1.9.7/node_modules/@noble/curves/esm/abstract/weierstrass.js:0
+    at /home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/@coinbase+wallet-sdk@4.3.6+9684d7d2f9a4d681/node_modules/@coinbase/wallet-sdk/dist/sign/walletlink/relay/type/WalletLinkSession.js:0
+
+error: ResolveMessage: Cannot find module '@noble/hashes/sha3' from '/home/secure-dev/Dev/dfinity/partners/shaw/jeju/apps/gateway/scripts/build.ts'
+    at /home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/@coinbase+wallet-sdk@4.3.6+9684d7d2f9a4d681/node_modules/@coinbase/wallet-sdk/dist/vendor-js/eth-eip712-util/util.cjs:0
 
 error: ResolveMessage: Cannot find module '@noble/hashes/ripemd160' from '/home/secure-dev/Dev/dfinity/partners/shaw/jeju/apps/gateway/scripts/build.ts'
     at /home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/ox@0.11.1+0470b0a66942a3da/node_modules/ox/_cjs/core/Hash.js:0
@@ -1416,6 +1972,39 @@ error: ResolveMessage: Cannot find module '@noble/hashes/sha3' from '/home/secur
 error: ResolveMessage: Cannot find module '@noble/hashes/sha256' from '/home/secure-dev/Dev/dfinity/partners/shaw/jeju/apps/autocrat/scripts/build.ts'
     at /home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/viem@2.43.3+a98ba5b2ef9ffa9b/node_modules/viem/_esm/utils/hash/sha256.js:0
 
+error: ResolveMessage: Cannot find module '@noble/hashes/utils' from '/home/secure-dev/Dev/dfinity/partners/shaw/jeju/apps/autocrat/scripts/build.ts'
+    at /home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/@noble+curves@1.9.7/node_modules/@noble/curves/abstract/weierstrass.js:0
+
+error: ResolveMessage: Cannot find module '@noble/hashes/ripemd160' from '/home/secure-dev/Dev/dfinity/partners/shaw/jeju/apps/autocrat/scripts/build.ts'
+    at /home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/ox@0.11.1+0470b0a66942a3da/node_modules/ox/_esm/core/Hash.js:0
+
+error: ResolveMessage: Cannot find module '@noble/hashes/sha3' from '/home/secure-dev/Dev/dfinity/partners/shaw/jeju/apps/autocrat/scripts/build.ts'
+    at /home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/ox@0.11.1+0470b0a66942a3da/node_modules/ox/_esm/core/Hash.js:0
+
+error: ResolveMessage: Cannot find module '@noble/hashes/sha256' from '/home/secure-dev/Dev/dfinity/partners/shaw/jeju/apps/autocrat/scripts/build.ts'
+    at /home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/ox@0.11.1+0470b0a66942a3da/node_modules/ox/_esm/core/Hash.js:0
+
+error: ResolveMessage: Cannot find module '@noble/hashes/ripemd160' from '/home/secure-dev/Dev/dfinity/partners/shaw/jeju/apps/autocrat/scripts/build.ts'
+    at /home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/ox@0.9.17+0470b0a66942a3da/node_modules/ox/_esm/core/Hash.js:0
+
+error: ResolveMessage: Cannot find module '@noble/hashes/sha3' from '/home/secure-dev/Dev/dfinity/partners/shaw/jeju/apps/autocrat/scripts/build.ts'
+    at /home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/ox@0.9.17+0470b0a66942a3da/node_modules/ox/_esm/core/Hash.js:0
+
+error: ResolveMessage: Cannot find module '@noble/hashes/sha256' from '/home/secure-dev/Dev/dfinity/partners/shaw/jeju/apps/autocrat/scripts/build.ts'
+    at /home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/ox@0.9.17+0470b0a66942a3da/node_modules/ox/_esm/core/Hash.js:0
+
+error: ResolveMessage: Cannot find module '@noble/hashes/hmac' from '/home/secure-dev/Dev/dfinity/partners/shaw/jeju/apps/autocrat/scripts/build.ts'
+    at /home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/@scure+bip32@1.7.0/node_modules/@scure/bip32/lib/esm/index.js:0
+
+error: ResolveMessage: Cannot find module '@noble/hashes/legacy' from '/home/secure-dev/Dev/dfinity/partners/shaw/jeju/apps/autocrat/scripts/build.ts'
+    at /home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/@scure+bip32@1.7.0/node_modules/@scure/bip32/lib/esm/index.js:0
+
+error: ResolveMessage: Cannot find module '@noble/hashes/sha2' from '/home/secure-dev/Dev/dfinity/partners/shaw/jeju/apps/autocrat/scripts/build.ts'
+    at /home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/@scure+bip32@1.7.0/node_modules/@scure/bip32/lib/esm/index.js:0
+
+error: ResolveMessage: Cannot find module '@noble/hashes/utils' from '/home/secure-dev/Dev/dfinity/partners/shaw/jeju/apps/autocrat/scripts/build.ts'
+    at /home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/@scure+bip32@1.7.0/node_modules/@scure/bip32/lib/esm/index.js:0
+
 error: ResolveMessage: Cannot find module '@noble/hashes/hmac' from '/home/secure-dev/Dev/dfinity/partners/shaw/jeju/apps/autocrat/scripts/build.ts'
     at /home/secure-dev/Dev/dfinity/partners/shaw/jeju/packages/shared/src/crypto/universal.ts:0
 
@@ -1435,27 +2024,6 @@ error: ResolveMessage: Cannot find module '@noble/hashes/utils' from '/home/secu
     at /home/secure-dev/Dev/dfinity/partners/shaw/jeju/packages/shared/src/crypto/universal.ts:0
 
 error: ResolveMessage: Cannot find module '@noble/hashes/ripemd160' from '/home/secure-dev/Dev/dfinity/partners/shaw/jeju/apps/autocrat/scripts/build.ts'
-    at /home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/ox@0.11.1+0470b0a66942a3da/node_modules/ox/_esm/core/Hash.js:0
-
-error: ResolveMessage: Cannot find module '@noble/hashes/sha3' from '/home/secure-dev/Dev/dfinity/partners/shaw/jeju/apps/autocrat/scripts/build.ts'
-    at /home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/ox@0.11.1+0470b0a66942a3da/node_modules/ox/_esm/core/Hash.js:0
-
-error: ResolveMessage: Cannot find module '@noble/hashes/sha256' from '/home/secure-dev/Dev/dfinity/partners/shaw/jeju/apps/autocrat/scripts/build.ts'
-    at /home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/ox@0.11.1+0470b0a66942a3da/node_modules/ox/_esm/core/Hash.js:0
-
-error: ResolveMessage: Cannot find module '@noble/hashes/ripemd160' from '/home/secure-dev/Dev/dfinity/partners/shaw/jeju/apps/autocrat/scripts/build.ts'
-    at /home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/ox@0.9.17+0470b0a66942a3da/node_modules/ox/_esm/core/Hash.js:0
-
-error: ResolveMessage: Cannot find module '@noble/hashes/sha3' from '/home/secure-dev/Dev/dfinity/partners/shaw/jeju/apps/autocrat/scripts/build.ts'
-    at /home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/ox@0.9.17+0470b0a66942a3da/node_modules/ox/_esm/core/Hash.js:0
-
-error: ResolveMessage: Cannot find module '@noble/hashes/sha256' from '/home/secure-dev/Dev/dfinity/partners/shaw/jeju/apps/autocrat/scripts/build.ts'
-    at /home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/ox@0.9.17+0470b0a66942a3da/node_modules/ox/_esm/core/Hash.js:0
-
-error: ResolveMessage: Cannot find module '@noble/hashes/blake3' from '/home/secure-dev/Dev/dfinity/partners/shaw/jeju/apps/autocrat/scripts/build.ts'
-    at /home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/ox@0.6.9+0470b0a66942a3da/node_modules/ox/_esm/core/BinaryStateTree.js:0
-
-error: ResolveMessage: Cannot find module '@noble/hashes/ripemd160' from '/home/secure-dev/Dev/dfinity/partners/shaw/jeju/apps/autocrat/scripts/build.ts'
     at /home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/ox@0.6.9+0470b0a66942a3da/node_modules/ox/_esm/core/Hash.js:0
 
 error: ResolveMessage: Cannot find module '@noble/hashes/sha3' from '/home/secure-dev/Dev/dfinity/partners/shaw/jeju/apps/autocrat/scripts/build.ts'
@@ -1473,20 +2041,8 @@ error: ResolveMessage: Cannot find module '@noble/hashes/sha2' from '/home/secur
 error: ResolveMessage: Cannot find module '@noble/hashes/utils' from '/home/secure-dev/Dev/dfinity/partners/shaw/jeju/apps/autocrat/scripts/build.ts'
     at /home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/@scure+bip39@1.6.0/node_modules/@scure/bip39/esm/index.js:0
 
-error: ResolveMessage: Cannot find module '@noble/hashes/hmac' from '/home/secure-dev/Dev/dfinity/partners/shaw/jeju/apps/autocrat/scripts/build.ts'
-    at /home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/@scure+bip32@1.7.0/node_modules/@scure/bip32/lib/esm/index.js:0
-
-error: ResolveMessage: Cannot find module '@noble/hashes/legacy' from '/home/secure-dev/Dev/dfinity/partners/shaw/jeju/apps/autocrat/scripts/build.ts'
-    at /home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/@scure+bip32@1.7.0/node_modules/@scure/bip32/lib/esm/index.js:0
-
-error: ResolveMessage: Cannot find module '@noble/hashes/sha2' from '/home/secure-dev/Dev/dfinity/partners/shaw/jeju/apps/autocrat/scripts/build.ts'
-    at /home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/@scure+bip32@1.7.0/node_modules/@scure/bip32/lib/esm/index.js:0
-
-error: ResolveMessage: Cannot find module '@noble/hashes/utils' from '/home/secure-dev/Dev/dfinity/partners/shaw/jeju/apps/autocrat/scripts/build.ts'
-    at /home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/@scure+bip32@1.7.0/node_modules/@scure/bip32/lib/esm/index.js:0
-
-error: ResolveMessage: Cannot find module '@noble/hashes/utils' from '/home/secure-dev/Dev/dfinity/partners/shaw/jeju/apps/autocrat/scripts/build.ts'
-    at /home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/@noble+curves@1.9.7/node_modules/@noble/curves/abstract/weierstrass.js:0
+error: ResolveMessage: Cannot find module '@noble/hashes/blake3' from '/home/secure-dev/Dev/dfinity/partners/shaw/jeju/apps/autocrat/scripts/build.ts'
+    at /home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/ox@0.6.9+0470b0a66942a3da/node_modules/ox/_esm/core/BinaryStateTree.js:0
 
 error: ResolveMessage: Cannot find module '@noble/hashes/utils' from '/home/secure-dev/Dev/dfinity/partners/shaw/jeju/apps/autocrat/scripts/build.ts'
     at /home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/@noble+curves@1.9.7/node_modules/@noble/curves/esm/abstract/weierstrass.js:0
@@ -1585,48 +2141,26 @@ Test Wallet
   Key: 0xac0974bec39a17e36b...
   ⚠ Well-known test key - DO NOT use on mainnet
 $ bun --watch api/worker.ts
-Uniswap V4 not deployed on chain 31337
-Bazaar API Server running at http://127.0.0.1:4007
-[2026-01-26T01:00:08.544Z] [INFO] [Storage] DWS cache layer enabled for storage
-[2026-01-26T01:00:08.621Z] [INFO] [Server] Starting server {"port":4021,"network":"localnet","signer":"not initialized"}
 Factory API Worker running at http://127.0.0.1:4009
-[2026-01-26T01:00:08.756Z] [INFO] [KMSSigner] Initializing KMS signer {"endpoint":"http://127.0.0.1:4050","threshold":2,"totalParties":3,"hsmProvider":"software","hasFallbackKey":false}
-[2026-01-26T01:00:08.757Z] [WARN] [KMSSigner] Skipping KMS attestation verification (development mode)
-20 | } else if (typeof entryNamespace?.default?.fetch === 'function' || entryNamespace?.default?.app != undefined) {
-21 |    var server = globalThis[hmrSymbol];
-22 |    if (server) {
-23 |       server.reload(entryNamespace.default);
-24 |       console.debug(`Reloaded ${server.development ? 'development ' : ''}server: ${server.protocol}://${server.hostname}:${server.port}`);
-25 |       server = globalThis[hmrSymbol] = Bun.serve(entryNamespace.default);
-                                                     ^
+[SQLit v2] Auto-provisioning database: factory-db
 error: Failed to start server. Is port 4009 in use?
  syscall: "listen",
    errno: 0,
     code: "EADDRINUSE"
 
-      at bun:main:25:49
-[SQLit v2] Auto-provisioning database: factory-db
-[2026-01-26T01:00:08.795Z] [WARN] [Server] KMS not initialized - agent seeding skipped
-[2026-01-26T01:00:08.796Z] [WARN] [BotInitializer] No KMS signer configured, skipping bot initialization
-[2026-01-26T01:00:08.796Z] [INFO] [Server] Default bots initialized {"count":0}
-[2026-01-26T01:00:08.798Z] [ERROR] [Server] Failed to initialize KMS signer {"error":"Error: Unable to connect. Is the computer able to access the url?"}
-[SQLit v2] Created database a23c9ece6b182107cd6dc9b72c0edd9e (factory-db)
+      at serve (unknown:1:1)
+[SQLit v2] Created database 34175785e0ef30bb68c3e80826dce57a (factory-db)
 [Factory SQLit] Connected to database: factory-db
 [Factory SQLit] Database initialized
 Started development server: http://localhost:4040
+Uniswap V4 not deployed on chain 31337
 [SQLit v2] Auto-provisioning database: autocrat-db
-[SQLit v2] Created database 5e75e558e05f96959812bdf04244f126 (autocrat-db)
+[SQLit v2] Created database cb655dc775d694d419a9ed5cb6158aba (autocrat-db)
+Bazaar API Server running at http://127.0.0.1:4007
 [Autocrat] SQLit tables initialized successfully
-[Gateway State] Initialized with SQLit
-[Gateway] Worker running at http://127.0.0.1:4013
-[Gateway] Network: localnet
 [Inference] Chain sync failed, preserving 1 local nodes
-[SQLit v2] Auto-provisioning database: gateway-db
-[SQLit v2] Created database fe69246a175231965b533e6c89e08651 (gateway-db)
   ⚠ No API key for provider: groq
 [Autocrat] DWS compute/inference not available. Agent deliberation will fail until inference nodes are running. Start with: cd apps/crucible && bun run scripts/local-inference-node.ts
-[Gateway State] SQLit tables ensured
-[Gateway State] Initialized with SQLit
 [Autocrat] API port=4040 tee=dstack trigger=compute
 [Autocrat] API: http://127.0.0.1:4040
 [Autocrat] Failed to start: Failed to start server. Is port 4040 in use?
@@ -1642,7 +2176,7 @@ ExecaError: Command failed with exit code 1: bun --watch api/worker.ts
     command: "bun --watch api/worker.ts",
  escapedCommand: "bun --watch api/worker.ts",
         cwd: "/home/secure-dev/Dev/dfinity/partners/shaw/jeju/apps/autocrat",
- durationMs: 7693.599561,
+ durationMs: 5143.535383,
      failed: true,
    timedOut: false,
  isCanceled: false,
@@ -1660,342 +2194,396 @@ ExecaError: Command failed with exit code 1: bun --watch api/worker.ts
       at getFinalError (/home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/execa@9.5.3/node_modules/execa/lib/return/final-error.js:6:9)
       at makeError (/home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/execa@9.5.3/node_modules/execa/lib/return/result.js:108:16)
       at <anonymous> (/home/secure-dev/Dev/dfinity/partners/shaw/jeju/node_modules/.bun/execa@9.5.3/node_modules/execa/lib/methods/main-async.js:151:17)
-[2026-01-26T01:00:23.424Z] [561d1d77] INFO GET /health - Request started
-[2026-01-26T01:00:23.424Z] [561d1d77] INFO GET /health 200 0ms - Request completed
-[WorkerRegistry] Sync complete: loaded=0, skipped=0, failed=0, duration=1ms
-[2026-01-26T01:00:53.423Z] [6e77a9cd] INFO GET /health - Request started
-[2026-01-26T01:00:53.424Z] [6e77a9cd] INFO GET /health 200 1ms - Request completed
-[2026-01-26T01:01:23.423Z] [f91b93cb] INFO GET /health - Request started
-[2026-01-26T01:01:23.423Z] [f91b93cb] INFO GET /health 200 0ms - Request completed
-[WorkerRegistry] Sync complete: loaded=0, skipped=0, failed=0, duration=2ms
-[2026-01-26T01:01:53.423Z] [df96c6fb] INFO GET /health - Request started
-[2026-01-26T01:01:53.423Z] [df96c6fb] INFO GET /health 200 1ms - Request completed
-[2026-01-26T01:02:23.424Z] [50a7d81c] INFO GET /health - Request started
-[2026-01-26T01:02:23.424Z] [50a7d81c] INFO GET /health 200 0ms - Request completed
-[WorkerRegistry] Sync complete: loaded=0, skipped=0, failed=0, duration=1ms
-[2026-01-26T01:02:53.424Z] [0b605695] INFO GET /health - Request started
-[2026-01-26T01:02:53.424Z] [0b605695] INFO GET /health 200 0ms - Request completed
-[2026-01-26T01:03:23.424Z] [43f93830] INFO GET /health - Request started
-[2026-01-26T01:03:23.425Z] [43f93830] INFO GET /health 200 1ms - Request completed
-[WorkerRegistry] Sync complete: loaded=0, skipped=0, failed=0, duration=1ms
-[2026-01-26T01:03:53.424Z] [0505c88d] INFO GET /health - Request started
-[2026-01-26T01:03:53.425Z] [0505c88d] INFO GET /health 200 1ms - Request completed
-[2026-01-26T01:04:23.425Z] [9afb022f] INFO GET /health - Request started
-[2026-01-26T01:04:23.425Z] [9afb022f] INFO GET /health 200 0ms - Request completed
-[WorkerRegistry] Sync complete: loaded=0, skipped=0, failed=0, duration=0ms
-[2026-01-26T01:04:53.425Z] [f933b6a4] INFO GET /health - Request started
-[2026-01-26T01:04:53.425Z] [f933b6a4] INFO GET /health 200 0ms - Request completed
-[2026-01-26T01:05:23.426Z] [e937af93] INFO GET /health - Request started
-[2026-01-26T01:05:23.426Z] [e937af93] INFO GET /health 200 0ms - Request completed
-[WorkerRegistry] Sync complete: loaded=0, skipped=0, failed=0, duration=1ms
-[2026-01-26T01:05:53.426Z] [29c4dbb6] INFO GET /health - Request started
-[2026-01-26T01:05:53.427Z] [29c4dbb6] INFO GET /health 200 1ms - Request completed
-[2026-01-26T01:06:23.428Z] [8f8bd83c] INFO GET /health - Request started
-[2026-01-26T01:06:23.428Z] [8f8bd83c] INFO GET /health 200 0ms - Request completed
-[WorkerRegistry] Sync complete: loaded=0, skipped=0, failed=0, duration=1ms
-[2026-01-26T01:06:53.428Z] [076fba73] INFO GET /health - Request started
-[2026-01-26T01:06:53.428Z] [076fba73] INFO GET /health 200 0ms - Request completed
-[2026-01-26T01:07:23.428Z] [13ae6882] INFO GET /health - Request started
-[2026-01-26T01:07:23.428Z] [13ae6882] INFO GET /health 200 0ms - Request completed
-[WorkerRegistry] Sync complete: loaded=0, skipped=0, failed=0, duration=1ms
-[2026-01-26T01:07:53.432Z] [a886862c] INFO GET /health - Request started
-[2026-01-26T01:07:53.433Z] [a886862c] INFO GET /health 200 1ms - Request completed
-[2026-01-26T01:08:23.429Z] [399a0ece] INFO GET /health - Request started
-[2026-01-26T01:08:23.429Z] [399a0ece] INFO GET /health 200 0ms - Request completed
-[WorkerRegistry] Sync complete: loaded=0, skipped=0, failed=0, duration=1ms
-[2026-01-26T01:08:53.430Z] [a052b3f3] INFO GET /health - Request started
-[2026-01-26T01:08:53.430Z] [a052b3f3] INFO GET /health 200 0ms - Request completed
-[2026-01-26T01:09:23.430Z] [1237e69f] INFO GET /health - Request started
-[2026-01-26T01:09:23.431Z] [1237e69f] INFO GET /health 200 1ms - Request completed
-[WorkerRegistry] Sync complete: loaded=0, skipped=0, failed=0, duration=1ms
-[2026-01-26T01:09:53.430Z] [cbdb7690] INFO GET /health - Request started
-[2026-01-26T01:09:53.431Z] [cbdb7690] INFO GET /health 200 1ms - Request completed
-[2026-01-26T01:10:23.431Z] [bea169ab] INFO GET /health - Request started
-[2026-01-26T01:10:23.431Z] [bea169ab] INFO GET /health 200 0ms - Request completed
-[WorkerRegistry] Sync complete: loaded=0, skipped=0, failed=0, duration=1ms
-[Bazaar GraphQL] Request received: {
-  contentType: "application/json",
-  bodyType: "object",
-  bodyPreview: "{\"query\":\"{ __typename }\"}",
-}
-[2026-01-26T01:10:53.432Z] [db237460] INFO GET /health - Request started
-[2026-01-26T01:10:53.433Z] [db237460] INFO GET /health 200 0ms - Request completed
-[2026-01-26T01:11:23.434Z] [97adf47f] INFO GET /health - Request started
-[2026-01-26T01:11:23.435Z] [97adf47f] INFO GET /health 200 1ms - Request completed
-[WorkerRegistry] Sync complete: loaded=0, skipped=0, failed=0, duration=1ms
-[Bazaar GraphQL] Request received: {
-  contentType: "application/json",
-  bodyType: "object",
-  bodyPreview: "{\"query\":\"{ __typename }\"}",
-}
-[2026-01-26T01:11:53.435Z] [f1c084fe] INFO GET /health - Request started
-[2026-01-26T01:11:53.435Z] [f1c084fe] INFO GET /health 200 1ms - Request completed
-[Bazaar] ✓ Loaded seed state from /home/secure-dev/Dev/dfinity/partners/shaw/jeju/apps/bazaar/.seed-state.json
-[Bazaar]   Found 0 coins, 0 NFTs
-[Bazaar GraphQL] Request received: {
-  contentType: "application/json",
-  bodyType: "object",
-  bodyPreview: "{\"query\":\"\\n    query($limit: Int!, $offset: Int!, $orderBy: [TokenOrderByInput!]) {\\n      tokens( limit: $limit, offset: $offset, orderBy: $orderBy) {\\n        address chainId name symbol decimals t",
-}
-[Bazaar GraphQL] Request received: {
-  contentType: "application/json",
-  bodyType: "object",
-  bodyPreview: "{\"query\":\"\\n            query GetSwapTokens {\\n              tokens(limit: 20, orderBy: volumeUSD24h_DESC) {\\n                address\\n                name\\n                symbol\\n                dec",
-}
-[2026-01-26T01:12:23.433Z] [6b1679a4] INFO GET /health - Request started
-[2026-01-26T01:12:23.433Z] [6b1679a4] INFO GET /health 200 0ms - Request completed
-[Bazaar] Ban check failed for 0x70997970C51812dc3A010C7d01b50e0d17dc79C8
-  [secrets] Using Anvil dev key (localnet only)
-Warning: Found unknown `exclude_lints` config for profile `lint` defined in foundry.toml.
-[Bazaar GraphQL] Request received: {
-  contentType: "application/json",
-  bodyType: "object",
-  bodyPreview: "{\"query\":\"{ __typename }\"}",
-}
-Factory API Worker running at http://127.0.0.1:4009
-20 | } else if (typeof entryNamespace?.default?.fetch === 'function' || entryNamespace?.default?.app != undefined) {
-21 |    var server = globalThis[hmrSymbol];
-22 |    if (server) {
-23 |       server.reload(entryNamespace.default);
-24 |       console.debug(`Reloaded ${server.development ? 'development ' : ''}server: ${server.protocol}://${server.hostname}:${server.port}`);
-25 |       server = globalThis[hmrSymbol] = Bun.serve(entryNamespace.default);
-                                                     ^
-error: Failed to start server. Is port 4009 in use?
- syscall: "listen",
-   errno: 0,
-    code: "EADDRINUSE"
-
-      at bun:main:25:49
-[Factory SQLit] Connected to database: factory-db
-[Factory SQLit] Database initialized
-Auth gateway running on http://127.0.0.1:4200
 [Gateway State] Initialized with SQLit
 [Gateway] Worker running at http://127.0.0.1:4013
 [Gateway] Network: localnet
+[SQLit v2] Auto-provisioning database: gateway-db
+[SQLit v2] Created database 24ccc51a811cc78d58c97f226a8f2857 (gateway-db)
 [Gateway State] SQLit tables ensured
 [Gateway State] Initialized with SQLit
-[2026-01-26T01:12:53.436Z] [beaf7e1b] INFO GET /health - Request started
-[2026-01-26T01:12:53.436Z] [beaf7e1b] INFO GET /health 200 0ms - Request completed
+[2026-01-26T05:35:31.148Z] [INFO] [Storage] DWS cache layer enabled for storage
+[2026-01-26T05:35:31.187Z] [INFO] [Server] Starting server {"port":4021,"network":"localnet","signer":"not initialized"}
+[2026-01-26T05:35:31.241Z] [INFO] [KMSSigner] Initializing KMS signer {"endpoint":"http://127.0.0.1:4050","threshold":2,"totalParties":3,"hsmProvider":"software","hasFallbackKey":false}
+[2026-01-26T05:35:31.241Z] [WARN] [KMSSigner] Skipping KMS attestation verification (development mode)
+[2026-01-26T05:35:31.269Z] [WARN] [Server] KMS not initialized - agent seeding skipped
+[2026-01-26T05:35:31.270Z] [WARN] [BotInitializer] No KMS signer configured, skipping bot initialization
+[2026-01-26T05:35:31.270Z] [INFO] [Server] Default bots initialized {"count":0}
+[2026-01-26T05:35:31.272Z] [ERROR] [Server] Failed to initialize KMS signer {"error":"Error: Unable to connect. Is the computer able to access the url?"}
+[2026-01-26T05:35:41.818Z] [29601b20] INFO GET /health - Request started
+[2026-01-26T05:35:41.818Z] [29601b20] INFO GET /health 200 0ms - Request completed
+[2026-01-26T05:36:11.820Z] [eb2fa007] INFO GET /health - Request started
+[2026-01-26T05:36:11.820Z] [eb2fa007] INFO GET /health 200 0ms - Request completed
+[2026-01-26T05:36:41.825Z] [fa4fa8a5] INFO GET /health - Request started
+[2026-01-26T05:36:41.825Z] [fa4fa8a5] INFO GET /health 200 0ms - Request completed
 [WorkerRegistry] Sync complete: loaded=0, skipped=0, failed=0, duration=2ms
-[2026-01-26T01:13:23.436Z] [c1f86c36] INFO GET /health - Request started
-[2026-01-26T01:13:23.437Z] [c1f86c36] INFO GET /health 200 2ms - Request completed
-[Bazaar GraphQL] Request received: {
-  contentType: "application/json",
-  bodyType: "object",
-  bodyPreview: "{\"query\":\"{ __typename }\"}",
-}
-[2026-01-26T01:13:53.436Z] [d11215d7] INFO GET /health - Request started
-[2026-01-26T01:13:53.436Z] [d11215d7] INFO GET /health 200 1ms - Request completed
-[2026-01-26T01:14:23.437Z] [759578c7] INFO GET /health - Request started
-[2026-01-26T01:14:23.438Z] [759578c7] INFO GET /health 200 1ms - Request completed
+[2026-01-26T05:37:11.826Z] [a0facc01] INFO GET /health - Request started
+[2026-01-26T05:37:11.827Z] [a0facc01] INFO GET /health 200 1ms - Request completed
+[2026-01-26T05:37:41.829Z] [00a2ef78] INFO GET /health - Request started
+[2026-01-26T05:37:41.830Z] [00a2ef78] INFO GET /health 200 1ms - Request completed
+[2026-01-26T05:38:11.834Z] [7a0d6298] INFO GET /health - Request started
+[2026-01-26T05:38:11.838Z] [7a0d6298] INFO GET /health 200 4ms - Request completed
+[WorkerRegistry] Sync complete: loaded=0, skipped=0, failed=0, duration=0ms
+[2026-01-26T05:38:41.832Z] [c4aaf925] INFO GET /health - Request started
+[2026-01-26T05:38:41.832Z] [c4aaf925] INFO GET /health 200 0ms - Request completed
+[2026-01-26T05:39:11.836Z] [b3337e8e] INFO GET /health - Request started
+[2026-01-26T05:39:11.836Z] [b3337e8e] INFO GET /health 200 0ms - Request completed
 [WorkerRegistry] Sync complete: loaded=0, skipped=0, failed=0, duration=1ms
-[2026-01-26T01:14:53.437Z] [6981f285] INFO GET /health - Request started
-[2026-01-26T01:14:53.437Z] [6981f285] INFO GET /health 200 0ms - Request completed
-[2026-01-26T01:15:23.437Z] [d55e4bfa] INFO GET /health - Request started
-[2026-01-26T01:15:23.437Z] [d55e4bfa] INFO GET /health 200 0ms - Request completed
-[WorkerRegistry] Sync complete: loaded=0, skipped=0, failed=0, duration=1ms
-[2026-01-26T01:15:53.441Z] [bef8edcb] INFO GET /health - Request started
-[2026-01-26T01:15:53.442Z] [bef8edcb] INFO GET /health 200 1ms - Request completed
-[2026-01-26T01:16:23.438Z] [ed6bb475] INFO GET /health - Request started
-[2026-01-26T01:16:23.439Z] [ed6bb475] INFO GET /health 200 1ms - Request completed
+[2026-01-26T05:39:41.839Z] [d18dd276] INFO GET /health - Request started
+[2026-01-26T05:39:41.840Z] [d18dd276] INFO GET /health 200 1ms - Request completed
+[2026-01-26T05:40:11.842Z] [2eb21830] INFO GET /health - Request started
+[2026-01-26T05:40:11.842Z] [2eb21830] INFO GET /health 200 0ms - Request completed
 [WorkerRegistry] Sync complete: loaded=0, skipped=0, failed=0, duration=2ms
-[2026-01-26T01:16:53.438Z] [b2446131] INFO GET /health - Request started
-[2026-01-26T01:16:53.438Z] [b2446131] INFO GET /health 200 0ms - Request completed
-[2026-01-26T01:17:23.438Z] [ce9d2da3] INFO GET /health - Request started
-[2026-01-26T01:17:23.439Z] [ce9d2da3] INFO GET /health 200 1ms - Request completed
+[2026-01-26T05:40:41.846Z] [657b990e] INFO GET /health - Request started
+[2026-01-26T05:40:41.846Z] [657b990e] INFO GET /health 200 1ms - Request completed
+[2026-01-26T05:41:11.847Z] [03b02387] INFO GET /health - Request started
+[2026-01-26T05:41:11.847Z] [03b02387] INFO GET /health 200 0ms - Request completed
+[2026-01-26T05:41:41.851Z] [808cfdd7] INFO GET /health - Request started
+[2026-01-26T05:41:41.851Z] [808cfdd7] INFO GET /health 200 0ms - Request completed
 [WorkerRegistry] Sync complete: loaded=0, skipped=0, failed=0, duration=1ms
-[2026-01-26T01:17:53.438Z] [90decc7d] INFO GET /health - Request started
-[2026-01-26T01:17:53.438Z] [90decc7d] INFO GET /health 200 0ms - Request completed
-[2026-01-26T01:18:23.439Z] [78eeb704] INFO GET /health - Request started
-[2026-01-26T01:18:23.439Z] [78eeb704] INFO GET /health 200 0ms - Request completed
-[WorkerRegistry] Sync complete: loaded=0, skipped=0, failed=0, duration=1ms
-[2026-01-26T01:18:53.441Z] [83441638] INFO GET /health - Request started
-[2026-01-26T01:18:53.441Z] [83441638] INFO GET /health 200 0ms - Request completed
-[2026-01-26T01:19:23.439Z] [4cb53101] INFO GET /health - Request started
-[2026-01-26T01:19:23.439Z] [4cb53101] INFO GET /health 200 0ms - Request completed
-[2026-01-26T01:19:53.439Z] [477eefec] INFO GET /health - Request started
-[2026-01-26T01:19:53.439Z] [477eefec] INFO GET /health 200 0ms - Request completed
-[WorkerRegistry] Sync complete: loaded=0, skipped=0, failed=0, duration=2ms
-[2026-01-26T01:20:23.441Z] [db767978] INFO GET /health - Request started
-[2026-01-26T01:20:23.442Z] [db767978] INFO GET /health 200 2ms - Request completed
-[Bazaar GraphQL] Request received: {
-  contentType: "application/json",
-  bodyType: "object",
-  bodyPreview: "{\"query\":\"{ __typename }\"}",
-}
-[2026-01-26T01:20:53.440Z] [5d8bca09] INFO GET /health - Request started
-[2026-01-26T01:20:53.441Z] [5d8bca09] INFO GET /health 200 1ms - Request completed
-[2026-01-26T01:21:23.441Z] [1810e1fa] INFO GET /health - Request started
-[2026-01-26T01:21:23.441Z] [1810e1fa] INFO GET /health 200 0ms - Request completed
+[2026-01-26T05:42:11.856Z] [73159faf] INFO GET /health - Request started
+[2026-01-26T05:42:11.856Z] [73159faf] INFO GET /health 200 0ms - Request completed
+[2026-01-26T05:42:41.858Z] [2f4d4a4d] INFO GET /health - Request started
+[2026-01-26T05:42:41.858Z] [2f4d4a4d] INFO GET /health 200 0ms - Request completed
 [WorkerRegistry] Sync complete: loaded=0, skipped=0, failed=0, duration=3ms
-[Bazaar GraphQL] Request received: {
-  contentType: "application/json",
-  bodyType: "object",
-  bodyPreview: "{\"query\":\"{ __typename }\"}",
-}
-[Bazaar GraphQL] Request received: {
-  contentType: "application/json",
-  bodyType: "object",
-  bodyPreview: "{\"query\":\"{ __typename }\"}",
-}
-[2026-01-26T01:21:53.441Z] [6071da5a] INFO GET /health - Request started
-[2026-01-26T01:21:53.442Z] [6071da5a] INFO GET /health 200 1ms - Request completed
-[2026-01-26T01:22:23.440Z] [0d482780] INFO GET /health - Request started
-[2026-01-26T01:22:23.441Z] [0d482780] INFO GET /health 200 1ms - Request completed
+[2026-01-26T05:43:11.858Z] [d9b06d19] INFO GET /health - Request started
+[2026-01-26T05:43:11.858Z] [d9b06d19] INFO GET /health 200 0ms - Request completed
+[2026-01-26T05:43:41.864Z] [21f12180] INFO GET /health - Request started
+[2026-01-26T05:43:41.864Z] [21f12180] INFO GET /health 200 0ms - Request completed
+[WorkerRegistry] Sync complete: loaded=0, skipped=0, failed=0, duration=6ms
+[2026-01-26T05:44:11.872Z] [8e745a70] INFO GET /health - Request started
+[2026-01-26T05:44:11.872Z] [8e745a70] INFO GET /health 200 0ms - Request completed
+[2026-01-26T05:44:41.874Z] [b9647d0d] INFO GET /health - Request started
+[2026-01-26T05:44:41.874Z] [b9647d0d] INFO GET /health 200 1ms - Request completed
+[2026-01-26T05:45:11.878Z] [a3027d46] INFO GET /health - Request started
+[2026-01-26T05:45:11.878Z] [a3027d46] INFO GET /health 200 0ms - Request completed
+[WorkerRegistry] Sync complete: loaded=0, skipped=0, failed=0, duration=2ms
+[2026-01-26T05:45:41.888Z] [20f2b236] INFO GET /health - Request started
+[2026-01-26T05:45:41.889Z] [20f2b236] INFO GET /health 200 1ms - Request completed
+[2026-01-26T05:46:11.884Z] [c77b14c1] INFO GET /health - Request started
+[2026-01-26T05:46:11.886Z] [c77b14c1] INFO GET /health 200 0ms - Request completed
 [WorkerRegistry] Sync complete: loaded=0, skipped=0, failed=0, duration=4ms
-[2026-01-26T01:22:53.441Z] [117376f8] INFO GET /health - Request started
-[2026-01-26T01:22:53.441Z] [117376f8] INFO GET /health 200 0ms - Request completed
-[2026-01-26T01:23:23.442Z] [3c79b71e] INFO GET /health - Request started
-[2026-01-26T01:23:23.442Z] [3c79b71e] INFO GET /health 200 0ms - Request completed
-[WorkerRegistry] Sync complete: loaded=0, skipped=0, failed=0, duration=1ms
-[2026-01-26T01:23:53.442Z] [3020631d] INFO GET /health - Request started
-[2026-01-26T01:23:53.442Z] [3020631d] INFO GET /health 200 1ms - Request completed
-[2026-01-26T01:24:23.443Z] [8fe8e9bc] INFO GET /health - Request started
-[2026-01-26T01:24:23.444Z] [8fe8e9bc] INFO GET /health 200 1ms - Request completed
+[2026-01-26T05:46:41.884Z] [b86d388a] INFO GET /health - Request started
+[2026-01-26T05:46:41.884Z] [b86d388a] INFO GET /health 200 0ms - Request completed
+[2026-01-26T05:47:11.884Z] [201d3bda] INFO GET /health - Request started
+[2026-01-26T05:47:11.884Z] [201d3bda] INFO GET /health 200 0ms - Request completed
 [WorkerRegistry] Sync complete: loaded=0, skipped=0, failed=0, duration=2ms
-[2026-01-26T01:24:53.445Z] [7cac408f] INFO GET /health - Request started
-[2026-01-26T01:24:53.445Z] [7cac408f] INFO GET /health 200 0ms - Request completed
-[2026-01-26T01:25:23.447Z] [f87e159e] INFO GET /health - Request started
-[2026-01-26T01:25:23.447Z] [f87e159e] INFO GET /health 200 0ms - Request completed
-[WorkerRegistry] Sync complete: loaded=0, skipped=0, failed=0, duration=1ms
-[2026-01-26T01:25:53.450Z] [a862de34] INFO GET /health - Request started
-[2026-01-26T01:25:53.450Z] [a862de34] INFO GET /health 200 0ms - Request completed
-[2026-01-26T01:26:23.455Z] [281fd5fb] INFO GET /health - Request started
-[2026-01-26T01:26:23.455Z] [281fd5fb] INFO GET /health 200 0ms - Request completed
-[WorkerRegistry] Sync complete: loaded=0, skipped=0, failed=0, duration=2ms
-[2026-01-26T01:26:53.455Z] [2aa8e0cf] INFO GET /health - Request started
-[2026-01-26T01:26:53.456Z] [2aa8e0cf] INFO GET /health 200 1ms - Request completed
-[2026-01-26T01:27:23.459Z] [cb5ab35a] INFO GET /health - Request started
-[2026-01-26T01:27:23.459Z] [cb5ab35a] INFO GET /health 200 0ms - Request completed
-[WorkerRegistry] Sync complete: loaded=0, skipped=0, failed=0, duration=2ms
-[2026-01-26T01:27:53.462Z] [437c1610] INFO GET /health - Request started
-[2026-01-26T01:27:53.462Z] [437c1610] INFO GET /health 200 0ms - Request completed
-[2026-01-26T01:28:23.464Z] [f8f89b19] INFO GET /health - Request started
-[2026-01-26T01:28:23.464Z] [f8f89b19] INFO GET /health 200 0ms - Request completed
-[2026-01-26T01:28:53.467Z] [9e3e5560] INFO GET /health - Request started
-[2026-01-26T01:28:53.467Z] [9e3e5560] INFO GET /health 200 0ms - Request completed
-[WorkerRegistry] Sync complete: loaded=0, skipped=0, failed=0, duration=2ms
-[Bazaar GraphQL] Request received: {
-  contentType: "application/json",
-  bodyType: "object",
-  bodyPreview: "{\"query\":\"{ __typename }\"}",
-}
-[2026-01-26T01:29:23.469Z] [e4455569] INFO GET /health - Request started
-[2026-01-26T01:29:23.469Z] [e4455569] INFO GET /health 200 0ms - Request completed
-[2026-01-26T01:29:53.472Z] [2051d305] INFO GET /health - Request started
-[2026-01-26T01:29:53.472Z] [2051d305] INFO GET /health 200 0ms - Request completed
-[Bazaar GraphQL] Request received: {
-  contentType: "application/json",
-  bodyType: "object",
-  bodyPreview: "{\"query\":\"{ __typename }\"}",
-}
-[2026-01-26T01:30:23.474Z] [a27ebf6e] INFO GET /health - Request started
-[2026-01-26T01:30:23.474Z] [a27ebf6e] INFO GET /health 200 0ms - Request completed
-[WorkerRegistry] Sync complete: loaded=0, skipped=0, failed=0, duration=1ms
-[2026-01-26T01:30:53.477Z] [086173b1] INFO GET /health - Request started
-[2026-01-26T01:30:53.477Z] [086173b1] INFO GET /health 200 0ms - Request completed
-[Bazaar GraphQL] Request received: {
-  contentType: "application/json",
-  bodyType: "object",
-  bodyPreview: "{\"query\":\"{ __typename }\"}",
-}
-[2026-01-26T01:31:23.481Z] [0bacdeba] INFO GET /health - Request started
-[2026-01-26T01:31:23.481Z] [0bacdeba] INFO GET /health 200 0ms - Request completed
-[2026-01-26T01:31:53.481Z] [ac02da0f] INFO GET /health - Request started
-[2026-01-26T01:31:53.481Z] [ac02da0f] INFO GET /health 200 0ms - Request completed
-[WorkerRegistry] Sync complete: loaded=0, skipped=0, failed=0, duration=1ms
-[Bazaar GraphQL] Request received: {
-  contentType: "application/json",
-  bodyType: "object",
-  bodyPreview: "{\"query\":\"{ __typename }\"}",
-}
-[2026-01-26T01:32:23.481Z] [a9eef57f] INFO GET /health - Request started
-[2026-01-26T01:32:23.481Z] [a9eef57f] INFO GET /health 200 0ms - Request completed
-[2026-01-26T01:32:53.481Z] [fafbe30d] INFO GET /health - Request started
-[2026-01-26T01:32:53.481Z] [fafbe30d] INFO GET /health 200 0ms - Request completed
-[WorkerRegistry] Sync complete: loaded=0, skipped=0, failed=0, duration=1ms
-[Bazaar GraphQL] Request received: {
-  contentType: "application/json",
-  bodyType: "object",
-  bodyPreview: "{\"query\":\"{ __typename }\"}",
-}
-[2026-01-26T01:33:23.481Z] [f0a1a88d] INFO GET /health - Request started
-[2026-01-26T01:33:23.482Z] [f0a1a88d] INFO GET /health 200 1ms - Request completed
-[2026-01-26T01:33:53.481Z] [182ea203] INFO GET /health - Request started
-[2026-01-26T01:33:53.482Z] [182ea203] INFO GET /health 200 1ms - Request completed
-[Bazaar GraphQL] Request received: {
-  contentType: "application/json",
-  bodyType: "object",
-  bodyPreview: "{\"query\":\"{ __typename }\"}",
-}
-[2026-01-26T01:34:23.482Z] [c24f6103] INFO GET /health - Request started
-[2026-01-26T01:34:23.482Z] [c24f6103] INFO GET /health 200 0ms - Request completed
-[WorkerRegistry] Sync complete: loaded=0, skipped=0, failed=0, duration=2ms
-[2026-01-26T01:34:53.484Z] [023b7cc4] INFO GET /health - Request started
-[2026-01-26T01:34:53.484Z] [023b7cc4] INFO GET /health 200 0ms - Request completed
-[Bazaar GraphQL] Request received: {
-  contentType: "application/json",
-  bodyType: "object",
-  bodyPreview: "{\"query\":\"{ __typename }\"}",
-}
-[2026-01-26T01:35:23.486Z] [9c8d43d4] INFO GET /health - Request started
-[2026-01-26T01:35:23.487Z] [9c8d43d4] INFO GET /health 200 1ms - Request completed
+[2026-01-26T05:47:41.886Z] [a035050d] INFO GET /health - Request started
+[2026-01-26T05:47:41.886Z] [a035050d] INFO GET /health 200 1ms - Request completed
+[2026-01-26T05:48:11.889Z] [a6d024ac] INFO GET /health - Request started
+[2026-01-26T05:48:11.890Z] [a6d024ac] INFO GET /health 200 1ms - Request completed
+[2026-01-26T05:48:41.887Z] [adff1f15] INFO GET /health - Request started
+[2026-01-26T05:48:41.887Z] [adff1f15] INFO GET /health 200 0ms - Request completed
 [WorkerRegistry] Sync complete: loaded=0, skipped=0, failed=0, duration=3ms
-[2026-01-26T01:35:53.482Z] [62ec8f79] INFO GET /health - Request started
-[2026-01-26T01:35:53.482Z] [62ec8f79] INFO GET /health 200 0ms - Request completed
-[Bazaar GraphQL] Request received: {
-  contentType: "application/json",
-  bodyType: "object",
-  bodyPreview: "{\"query\":\"{ __typename }\"}",
-}
-[2026-01-26T01:36:23.482Z] [270af474] INFO GET /health - Request started
-[2026-01-26T01:36:23.482Z] [270af474] INFO GET /health 200 0ms - Request completed
-[2026-01-26T01:36:53.482Z] [6f66eb0e] INFO GET /health - Request started
-[2026-01-26T01:36:53.482Z] [6f66eb0e] INFO GET /health 200 0ms - Request completed
+[2026-01-26T05:49:11.891Z] [91d30ae6] INFO GET /health - Request started
+[2026-01-26T05:49:11.892Z] [91d30ae6] INFO GET /health 200 1ms - Request completed
+[2026-01-26T05:49:41.890Z] [ee0c6744] INFO GET /health - Request started
+[2026-01-26T05:49:41.890Z] [ee0c6744] INFO GET /health 200 0ms - Request completed
+[2026-01-26T05:50:11.891Z] [0553f1b9] INFO GET /health - Request started
+[2026-01-26T05:50:11.891Z] [0553f1b9] INFO GET /health 200 0ms - Request completed
 [WorkerRegistry] Sync complete: loaded=0, skipped=0, failed=0, duration=1ms
-[Bazaar GraphQL] Request received: {
-  contentType: "application/json",
-  bodyType: "object",
-  bodyPreview: "{\"query\":\"{ __typename }\"}",
-}
-[2026-01-26T01:37:23.483Z] [0df59e5f] INFO GET /health - Request started
-[2026-01-26T01:37:23.483Z] [0df59e5f] INFO GET /health 200 1ms - Request completed
-[2026-01-26T01:37:53.483Z] [4e9a7dd7] INFO GET /health - Request started
-[2026-01-26T01:37:53.483Z] [4e9a7dd7] INFO GET /health 200 0ms - Request completed
-[Bazaar GraphQL] Request received: {
-  contentType: "application/json",
-  bodyType: "object",
-  bodyPreview: "{\"query\":\"{ __typename }\"}",
-}
-[2026-01-26T01:38:23.483Z] [fb24341b] INFO GET /health - Request started
-[2026-01-26T01:38:23.483Z] [fb24341b] INFO GET /health 200 0ms - Request completed
+[2026-01-26T05:50:41.892Z] [ac841e92] INFO GET /health - Request started
+[2026-01-26T05:50:41.892Z] [ac841e92] INFO GET /health 200 0ms - Request completed
+[2026-01-26T05:51:11.893Z] [59aeee99] INFO GET /health - Request started
+[2026-01-26T05:51:11.893Z] [59aeee99] INFO GET /health 200 1ms - Request completed
 [WorkerRegistry] Sync complete: loaded=0, skipped=0, failed=0, duration=2ms
-[2026-01-26T01:38:53.484Z] [6d744abc] INFO GET /health - Request started
-[2026-01-26T01:38:53.485Z] [6d744abc] INFO GET /health 200 1ms - Request completed
-[Bazaar GraphQL] Request received: {
-  contentType: "application/json",
-  bodyType: "object",
-  bodyPreview: "{\"query\":\"{ __typename }\"}",
-}
-[2026-01-26T01:39:23.484Z] [a68fdefd] INFO GET /health - Request started
-[2026-01-26T01:39:23.484Z] [a68fdefd] INFO GET /health 200 0ms - Request completed
-[2026-01-26T01:39:53.486Z] [35cfd64a] INFO GET /health - Request started
-[2026-01-26T01:39:53.486Z] [35cfd64a] INFO GET /health 200 0ms - Request completed
+[2026-01-26T05:51:41.894Z] [03d00763] INFO GET /health - Request started
+[2026-01-26T05:51:41.894Z] [03d00763] INFO GET /health 200 0ms - Request completed
+[2026-01-26T05:52:11.895Z] [108a49a0] INFO GET /health - Request started
+[2026-01-26T05:52:11.895Z] [108a49a0] INFO GET /health 200 0ms - Request completed
+[WorkerRegistry] Sync complete: loaded=0, skipped=0, failed=0, duration=3ms
+[2026-01-26T05:52:41.897Z] [f221d5f7] INFO GET /health - Request started
+[2026-01-26T05:52:41.897Z] [f221d5f7] INFO GET /health 200 0ms - Request completed
+[2026-01-26T05:53:11.897Z] [63ac0102] INFO GET /health - Request started
+[2026-01-26T05:53:11.897Z] [63ac0102] INFO GET /health 200 0ms - Request completed
+[WorkerRegistry] Sync complete: loaded=0, skipped=0, failed=0, duration=3ms
+[2026-01-26T05:53:41.898Z] [da1b4706] INFO GET /health - Request started
+[2026-01-26T05:53:41.898Z] [da1b4706] INFO GET /health 200 0ms - Request completed
+[2026-01-26T05:54:11.898Z] [07e2f656] INFO GET /health - Request started
+[2026-01-26T05:54:11.898Z] [07e2f656] INFO GET /health 200 1ms - Request completed
+[2026-01-26T05:54:41.899Z] [6541d3f5] INFO GET /health - Request started
+[2026-01-26T05:54:41.899Z] [6541d3f5] INFO GET /health 200 0ms - Request completed
+[WorkerRegistry] Sync complete: loaded=0, skipped=0, failed=0, duration=2ms
+[2026-01-26T05:55:11.900Z] [56f84430] INFO GET /health - Request started
+[2026-01-26T05:55:11.900Z] [56f84430] INFO GET /health 200 0ms - Request completed
+[2026-01-26T05:55:41.901Z] [74571b6b] INFO GET /health - Request started
+[2026-01-26T05:55:41.901Z] [74571b6b] INFO GET /health 200 0ms - Request completed
+[2026-01-26T05:56:11.902Z] [ca858def] INFO GET /health - Request started
+[2026-01-26T05:56:11.902Z] [ca858def] INFO GET /health 200 0ms - Request completed
+[WorkerRegistry] Sync complete: loaded=0, skipped=0, failed=0, duration=2ms
+[2026-01-26T05:56:41.903Z] [44c3ae37] INFO GET /health - Request started
+[2026-01-26T05:56:41.904Z] [44c3ae37] INFO GET /health 200 1ms - Request completed
+[2026-01-26T05:57:11.904Z] [50930ffa] INFO GET /health - Request started
+[2026-01-26T05:57:11.904Z] [50930ffa] INFO GET /health 200 0ms - Request completed
+[2026-01-26T05:57:41.905Z] [63b840bc] INFO GET /health - Request started
+[2026-01-26T05:57:41.905Z] [63b840bc] INFO GET /health 200 0ms - Request completed
 [WorkerRegistry] Sync complete: loaded=0, skipped=0, failed=0, duration=1ms
-[Bazaar GraphQL] Request received: {
-  contentType: "application/json",
-  bodyType: "object",
-  bodyPreview: "{\"query\":\"{ __typename }\"}",
-}
-[2026-01-26T01:40:23.487Z] [83a01fd4] INFO GET /health - Request started
-[2026-01-26T01:40:23.487Z] [83a01fd4] INFO GET /health 200 0ms - Request completed
-[2026-01-26T01:40:53.499Z] [2b07caf5] INFO GET /health - Request started
-[2026-01-26T01:40:53.499Z] [2b07caf5] INFO GET /health 200 0ms - Request completed
+[2026-01-26T05:58:11.906Z] [c1af8dda] INFO GET /health - Request started
+[2026-01-26T05:58:11.906Z] [c1af8dda] INFO GET /health 200 0ms - Request completed
+[2026-01-26T05:58:41.907Z] [bb1ef5aa] INFO GET /health - Request started
+[2026-01-26T05:58:41.907Z] [bb1ef5aa] INFO GET /health 200 0ms - Request completed
+[WorkerRegistry] Sync complete: loaded=0, skipped=0, failed=0, duration=2ms
+[2026-01-26T05:59:11.908Z] [aa871eb3] INFO GET /health - Request started
+[2026-01-26T05:59:11.908Z] [aa871eb3] INFO GET /health 200 0ms - Request completed
+[2026-01-26T05:59:41.910Z] [17f37260] INFO GET /health - Request started
+[2026-01-26T05:59:41.910Z] [17f37260] INFO GET /health 200 0ms - Request completed
 [WorkerRegistry] Sync complete: loaded=0, skipped=0, failed=0, duration=1ms
-[Bazaar GraphQL] Request received: {
-  contentType: "application/json",
-  bodyType: "object",
-  bodyPreview: "{\"query\":\"{ __typename }\"}",
-}
-[2026-01-26T01:41:23.506Z] [2b173f49] INFO GET /health - Request started
-[2026-01-26T01:41:23.506Z] [2b173f49] INFO GET /health 200 0ms - Request completed
+[2026-01-26T06:00:11.910Z] [3d9b9265] INFO GET /health - Request started
+[2026-01-26T06:00:11.910Z] [3d9b9265] INFO GET /health 200 0ms - Request completed
+[2026-01-26T06:00:41.911Z] [740e4e99] INFO GET /health - Request started
+[2026-01-26T06:00:41.911Z] [740e4e99] INFO GET /health 200 0ms - Request completed
+[WorkerRegistry] Sync complete: loaded=0, skipped=0, failed=0, duration=3ms
+[2026-01-26T06:01:11.912Z] [005f4dc2] INFO GET /health - Request started
+[2026-01-26T06:01:11.912Z] [005f4dc2] INFO GET /health 200 0ms - Request completed
+[2026-01-26T06:01:41.912Z] [79265527] INFO GET /health - Request started
+[2026-01-26T06:01:41.912Z] [79265527] INFO GET /health 200 0ms - Request completed
+[WorkerRegistry] Sync complete: loaded=0, skipped=0, failed=0, duration=1ms
+[2026-01-26T06:02:11.913Z] [5b64155d] INFO GET /health - Request started
+[2026-01-26T06:02:11.913Z] [5b64155d] INFO GET /health 200 0ms - Request completed
+[2026-01-26T06:02:41.914Z] [5cbe02df] INFO GET /health - Request started
+[2026-01-26T06:02:41.914Z] [5cbe02df] INFO GET /health 200 0ms - Request completed
+[WorkerRegistry] Sync complete: loaded=0, skipped=0, failed=0, duration=2ms
+[2026-01-26T06:03:11.918Z] [9522378b] INFO GET /health - Request started
+[2026-01-26T06:03:11.918Z] [9522378b] INFO GET /health 200 0ms - Request completed
+[2026-01-26T06:03:41.919Z] [30dcc729] INFO GET /health - Request started
+[2026-01-26T06:03:41.919Z] [30dcc729] INFO GET /health 200 0ms - Request completed
+[WorkerRegistry] Sync complete: loaded=0, skipped=0, failed=0, duration=2ms
+[2026-01-26T06:04:11.925Z] [5301eee5] INFO GET /health - Request started
+[2026-01-26T06:04:11.925Z] [5301eee5] INFO GET /health 200 0ms - Request completed
+[2026-01-26T06:04:41.925Z] [6703902e] INFO GET /health - Request started
+[2026-01-26T06:04:41.925Z] [6703902e] INFO GET /health 200 0ms - Request completed
+[WorkerRegistry] Sync complete: loaded=0, skipped=0, failed=0, duration=2ms
+[2026-01-26T06:05:11.926Z] [559bcdb0] INFO GET /health - Request started
+[2026-01-26T06:05:11.926Z] [559bcdb0] INFO GET /health 200 0ms - Request completed
+[2026-01-26T06:05:41.927Z] [f236472e] INFO GET /health - Request started
+[2026-01-26T06:05:41.927Z] [f236472e] INFO GET /health 200 0ms - Request completed
+[WorkerRegistry] Sync complete: loaded=0, skipped=0, failed=0, duration=2ms
+[2026-01-26T06:06:11.928Z] [1731e998] INFO GET /health - Request started
+[2026-01-26T06:06:11.928Z] [1731e998] INFO GET /health 200 0ms - Request completed
+[2026-01-26T06:06:41.929Z] [1ea4be0d] INFO GET /health - Request started
+[2026-01-26T06:06:41.929Z] [1ea4be0d] INFO GET /health 200 0ms - Request completed
+[WorkerRegistry] Sync complete: loaded=0, skipped=0, failed=0, duration=0ms
+[2026-01-26T06:07:11.930Z] [3178c450] INFO GET /health - Request started
+[2026-01-26T06:07:11.930Z] [3178c450] INFO GET /health 200 0ms - Request completed
+[2026-01-26T06:07:41.931Z] [2b71e75a] INFO GET /health - Request started
+[2026-01-26T06:07:41.931Z] [2b71e75a] INFO GET /health 200 0ms - Request completed
+[WorkerRegistry] Sync complete: loaded=0, skipped=0, failed=0, duration=1ms
+[2026-01-26T06:08:11.932Z] [1644a43f] INFO GET /health - Request started
+[2026-01-26T06:08:11.932Z] [1644a43f] INFO GET /health 200 0ms - Request completed
+[2026-01-26T06:08:41.933Z] [74eff8dd] INFO GET /health - Request started
+[2026-01-26T06:08:41.933Z] [74eff8dd] INFO GET /health 200 0ms - Request completed
+[WorkerRegistry] Sync complete: loaded=0, skipped=0, failed=0, duration=2ms
+[2026-01-26T06:09:11.934Z] [a33e2ccc] INFO GET /health - Request started
+[2026-01-26T06:09:11.934Z] [a33e2ccc] INFO GET /health 200 0ms - Request completed
+[2026-01-26T06:09:41.936Z] [74e6cc21] INFO GET /health - Request started
+[2026-01-26T06:09:41.938Z] [74e6cc21] INFO GET /health 200 1ms - Request completed
+[WorkerRegistry] Sync complete: loaded=0, skipped=0, failed=0, duration=3ms
+[2026-01-26T06:10:11.936Z] [677ec279] INFO GET /health - Request started
+[2026-01-26T06:10:11.936Z] [677ec279] INFO GET /health 200 0ms - Request completed
+[2026-01-26T06:10:41.937Z] [1ed80e07] INFO GET /health - Request started
+[2026-01-26T06:10:41.937Z] [1ed80e07] INFO GET /health 200 0ms - Request completed
+[2026-01-26T06:11:11.938Z] [fe4f2893] INFO GET /health - Request started
+[2026-01-26T06:11:11.938Z] [fe4f2893] INFO GET /health 200 0ms - Request completed
+[WorkerRegistry] Sync complete: loaded=0, skipped=0, failed=0, duration=4ms
+[2026-01-26T06:11:41.940Z] [42a3caff] INFO GET /health - Request started
+[2026-01-26T06:11:41.940Z] [42a3caff] INFO GET /health 200 0ms - Request completed
+[2026-01-26T06:12:11.941Z] [5a405580] INFO GET /health - Request started
+[2026-01-26T06:12:11.941Z] [5a405580] INFO GET /health 200 0ms - Request completed
+[WorkerRegistry] Sync complete: loaded=0, skipped=0, failed=0, duration=0ms
+[2026-01-26T06:12:41.943Z] [2397063c] INFO GET /health - Request started
+[2026-01-26T06:12:41.943Z] [2397063c] INFO GET /health 200 0ms - Request completed
+[2026-01-26T06:13:11.943Z] [63692956] INFO GET /health - Request started
+[2026-01-26T06:13:11.943Z] [63692956] INFO GET /health 200 0ms - Request completed
+[WorkerRegistry] Sync complete: loaded=0, skipped=0, failed=0, duration=1ms
+[2026-01-26T06:13:41.944Z] [28cf42d1] INFO GET /health - Request started
+[2026-01-26T06:13:41.944Z] [28cf42d1] INFO GET /health 200 0ms - Request completed
+[2026-01-26T06:14:11.980Z] [4801eaee] INFO GET /health - Request started
+[2026-01-26T06:14:11.980Z] [4801eaee] INFO GET /health 200 1ms - Request completed
+[2026-01-26T06:14:41.982Z] [cff884d6] INFO GET /health - Request started
+[2026-01-26T06:14:41.982Z] [cff884d6] INFO GET /health 200 0ms - Request completed
+[WorkerRegistry] Sync complete: loaded=0, skipped=0, failed=0, duration=1ms
+[2026-01-26T06:15:11.986Z] [fdb1d023] INFO GET /health - Request started
+[2026-01-26T06:15:11.986Z] [fdb1d023] INFO GET /health 200 0ms - Request completed
+[2026-01-26T06:15:41.988Z] [49c7788e] INFO GET /health - Request started
+[2026-01-26T06:15:41.988Z] [49c7788e] INFO GET /health 200 0ms - Request completed
+[WorkerRegistry] Sync complete: loaded=0, skipped=0, failed=0, duration=1ms
+[2026-01-26T06:16:11.989Z] [c1455a80] INFO GET /health - Request started
+[2026-01-26T06:16:11.989Z] [c1455a80] INFO GET /health 200 0ms - Request completed
+[2026-01-26T06:16:41.991Z] [83106add] INFO GET /health - Request started
+[2026-01-26T06:16:41.992Z] [83106add] INFO GET /health 200 0ms - Request completed
+[WorkerRegistry] Sync complete: loaded=0, skipped=0, failed=0, duration=1ms
+[2026-01-26T06:17:11.994Z] [ed5374c4] INFO GET /health - Request started
+[2026-01-26T06:17:11.994Z] [ed5374c4] INFO GET /health 200 0ms - Request completed
+[2026-01-26T06:17:41.997Z] [6b62b96d] INFO GET /health - Request started
+[2026-01-26T06:17:41.997Z] [6b62b96d] INFO GET /health 200 0ms - Request completed
+[WorkerRegistry] Sync complete: loaded=0, skipped=0, failed=0, duration=1ms
+[2026-01-26T06:18:12.000Z] [06ce0df7] INFO GET /health - Request started
+[2026-01-26T06:18:12.000Z] [06ce0df7] INFO GET /health 200 0ms - Request completed
+[2026-01-26T06:18:42.001Z] [f76fc1b8] INFO GET /health - Request started
+[2026-01-26T06:18:42.001Z] [f76fc1b8] INFO GET /health 200 0ms - Request completed
+[WorkerRegistry] Sync complete: loaded=0, skipped=0, failed=0, duration=1ms
+[2026-01-26T06:19:12.004Z] [c6cc6f0a] INFO GET /health - Request started
+[2026-01-26T06:19:12.004Z] [c6cc6f0a] INFO GET /health 200 0ms - Request completed
+[2026-01-26T06:19:42.004Z] [162fbe4f] INFO GET /health - Request started
+[2026-01-26T06:19:42.005Z] [162fbe4f] INFO GET /health 200 1ms - Request completed
+[WorkerRegistry] Sync complete: loaded=0, skipped=0, failed=0, duration=1ms
+[2026-01-26T06:20:12.006Z] [22f55dc7] INFO GET /health - Request started
+[2026-01-26T06:20:12.007Z] [22f55dc7] INFO GET /health 200 1ms - Request completed
+[2026-01-26T06:20:42.009Z] [ba3a4c43] INFO GET /health - Request started
+[2026-01-26T06:20:42.009Z] [ba3a4c43] INFO GET /health 200 0ms - Request completed
+[WorkerRegistry] Sync complete: loaded=0, skipped=0, failed=0, duration=1ms
+[2026-01-26T06:21:12.014Z] [cd23ea72] INFO GET /health - Request started
+[2026-01-26T06:21:12.014Z] [cd23ea72] INFO GET /health 200 0ms - Request completed
+[2026-01-26T06:21:42.015Z] [a02ab21a] INFO GET /health - Request started
+[2026-01-26T06:21:42.015Z] [a02ab21a] INFO GET /health 200 0ms - Request completed
+[WorkerRegistry] Sync complete: loaded=0, skipped=0, failed=0, duration=1ms
+[2026-01-26T06:22:12.016Z] [3d127ddc] INFO GET /health - Request started
+[2026-01-26T06:22:12.016Z] [3d127ddc] INFO GET /health 200 0ms - Request completed
+[2026-01-26T06:22:42.016Z] [7151b820] INFO GET /health - Request started
+[2026-01-26T06:22:42.016Z] [7151b820] INFO GET /health 200 0ms - Request completed
+[WorkerRegistry] Sync complete: loaded=0, skipped=0, failed=0, duration=1ms
+[2026-01-26T06:23:12.019Z] [a1408be5] INFO GET /health - Request started
+[2026-01-26T06:23:12.019Z] [a1408be5] INFO GET /health 200 0ms - Request completed
+[2026-01-26T06:23:42.020Z] [2fb9e66c] INFO GET /health - Request started
+[2026-01-26T06:23:42.020Z] [2fb9e66c] INFO GET /health 200 0ms - Request completed
+[WorkerRegistry] Sync complete: loaded=0, skipped=0, failed=0, duration=2ms
+[2026-01-26T06:24:12.023Z] [96fca96d] INFO GET /health - Request started
+[2026-01-26T06:24:12.023Z] [96fca96d] INFO GET /health 200 0ms - Request completed
+[2026-01-26T06:24:42.023Z] [44e5982f] INFO GET /health - Request started
+[2026-01-26T06:24:42.023Z] [44e5982f] INFO GET /health 200 0ms - Request completed
+[2026-01-26T06:25:12.024Z] [240be476] INFO GET /health - Request started
+[2026-01-26T06:25:12.025Z] [240be476] INFO GET /health 200 1ms - Request completed
+[WorkerRegistry] Sync complete: loaded=0, skipped=0, failed=0, duration=1ms
+[2026-01-26T06:25:42.027Z] [16cdfc6e] INFO GET /health - Request started
+[2026-01-26T06:25:42.027Z] [16cdfc6e] INFO GET /health 200 0ms - Request completed
+[2026-01-26T06:26:12.027Z] [26747fc1] INFO GET /health - Request started
+[2026-01-26T06:26:12.027Z] [26747fc1] INFO GET /health 200 0ms - Request completed
+[WorkerRegistry] Sync complete: loaded=0, skipped=0, failed=0, duration=1ms
+[2026-01-26T06:26:42.029Z] [03da2ec2] INFO GET /health - Request started
+[2026-01-26T06:26:42.029Z] [03da2ec2] INFO GET /health 200 0ms - Request completed
+[2026-01-26T06:27:12.029Z] [181563f8] INFO GET /health - Request started
+[2026-01-26T06:27:12.029Z] [181563f8] INFO GET /health 200 0ms - Request completed
+[WorkerRegistry] Sync complete: loaded=0, skipped=0, failed=0, duration=4ms
+[2026-01-26T06:27:42.032Z] [192805e6] INFO GET /health - Request started
+[2026-01-26T06:27:42.033Z] [192805e6] INFO GET /health 200 1ms - Request completed
+[2026-01-26T06:28:12.033Z] [cc67db20] INFO GET /health - Request started
+[2026-01-26T06:28:12.033Z] [cc67db20] INFO GET /health 200 0ms - Request completed
+[2026-01-26T06:28:42.036Z] [e27294b0] INFO GET /health - Request started
+[2026-01-26T06:28:42.036Z] [e27294b0] INFO GET /health 200 0ms - Request completed
+[WorkerRegistry] Sync complete: loaded=0, skipped=0, failed=0, duration=2ms
+[2026-01-26T06:29:12.037Z] [89b55890] INFO GET /health - Request started
+[2026-01-26T06:29:12.037Z] [89b55890] INFO GET /health 200 0ms - Request completed
+[2026-01-26T06:29:42.037Z] [3931f8bc] INFO GET /health - Request started
+[2026-01-26T06:29:42.037Z] [3931f8bc] INFO GET /health 200 0ms - Request completed
+[WorkerRegistry] Sync complete: loaded=0, skipped=0, failed=0, duration=2ms
+[2026-01-26T06:30:12.038Z] [f6e2ffb3] INFO GET /health - Request started
+[2026-01-26T06:30:12.038Z] [f6e2ffb3] INFO GET /health 200 0ms - Request completed
+[2026-01-26T06:30:42.039Z] [b4e64a63] INFO GET /health - Request started
+[2026-01-26T06:30:42.039Z] [b4e64a63] INFO GET /health 200 0ms - Request completed
+[WorkerRegistry] Sync complete: loaded=0, skipped=0, failed=0, duration=1ms
+[2026-01-26T06:31:12.040Z] [95e11648] INFO GET /health - Request started
+[2026-01-26T06:31:12.040Z] [95e11648] INFO GET /health 200 0ms - Request completed
+[2026-01-26T06:31:42.041Z] [5ff3fb30] INFO GET /health - Request started
+[2026-01-26T06:31:42.041Z] [5ff3fb30] INFO GET /health 200 0ms - Request completed
+[WorkerRegistry] Sync complete: loaded=0, skipped=0, failed=0, duration=1ms
+[2026-01-26T06:32:12.042Z] [4dbf77d6] INFO GET /health - Request started
+[2026-01-26T06:32:12.042Z] [4dbf77d6] INFO GET /health 200 0ms - Request completed
+[2026-01-26T06:32:42.043Z] [90bfc9a4] INFO GET /health - Request started
+[2026-01-26T06:32:42.043Z] [90bfc9a4] INFO GET /health 200 0ms - Request completed
+[WorkerRegistry] Sync complete: loaded=0, skipped=0, failed=0, duration=3ms
+[2026-01-26T06:33:12.044Z] [f92cf800] INFO GET /health - Request started
+[2026-01-26T06:33:12.044Z] [f92cf800] INFO GET /health 200 0ms - Request completed
+[2026-01-26T06:33:42.045Z] [bd3ab6b3] INFO GET /health - Request started
+[2026-01-26T06:33:42.045Z] [bd3ab6b3] INFO GET /health 200 0ms - Request completed
+[WorkerRegistry] Sync complete: loaded=0, skipped=0, failed=0, duration=2ms
+[2026-01-26T06:34:12.046Z] [faf35ad2] INFO GET /health - Request started
+[2026-01-26T06:34:12.046Z] [faf35ad2] INFO GET /health 200 0ms - Request completed
+[2026-01-26T06:34:42.049Z] [7199053c] INFO GET /health - Request started
+[2026-01-26T06:34:42.049Z] [7199053c] INFO GET /health 200 0ms - Request completed
+[WorkerRegistry] Sync complete: loaded=0, skipped=0, failed=0, duration=2ms
+[2026-01-26T06:35:12.049Z] [cecc393d] INFO GET /health - Request started
+[2026-01-26T06:35:12.049Z] [cecc393d] INFO GET /health 200 0ms - Request completed
+[2026-01-26T06:35:42.050Z] [7838e72a] INFO GET /health - Request started
+[2026-01-26T06:35:42.050Z] [7838e72a] INFO GET /health 200 0ms - Request completed
+[WorkerRegistry] Sync complete: loaded=0, skipped=0, failed=0, duration=1ms
+[2026-01-26T06:36:12.051Z] [01a2441d] INFO GET /health - Request started
+[2026-01-26T06:36:12.051Z] [01a2441d] INFO GET /health 200 0ms - Request completed
+[2026-01-26T06:36:42.053Z] [8f400053] INFO GET /health - Request started
+[2026-01-26T06:36:42.053Z] [8f400053] INFO GET /health 200 0ms - Request completed
+[WorkerRegistry] Sync complete: loaded=0, skipped=0, failed=0, duration=2ms
+[2026-01-26T06:37:12.054Z] [660fe437] INFO GET /health - Request started
+[2026-01-26T06:37:12.054Z] [660fe437] INFO GET /health 200 0ms - Request completed
+[2026-01-26T06:37:42.055Z] [34cee475] INFO GET /health - Request started
+[2026-01-26T06:37:42.055Z] [34cee475] INFO GET /health 200 0ms - Request completed
+[WorkerRegistry] Sync complete: loaded=0, skipped=0, failed=0, duration=1ms
+[2026-01-26T06:38:12.056Z] [3010000e] INFO GET /health - Request started
+[2026-01-26T06:38:12.056Z] [3010000e] INFO GET /health 200 0ms - Request completed
+[2026-01-26T06:38:42.057Z] [9cf4a38c] INFO GET /health - Request started
+[2026-01-26T06:38:42.057Z] [9cf4a38c] INFO GET /health 200 0ms - Request completed
+[WorkerRegistry] Sync complete: loaded=0, skipped=0, failed=0, duration=1ms
+[2026-01-26T06:39:12.058Z] [5d369b7a] INFO GET /health - Request started
+[2026-01-26T06:39:12.058Z] [5d369b7a] INFO GET /health 200 0ms - Request completed
+[2026-01-26T06:39:42.059Z] [4a998bc9] INFO GET /health - Request started
+[2026-01-26T06:39:42.059Z] [4a998bc9] INFO GET /health 200 0ms - Request completed
+[WorkerRegistry] Sync complete: loaded=0, skipped=0, failed=0, duration=1ms
+[2026-01-26T06:40:12.060Z] [2e35c541] INFO GET /health - Request started
+[2026-01-26T06:40:12.060Z] [2e35c541] INFO GET /health 200 0ms - Request completed
+[2026-01-26T06:40:42.061Z] [ffc614a1] INFO GET /health - Request started
+[2026-01-26T06:40:42.061Z] [ffc614a1] INFO GET /health 200 0ms - Request completed
+[WorkerRegistry] Sync complete: loaded=0, skipped=0, failed=0, duration=2ms
+[2026-01-26T06:41:12.062Z] [de3f6afd] INFO GET /health - Request started
+[2026-01-26T06:41:12.062Z] [de3f6afd] INFO GET /health 200 0ms - Request completed
+[2026-01-26T06:41:42.063Z] [da69d517] INFO GET /health - Request started
+[2026-01-26T06:41:42.063Z] [da69d517] INFO GET /health 200 0ms - Request completed
+[WorkerRegistry] Sync complete: loaded=0, skipped=0, failed=0, duration=1ms
+[2026-01-26T06:42:12.064Z] [e4e20d3e] INFO GET /health - Request started
+[2026-01-26T06:42:12.064Z] [e4e20d3e] INFO GET /health 200 0ms - Request completed
+[2026-01-26T06:42:42.065Z] [8d484a8b] INFO GET /health - Request started
+[2026-01-26T06:42:42.065Z] [8d484a8b] INFO GET /health 200 0ms - Request completed
+[WorkerRegistry] Sync complete: loaded=0, skipped=0, failed=0, duration=2ms
+[2026-01-26T06:43:12.066Z] [7d7b3cd5] INFO GET /health - Request started
+[2026-01-26T06:43:12.066Z] [7d7b3cd5] INFO GET /health 200 0ms - Request completed
+[2026-01-26T06:43:42.067Z] [3733c6cf] INFO GET /health - Request started
+[2026-01-26T06:43:42.067Z] [3733c6cf] INFO GET /health 200 0ms - Request completed
+[2026-01-26T06:44:12.068Z] [599baa87] INFO GET /health - Request started
+[2026-01-26T06:44:12.068Z] [599baa87] INFO GET /health 200 0ms - Request completed
+[WorkerRegistry] Sync complete: loaded=0, skipped=0, failed=0, duration=2ms
+[2026-01-26T06:44:42.069Z] [b41a1442] INFO GET /health - Request started
+[2026-01-26T06:44:42.069Z] [b41a1442] INFO GET /health 200 0ms - Request completed
+[2026-01-26T06:45:12.070Z] [934bdf06] INFO GET /health - Request started
+[2026-01-26T06:45:12.070Z] [934bdf06] INFO GET /health 200 0ms - Request completed
+[2026-01-26T06:45:42.070Z] [b7fd6ce4] INFO GET /health - Request started
+[2026-01-26T06:45:42.070Z] [b7fd6ce4] INFO GET /health 200 0ms - Request completed
+[WorkerRegistry] Sync complete: loaded=0, skipped=0, failed=0, duration=1ms
+[2026-01-26T06:46:12.070Z] [6778a2f9] INFO GET /health - Request started
+[2026-01-26T06:46:12.071Z] [6778a2f9] INFO GET /health 200 1ms - Request completed
+[2026-01-26T06:46:42.071Z] [269f3915] INFO GET /health - Request started
+[2026-01-26T06:46:42.071Z] [269f3915] INFO GET /health 200 0ms - Request completed
+[2026-01-26T06:47:12.070Z] [f6d27104] INFO GET /health - Request started
+[2026-01-26T06:47:12.071Z] [f6d27104] INFO GET /health 200 1ms - Request completed
+[WorkerRegistry] Sync complete: loaded=0, skipped=0, failed=0, duration=2ms
+[2026-01-26T06:47:42.072Z] [15608cfa] INFO GET /health - Request started
+[2026-01-26T06:47:42.072Z] [15608cfa] INFO GET /health 200 1ms - Request completed
+[2026-01-26T06:48:12.071Z] [1a75cc36] INFO GET /health - Request started
+[2026-01-26T06:48:12.072Z] [1a75cc36] INFO GET /health 200 1ms - Request completed
+[WorkerRegistry] Sync complete: loaded=0, skipped=0, failed=0, duration=2ms
+[2026-01-26T06:48:42.071Z] [378d16d1] INFO GET /health - Request started
+[2026-01-26T06:48:42.071Z] [378d16d1] INFO GET /health 200 0ms - Request completed
+[2026-01-26T06:49:12.072Z] [8e5ec7ff] INFO GET /health - Request started
+[2026-01-26T06:49:12.072Z] [8e5ec7ff] INFO GET /health 200 1ms - Request completed
+[WorkerRegistry] Sync complete: loaded=0, skipped=0, failed=0, duration=2ms
+[2026-01-26T06:49:42.072Z] [f325f449] INFO GET /health - Request started
+[2026-01-26T06:49:42.072Z] [f325f449] INFO GET /health 200 0ms - Request completed
+[2026-01-26T06:50:12.073Z] [7dc22bb4] INFO GET /health - Request started
+[2026-01-26T06:50:12.073Z] [7dc22bb4] INFO GET /health 200 0ms - Request completed
+[2026-01-26T06:50:42.073Z] [f33cddbb] INFO GET /health - Request started
+[2026-01-26T06:50:42.073Z] [f33cddbb] INFO GET /health 200 0ms - Request completed
+[WorkerRegistry] Sync complete: loaded=0, skipped=0, failed=0, duration=2ms
+[2026-01-26T06:51:12.074Z] [14348304] INFO GET /health - Request started
+[2026-01-26T06:51:12.074Z] [14348304] INFO GET /health 200 1ms - Request completed
+[2026-01-26T06:51:42.075Z] [14ebe000] INFO GET /health - Request started
+[2026-01-26T06:51:42.076Z] [14ebe000] INFO GET /health 200 1ms - Request completed
+[WorkerRegistry] Sync complete: loaded=0, skipped=0, failed=0, duration=2ms
+[2026-01-26T06:52:12.079Z] [59923794] INFO GET /health - Request started
+[2026-01-26T06:52:12.079Z] [59923794] INFO GET /health 200 0ms - Request completed
+[2026-01-26T06:52:42.079Z] [7d485c7f] INFO GET /health - Request started
+[2026-01-26T06:52:42.079Z] [7d485c7f] INFO GET /health 200 0ms - Request completed
